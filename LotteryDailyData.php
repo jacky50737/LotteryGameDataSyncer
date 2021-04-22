@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 $url = 'https://videoracing.com/api/Issue/Search';
 
-$data = 'LotteryGameCode=35&IssueCount=&OpenDateDateTime=';
+$data = 'LotteryGameCode=35&IssueCount=5&OpenDateDateTime=';
 
 $file = fopen("log.txt", "r");
 $lastDay = fgets($file);
@@ -50,16 +50,16 @@ if ($info['http_code'] == 200) {
             $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
         }
         $excel_url_checkData = $excel_url . "&action=" . $action;
-        $is_have = json_decode(file_get_contents($excel_url_checkData));
+        $is_have = json_decode(file_get_contents($excel_url_checkData.'&'.rand()));
         if (isset($is_have->dataFlag)) {
             $action = "uploadData";
             $excel_url_uploadData = $excel_url . "&action=" . $action;
-            $is_upload = json_decode(file_get_contents($excel_url_uploadData));
+            $is_upload = json_decode(file_get_contents($excel_url_uploadData.'&'.rand()));
             if(isset($is_upload->uploadtag)){
                 echo $game.'期上傳成功!'."\n";
             }
         }
-        usleep(10);
+        usleep(1);
     }
 
     $file = fopen("log.txt", "w");
