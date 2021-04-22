@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 $url = 'https://videoracing.com/api/Issue/Search';
 
-$data = 'LotteryGameCode=35&IssueCount=5&OpenDateDateTime=';
+$data = 'LotteryGameCode=35&IssueCount=&OpenDateDateTime=';
 
 $file = fopen("log.txt", "r");
 $lastDay = fgets($file);
