@@ -45,7 +45,7 @@ if ($info['http_code'] == 200) {
             $excel_url_checkData = $excel_url . "&action=" . $action;
 
             $ch2 = curl_init();
-            curl_setopt ($ch2, CURLOPT_URL, $excel_url_checkData);
+            curl_setopt($ch2, CURLOPT_URL, $excel_url_checkData);
             curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
@@ -56,19 +56,19 @@ if ($info['http_code'] == 200) {
             for ($i = 0; $i < 3; $i++) {
                 if (isset($is_have_data)) {
                     $is_have = json_decode($is_have_data);
-                    $i=3;
+                    $i = 3;
                 }
             }
             $process_file = fopen("processlog.txt", "a+");
-            fwrite($process_file, "驗證期數：".$game."=>成功!，驗證時間：" .
-                date("Y-m-d A h:i:s", time() + 8 * 60 * 60));
+            fwrite($process_file, "驗證期數：" . $game . "=>成功!，驗證時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
             fclose($process_file);
             if (isset($is_have->dataFlag)) {
                 $action = "uploadData";
                 $excel_url_uploadData = $excel_url . "&action=" . $action;
 
                 $ch3 = curl_init();
-                curl_setopt ($ch3, CURLOPT_URL, $excel_url_uploadData);
+                curl_setopt($ch3, CURLOPT_URL, $excel_url_uploadData);
                 curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
                 curl_setopt($ch3, CURLOPT_FOLLOWLOCATION, true);
                 curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
@@ -79,13 +79,13 @@ if ($info['http_code'] == 200) {
                 for ($j = 0; $j < 3; $j++) {
                     if (isset($is_upload_data)) {
                         $is_upload = json_decode($is_upload_data);
-                        $j=3;
+                        $j = 3;
                     }
                 }
                 if (isset($is_upload->uploadtag)) {
                     $process_file = fopen("processlog.txt", "a+");
-                    fwrite($process_file, "上傳期數：".$game."=>成功!，上傳時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60));
+                    fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                     fclose($process_file);
                     echo $game . '期上傳成功!' . "\n";
                 }
