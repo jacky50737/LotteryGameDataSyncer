@@ -27,39 +27,122 @@ if ($tomorrow < $today) {
 $data_all = $data . $day;
 
 //echo $data_all;
+try {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('content-type:application/x-www-form-urlencoded; charset=UTF-8'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_all);
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('content-type:application/x-www-form-urlencoded; charset=UTF-8'));
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data_all);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $results = json_decode(curl_exec($ch));
+    $info = curl_getinfo($ch);
+    curl_close($ch);
+} catch (Exception $exception) {
+    $error_file = fopen("errorlog.txt", "a+");
+    fwrite($error_file, "下載遊戲資料時發生錯誤，錯誤發生時間：" .
+        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+        " 下載錯誤日期：" . $day . " 錯誤訊息：" . $exception->getMessage(). "\n");
+    fclose($error_file);
+}
 
-$results = json_decode(curl_exec($ch));
-$info = curl_getinfo($ch);
-curl_close($ch);
 
 if ($info['http_code'] == 200) {
     foreach ($results as $result) {
-        $excel_url = 'https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec';
-        $game = $result->NumberOfPeriod;
-        $action = "checkData";
-        $excel_url .= "?game=" . $game;
-        foreach ($result->WinningNumbers as $key => $winningNumber) {
-            $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
-        }
-        $excel_url_checkData = $excel_url . "&action=" . $action;
-        $is_have = json_decode(file_get_contents($excel_url_checkData.'&'.rand()));
-        if (isset($is_have->dataFlag)) {
-            $action = "uploadData";
-            $excel_url_uploadData = $excel_url . "&action=" . $action;
-            $is_upload = json_decode(file_get_contents($excel_url_uploadData.'&'.rand()));
-            if(isset($is_upload->uploadtag)){
-                echo $game.'期上傳成功!'."\n";
+        try {
+            $excel_url = 'https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec';
+            $game = $result->NumberOfPeriod;
+            $action = "checkData";
+            $excel_url .= "?game=" . $game;
+            foreach ($result->WinningNumbers as $key => $winningNumber) {
+                $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
             }
+            $excel_url_checkData = $excel_url . "&action=" . $action;
+//            $is_have_data = file_get_contents($excel_url_checkData . '&' . rand());
+            $check_retry_tag = 0;
+            if($check_retry_tag<3){
+                $ch2 = curl_init();
+                curl_setopt ($ch2, CURLOPT_URL, $excel_url_checkData);
+                curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
+                curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch2, CURLOPT_TIMEOUT, 20);
+                $is_have_data = curl_exec($ch2);
+                curl_close($ch2);
+                if($is_have_data != false){
+                    $check_retry_tag = 3;
+                }elseif ($check_retry_tag == 2 && $is_have_data == false){
+                    $error_file = fopen("errorlog.txt", "a+");
+                    fwrite($error_file, "檢查資料時發生CURL錯誤，錯誤發生時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                        " 下載錯誤日期：" . $day ."\n");
+                    fclose($error_file);
+                }else{
+                    $check_retry_tag++;
+                }
+            }
+
+            for ($i = 0; $i < 3; $i++) {
+                if ($is_have_data != false) {
+                    $is_have = json_decode($is_have_data);
+                    $i=3;
+                }
+            }
+            $process_file = fopen("processlog.txt", "a+");
+            fwrite($process_file, "驗證期數：".$game."=>成功!，驗證時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60)."\n");
+            fclose($process_file);
+            if (isset($is_have->dataFlag)) {
+                $action = "uploadData";
+                $excel_url_uploadData = $excel_url . "&action=" . $action;
+//                $is_upload_data = file_get_contents($excel_url_uploadData . '&' . rand());
+                $upload_retry_tag = 0;
+                if($upload_retry_tag<3){
+                    $ch3 = curl_init();
+                    curl_setopt ($ch3, CURLOPT_URL, $excel_url_uploadData);
+                    curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
+                    curl_setopt($ch3, CURLOPT_FOLLOWLOCATION, true);
+                    curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch3, CURLOPT_TIMEOUT, 20);
+                    $is_upload_data = curl_exec($ch3);
+                    curl_close($ch3);
+                    if($is_upload_data != false){
+                        $upload_retry_tag = 3;
+                    }elseif ($upload_retry_tag == 2 && $is_upload_data == false){
+                        $error_file = fopen("errorlog.txt", "a+");
+                        fwrite($error_file, "上傳資料時發生CURL錯誤，錯誤發生時間：" .
+                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                            " 下載錯誤日期：" . $day ."\n");
+                        fclose($error_file);
+                    }else{
+                        $upload_retry_tag++;
+                    }
+                }
+
+                for ($j = 0; $j < 3; $j++) {
+                    if ($is_upload_data != false) {
+                        $is_upload = json_decode($is_upload_data);
+                        $j=3;
+                    }
+                }
+                if (isset($is_upload->uploadtag)) {
+                    $process_file = fopen("processlog.txt", "a+");
+                    fwrite($process_file, "上傳期數：".$game."=>成功!，上傳時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60)."\n");
+                    fclose($process_file);
+                    echo $game . '期上傳成功!' . "\n";
+                }
+            }
+            usleep(1);
+        } catch (Exception $exception) {
+            $error_file = fopen("errorlog.txt", "a+");
+            fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                " 發生錯誤遊戲期數：" . $game .
+                " 錯誤訊息：" . $exception->getMessage(). "\n");
+            fclose($error_file);
         }
-        usleep(1);
     }
 
     $file = fopen("log.txt", "w");

@@ -7,35 +7,97 @@
 
 declare(strict_types=1);
 
-header('Content-Type: application/json');
+$url = 'https://videoracing.com/api/Issue/Search';
 
-if (isset($_GET["password"])) {
-    $password = $_GET["password"];
-} else {
-    $password = "XXXXXX";
+$data = 'LotteryGameCode=35&IssueCount=1&OpenDateDateTime=';
+
+try {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('content-type:application/x-www-form-urlencoded; charset=UTF-8'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $results = json_decode(curl_exec($ch));
+    $info = curl_getinfo($ch);
+    curl_close($ch);
+
+} catch (Exception $exception) {
+    $error_file = fopen("errorlog.txt", "a+");
+    fwrite($error_file, "下載遊戲資料時發生錯誤，錯誤發生時間：" .
+        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+        " 錯誤訊息：" . $exception->getMessage());
+    fclose($error_file);
 }
 
-if ($password == "善鼎") {
 
-    if (isset($_GET["market"])) {
-        $market = $_GET["market"];
-    } else {
-        $market = "LINKUSDT";
+if ($info['http_code'] == 200) {
+    foreach ($results as $result) {
+        try {
+            $excel_url = 'https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec';
+            $game = $result->NumberOfPeriod;
+            $action = "checkData";
+            $excel_url .= "?game=" . $game;
+            foreach ($result->WinningNumbers as $key => $winningNumber) {
+                $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
+            }
+            $excel_url_checkData = $excel_url . "&action=" . $action;
+
+            $ch2 = curl_init();
+            curl_setopt ($ch2, CURLOPT_URL, $excel_url_checkData);
+            curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
+            curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch2, CURLOPT_TIMEOUT, 20);
+            $is_have_data = curl_exec($ch2);
+            curl_close($ch2);
+
+            for ($i = 0; $i < 3; $i++) {
+                if (isset($is_have_data)) {
+                    $is_have = json_decode($is_have_data);
+                    $i=3;
+                }
+            }
+            $process_file = fopen("processlog.txt", "a+");
+            fwrite($process_file, "驗證期數：".$game."=>成功!，驗證時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60));
+            fclose($process_file);
+            if (isset($is_have->dataFlag)) {
+                $action = "uploadData";
+                $excel_url_uploadData = $excel_url . "&action=" . $action;
+
+                $ch3 = curl_init();
+                curl_setopt ($ch3, CURLOPT_URL, $excel_url_uploadData);
+                curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
+                curl_setopt($ch3, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch3, CURLOPT_TIMEOUT, 20);
+                $is_upload_data = curl_exec($ch3);
+                curl_close($ch3);
+
+                for ($j = 0; $j < 3; $j++) {
+                    if (isset($is_upload_data)) {
+                        $is_upload = json_decode($is_upload_data);
+                        $j=3;
+                    }
+                }
+                if (isset($is_upload->uploadtag)) {
+                    $process_file = fopen("processlog.txt", "a+");
+                    fwrite($process_file, "上傳期數：".$game."=>成功!，上傳時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60));
+                    fclose($process_file);
+                    echo $game . '期上傳成功!' . "\n";
+                }
+            }
+            usleep(1);
+        } catch (Exception $exception) {
+            $error_file = fopen("errorlog.txt", "a+");
+            fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                " 發生錯誤遊戲期數：" . $game .
+                " 錯誤訊息：" . $exception->getMessage());
+            fclose($error_file);
+        }
     }
-
-    $url = 'https://api.binance.com';
-    $binanceApiKey = 'ysSQb0zgMyxsF3knmh44MS3vcqyvBpT80XKrpuk4xnRVf1a2fLiaQaER4JXSrnRt';
-    $binanceApiSecret = 'YaIYBzTXEJSh5nAAFLkYR1bGDMl4mwaNfvwe3dtULr5GvLodZTHTLCRei9aRs8kT';
-    $coinGet = '/api/v3/ticker/price?symbol=' . $market;
-    $url_all = $url . $coinGet;
-
-    try {
-        $response = json_decode(file_get_contents($url_all));
-        $data = ['price' => (double)$response->price];
-    } catch (Exception $e) {
-        $data = ['error' => "發生未知的錯誤：" . $e->getMessage()];
-    }
-} else {
-    $data = ['error' => '密碼錯誤'];
 }
-echo json_encode($data);
