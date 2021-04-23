@@ -190,7 +190,7 @@ $file = fopen("locktime.txt", "r");
 $locktime = fgets($file);
 fclose($file);
 
-if ((time() - $locktime) > 5400) {
+if ((time() - $locktime) > 10800) {
 
     $file = fopen("DailyLock.txt", "w");
     fwrite($file, "off");
