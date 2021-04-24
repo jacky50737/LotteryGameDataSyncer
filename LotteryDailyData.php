@@ -182,7 +182,6 @@ if ($lock == 'off') {
         fwrite($file, "off");
         fclose($file);
 
-
     }
 }
 

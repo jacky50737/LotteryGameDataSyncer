@@ -31,7 +31,6 @@ try {
     fclose($error_file);
 }
 
-
 if ($info['http_code'] == 200) {
     foreach ($results as $result) {
         try {
