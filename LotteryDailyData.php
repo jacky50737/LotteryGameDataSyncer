@@ -173,9 +173,13 @@ if ($lock == 'off') {
         $file = fopen("log.txt", "w");
         fwrite($file, $day);
         fclose($file);
+		
+		$process_file = fopen("processlog.txt", "a+");
+		fwrite($process_file, "日期：" . $day . "執行了：" . $time_total."\n");
+		fclose($process_file);
 
         $file = fopen("locktime.txt", "a+");
-        fwrite($file, "日期：" . $day . "執行了：" . $time_total."\n");
+        fwrite($file, $time_total."\n");
         fclose($file);
 
         $file = fopen("DailyLock.txt", "w");
