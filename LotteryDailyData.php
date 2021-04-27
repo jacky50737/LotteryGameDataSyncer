@@ -178,7 +178,7 @@ if ($lock == 'off') {
 		fwrite($process_file, "日期：" . $day . "執行了：" . $time_total."\n");
 		fclose($process_file);
 
-        $file = fopen("locktime.txt", "a+");
+        $file = fopen("locktime.txt", "w");
         fwrite($file, $time_total."\n");
         fclose($file);
 
