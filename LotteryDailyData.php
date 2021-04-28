@@ -188,7 +188,7 @@ if ($lock == 'off') {
 
     }
 }
-
+echo "正在爬號中!";
 $file = fopen("locktime.txt", "r");
 $locktime = fgets($file);
 fclose($file);
