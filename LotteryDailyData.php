@@ -21,7 +21,7 @@ if ($lock == 'off') {
 
     $url = 'https://videoracing.com/api/Issue/Search';
 
-    $data = 'LotteryGameCode=2&IssueCount=1&OpenDateDateTime=';
+    $data = 'LotteryGameCode=2&IssueCount=&OpenDateDateTime=';
 
     $file = fopen("log.txt", "r");
     $lastDay = fgets($file);
