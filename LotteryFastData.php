@@ -60,7 +60,7 @@ if ($info['http_code'] == 200) {
             }
 
             $process_file = fopen("processFastlog.txt", "a+");
-            fwrite($process_file, "驗證期數：" . $game . "=>成功!，驗證時間：" .
+            fwrite($process_file, "驗證期數：" . $game . "=>成功! 嘗試次數：".$i."驗證時間：" .
                 date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
             fclose($process_file);
 
@@ -88,7 +88,7 @@ if ($info['http_code'] == 200) {
                     }
                 }
                 $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "上傳期數結束：" . $game . "，結束時間：" .
+                fwrite($process_file, "上傳期數結束：" . $game . " 嘗試次數：".$j."，結束時間：" .
                     date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                 fclose($process_file);
                 if (isset($is_upload->uploadtag)) {
