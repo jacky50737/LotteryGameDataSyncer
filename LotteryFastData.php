@@ -69,11 +69,6 @@ if ($info['http_code'] == 200) {
                 $action = "uploadData";
                 $excel_url_uploadData = $excel_url . "&action=" . $action;
 
-                $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "開始上傳期數：" . $game . "，開始時間：" .
-                    date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
-                fclose($process_file);
-
                 $ch3 = curl_init();
                 curl_setopt($ch3, CURLOPT_URL, $excel_url_uploadData);
                 curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
@@ -89,10 +84,6 @@ if ($info['http_code'] == 200) {
                         $j = 3;
                     }
                 }
-                $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "上傳期數結束：" . $game . " 嘗試次數：".$j."次，結束時間：" .
-                    date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
-                fclose($process_file);
                 if (isset($is_upload->uploadtag)) {
                     $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
@@ -102,7 +93,7 @@ if ($info['http_code'] == 200) {
                 }
             }else{
                 $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "驗證期數：" . $game . "=>已存在! 嘗試次數：".$i." 驗證旗標：".isset($is_have->dataFlag)."驗證時間：" .
+                fwrite($process_file, "驗證期數：" . $game . "=>已存在! 嘗試次數：".$i."次 驗證旗標：".isset($is_have->dataFlag)."驗證時間：" .
                     date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                 fclose($process_file);
             }
