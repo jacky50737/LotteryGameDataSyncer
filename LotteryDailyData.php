@@ -195,7 +195,7 @@ $locktime = fgets($file);
 fclose($file);
 echo "距目前JOB已執行：".(time() - $locktime)."秒\n";
 
-if ((time() - $locktime) > 7200) {
+if ((microtime(true) - $locktime) > 7200) {
     echo "已解除鎖定";
     $file = fopen("DailyLock.txt", "w");
     fwrite($file, "off");
