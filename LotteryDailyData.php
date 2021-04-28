@@ -193,7 +193,7 @@ echo "正在爬號中 !\n";
 $file = fopen("locktime.txt", "r");
 $locktime = fgets($file);
 fclose($file);
-echo "距上次執行：".(time() - $locktime)."秒";
+echo "距目前JOB已執行：".(time() - $locktime)."秒";
 
 if ((time() - $locktime) > 16200) {
 
