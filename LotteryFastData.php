@@ -53,11 +53,12 @@ if ($info['http_code'] == 200) {
             curl_close($ch2);
 
             for ($i = 0; $i < 3; $i++) {
-                if (isset($is_have_data)) {
+                if ($is_have_data != false) {
                     $is_have = json_decode($is_have_data);
                     $i = 3;
                 }
             }
+
             $process_file = fopen("processlog.txt", "a+");
             fwrite($process_file, "驗證期數：" . $game . "=>成功!，驗證時間：" .
                 date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
