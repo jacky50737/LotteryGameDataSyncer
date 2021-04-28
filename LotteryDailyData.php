@@ -155,6 +155,11 @@ if ($lock == 'off') {
                         fclose($process_file);
                         echo $game . '期上傳成功!' . "\n";
                     }
+                }else{
+                    $process_file = fopen("processlog.txt", "a+");
+                    fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證旗標：".isset($is_have->dataFlag)? $is_have->dataFlag:"獲取失敗"."驗證時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                    fclose($process_file);
                 }
 
                 usleep(1);
