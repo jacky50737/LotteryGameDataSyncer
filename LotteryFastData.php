@@ -63,6 +63,11 @@ if ($info['http_code'] == 200) {
             fwrite($process_file, "驗證期數：" . $game . "=>成功!，驗證時間：" .
                 date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
             fclose($process_file);
+
+            $process_file = fopen("processFastlog.txt", "a+");
+            fwrite($process_file, "開始上傳期數：" . $game . "，開始時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+            fclose($process_file);
             if (isset($is_have->dataFlag)) {
                 $action = "uploadData";
                 $excel_url_uploadData = $excel_url . "&action=" . $action;
@@ -82,7 +87,10 @@ if ($info['http_code'] == 200) {
                         $j = 3;
                     }
                 }
-
+                $process_file = fopen("processFastlog.txt", "a+");
+                fwrite($process_file, "上傳期數結束：" . $game . "，結束時間：" .
+                    date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                fclose($process_file);
                 if (isset($is_upload->uploadtag)) {
                     $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
