@@ -99,6 +99,10 @@ if ($info['http_code'] == 200) {
                     echo $game . '期上傳成功!' . "\n";
                 }
             }
+            $process_file = fopen("processFastlog.txt", "a+");
+            fwrite($process_file, "驗證期數：" . $game . "=>已存在! 嘗試次數：".$i." 驗證旗標：".isset($is_have->dataFlag)."驗證時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+            fclose($process_file);
             usleep(1);
         } catch (Exception $exception) {
             $error_file = fopen("errorFastlog.txt", "a+");
