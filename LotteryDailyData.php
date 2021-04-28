@@ -61,6 +61,11 @@ if ($lock == 'off') {
 
 
     if ($info['http_code'] == 200) {
+
+        $file = fopen("locktime.txt", "w");
+        fwrite($file, $start_time."\n");
+        fclose($file);
+
         foreach ($results as $result) {
             try {
                 $excel_url = 'https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec';
@@ -177,10 +182,6 @@ if ($lock == 'off') {
 		$process_file = fopen("processlog.txt", "a+");
 		fwrite($process_file, "日期：" . $day . "執行了：" . $time_total."\n");
 		fclose($process_file);
-
-        $file = fopen("locktime.txt", "w");
-        fwrite($file, $time_total."\n");
-        fclose($file);
 
         $file = fopen("DailyLock.txt", "w");
         fwrite($file, "off");
