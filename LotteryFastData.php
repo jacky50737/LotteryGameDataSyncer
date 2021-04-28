@@ -42,15 +42,28 @@ if ($info['http_code'] == 200) {
                 $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
             }
             $excel_url_checkData = $excel_url . "&action=" . $action;
+            $check_retry_tag = 0;
 
-            $ch2 = curl_init();
-            curl_setopt($ch2, CURLOPT_URL, $excel_url_checkData);
-            curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
-            curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch2, CURLOPT_TIMEOUT, 0);
-            $is_have_data = curl_exec($ch2);
-            curl_close($ch2);
+            if ($check_retry_tag < 3) {
+                $ch2 = curl_init();
+                curl_setopt($ch2, CURLOPT_URL, $excel_url_checkData);
+                curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
+                curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch2, CURLOPT_TIMEOUT, 0);
+                $is_have_data = curl_exec($ch2);
+                curl_close($ch2);
+                if ($is_have_data != false) {
+                    $check_retry_tag = 3;
+                } elseif ($check_retry_tag == 2 && $is_have_data == false) {
+                    $error_file = fopen("errorFASTlog.txt", "a+");
+                    fwrite($error_file, "檢查資料時發生CURL錯誤，錯誤發生時間：" .
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60). "\n");
+                    fclose($error_file);
+                } else {
+                    $check_retry_tag++;
+                }
+            }
 
             for ($i = 0; $i < 3; $i++) {
                 if ($is_have_data != false) {
@@ -93,7 +106,7 @@ if ($info['http_code'] == 200) {
                 }
             }else{
                 $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證旗標：".isset($is_have->dataFlag)."驗證時間：" .
+                fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證旗標：".isset($is_have->dataFlag)? $is_have->dataFlag:"獲取失敗"."驗證時間：" .
                     date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                 fclose($process_file);
             }
