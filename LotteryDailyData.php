@@ -21,7 +21,7 @@ if ($lock == 'off') {
 
     $url = 'https://videoracing.com/api/Issue/Search';
 
-    $data = 'LotteryGameCode=2&IssueCount=&OpenDateDateTime=';
+    $data = 'LotteryGameCode=2&IssueCount=1&OpenDateDateTime=';
 
     $file = fopen("log.txt", "r");
     $lastDay = fgets($file);
@@ -63,7 +63,7 @@ if ($lock == 'off') {
     if ($info['http_code'] == 200) {
 
         $file = fopen("locktime.txt", "w");
-        fwrite($file, $start_time."\n");
+        fwrite($file, $start_time . "\n");
         fclose($file);
 
         foreach ($results as $result) {
@@ -129,6 +129,7 @@ if ($lock == 'off') {
                         $is_upload_data = curl_exec($ch3);
                         curl_close($ch3);
                         if ($is_upload_data != false) {
+                            $is_upload = json_decode($is_upload_data);
                             $upload_retry_tag = 3;
                         } elseif ($upload_retry_tag == 2 && $is_upload_data == false) {
                             $error_file = fopen("errorlog.txt", "a+");
@@ -141,13 +142,6 @@ if ($lock == 'off') {
                         }
                     }
 
-                    for ($j = 0; $j < 3; $j++) {
-                        if ($is_upload_data != false) {
-                            $is_upload = json_decode($is_upload_data);
-                            $j = 3;
-                        }
-                    }
-
                     if (isset($is_upload->uploadtag)) {
                         $process_file = fopen("processlog.txt", "a+");
                         fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
@@ -155,15 +149,14 @@ if ($lock == 'off') {
                         fclose($process_file);
                         echo $game . '期上傳成功!' . "\n";
                     }
-                }else{
+                } else {
                     $process_file = fopen("processlog.txt", "a+");
-                    fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證旗標：".isset($is_have->dataFlag)? $is_have->dataFlag:"獲取失敗"."驗證時間：" .
+                    fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
                         date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                     fclose($process_file);
                 }
 
                 usleep(1);
-
             } catch (Exception $exception) {
 
                 $error_file = fopen("errorlog.txt", "a+");
@@ -183,25 +176,28 @@ if ($lock == 'off') {
         $file = fopen("log.txt", "w");
         fwrite($file, $day);
         fclose($file);
-		
-		$process_file = fopen("processlog.txt", "a+");
-		fwrite($process_file, "日期：" . $day . "執行了：" . $time_total."\n");
-		fclose($process_file);
+
+        $process_file = fopen("processlog.txt", "a+");
+        fwrite($process_file, "日期：" . $day . "執行了：" . $time_total . "\n");
+        fclose($process_file);
 
         $file = fopen("DailyLock.txt", "w");
         fwrite($file, "off");
         fclose($file);
 
     }
+}else{
+    echo "正在爬號中 !\n";
+    $file = fopen("locktime.txt", "r");
+    $locktime = fgets($file);
+    fclose($file);
+    echo "距目前JOB已執行：" . (time() - $locktime) . "秒\n";
+
+
 }
-echo "正在爬號中 !\n";
-$file = fopen("locktime.txt", "r");
-$locktime = fgets($file);
-fclose($file);
-echo "距目前JOB已執行：".(time() - $locktime)."秒\n";
 
 if ((microtime(true) - $locktime) > 7200) {
-    echo "已解除鎖定";
+    echo "已解除鎖定\n";
     $file = fopen("DailyLock.txt", "w");
     fwrite($file, "off");
     fclose($file);

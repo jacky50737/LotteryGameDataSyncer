@@ -106,7 +106,7 @@ if ($info['http_code'] == 200) {
                 }
             }else{
                 $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證旗標：".isset($is_have->dataFlag)? $is_have->dataFlag:"獲取失敗"."驗證時間：" .
+                fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證時間：" .
                     date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                 fclose($process_file);
             }
