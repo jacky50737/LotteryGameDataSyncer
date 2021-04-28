@@ -76,11 +76,12 @@ if ($info['http_code'] == 200) {
                 curl_close($ch3);
 
                 for ($j = 0; $j < 3; $j++) {
-                    if (isset($is_upload_data)) {
+                    if ($is_upload_data != false) {
                         $is_upload = json_decode($is_upload_data);
                         $j = 3;
                     }
                 }
+
                 if (isset($is_upload->uploadtag)) {
                     $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
