@@ -195,7 +195,9 @@ if ($lock == 'off') {
 
 
 }
-
+$file = fopen("locktime.txt", "r");
+$locktime = fgets($file);
+fclose($file);
 if ((microtime(true) - $locktime) > 7200) {
     echo "已解除鎖定\n";
     $file = fopen("DailyLock.txt", "w");
