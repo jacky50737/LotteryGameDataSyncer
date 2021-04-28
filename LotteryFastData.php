@@ -82,7 +82,7 @@ if ($info['http_code'] == 200) {
                     }
                 }
                 if (isset($is_upload->uploadtag)) {
-                    $process_file = fopen("processlog.txt", "a+");
+                    $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "上傳期數：" . $game . "=>成功!，上傳時間：" .
                         date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                     fclose($process_file);
@@ -91,7 +91,7 @@ if ($info['http_code'] == 200) {
             }
             usleep(1);
         } catch (Exception $exception) {
-            $error_file = fopen("errorlog.txt", "a+");
+            $error_file = fopen("errorFastlog.txt", "a+");
             fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
                 date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
                 " 發生錯誤遊戲期數：" . $game .
