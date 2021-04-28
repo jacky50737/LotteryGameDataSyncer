@@ -85,7 +85,7 @@ if ($lock == 'off') {
                     curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
                     curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
                     curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($ch2, CURLOPT_TIMEOUT, 0);
+                    curl_setopt($ch2, CURLOPT_TIMEOUT, 100);
                     $is_have_data = curl_exec($ch2);
                     curl_close($ch2);
                     if ($is_have_data != false) {
@@ -125,7 +125,7 @@ if ($lock == 'off') {
                         curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
                         curl_setopt($ch3, CURLOPT_FOLLOWLOCATION, true);
                         curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
-                        curl_setopt($ch3, CURLOPT_TIMEOUT, 0);
+                        curl_setopt($ch3, CURLOPT_TIMEOUT, 100);
                         $is_upload_data = curl_exec($ch3);
                         curl_close($ch3);
                         if ($is_upload_data != false) {
