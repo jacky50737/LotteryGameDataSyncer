@@ -59,7 +59,7 @@ if ($info['http_code'] == 200) {
                 }
             }
 
-            $process_file = fopen("processlog.txt", "a+");
+            $process_file = fopen("processFastlog.txt", "a+");
             fwrite($process_file, "驗證期數：" . $game . "=>成功!，驗證時間：" .
                 date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
             fclose($process_file);
