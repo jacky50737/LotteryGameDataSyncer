@@ -116,7 +116,7 @@ try {
 
                     $process_file = fopen("processlog.txt", "a+");
                     fwrite($process_file, "驗證期數：" . $game . "=>成功!\t驗證時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                     fclose($process_file);
 
                     if (isset($is_have->dataFlag)) {
@@ -152,14 +152,14 @@ try {
                         if (isset($is_upload->uploadtag)) {
                             $process_file = fopen("processlog.txt", "a+");
                             fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
-                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
+                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                             fclose($process_file);
                             echo $game . '期上傳成功!' . "\n";
                         }
                     } else {
                         $process_file = fopen("processlog.txt", "a+");
                         fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
-                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
+                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                         fclose($process_file);
                     }
 
@@ -171,7 +171,7 @@ try {
                         $process_file = fopen("processlog.txt", "a+");
                         $pDate = intval($this_time + ($laststep * ($laststep / $doneStep)) / 1000);
                         $pDoneTime = date("Y-m-d A h:i:s", ($pDate + (8 * 60 * 60)));
-                        fwrite($process_file, "預計完成時間：" . $pDoneTime . "\t 剩餘期數：" .
+                        fwrite($process_file, "預計完成時間：" . $pDoneTime . "\n 剩餘期數：" .
                             $laststep . "\n");
                         fclose($process_file);
                     }
