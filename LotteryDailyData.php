@@ -69,7 +69,7 @@ echo "寫入開始時間...\n";
 
             echo "載入遊戲數據...\n";
 
-            $resultsCount = $results->count();
+            $resultsCount = count($results);
             $doneStep = 0;
 
             foreach ($results as $result) {
