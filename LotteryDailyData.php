@@ -169,7 +169,7 @@ echo "寫入開始時間...\n";
                         $this_time = floatval(microtime(true));
                         $cost_time = floatval($this_time) - floatval($start_time);
                         $process_file = fopen("processlog.txt", "a+");
-                        $pDoneTime = date("Y-m-d A h:i:s", ($this_time+($laststep*($laststep/$doneStep))) + 8 * 60 * 60);
+                        $pDoneTime = date("Y-m-d A h:i:s", (($this_time+($laststep*($laststep/$doneStep)))/1000) + 8 * 60 * 60);
                         fwrite($process_file, "預計完成時間：" . $pDoneTime . "\t 剩餘期數：" .
                             $laststep . "\n");
                         fclose($process_file);
