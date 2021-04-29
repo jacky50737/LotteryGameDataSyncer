@@ -207,6 +207,7 @@ fclose($file);if ((microtime(true) - $locktime) > 7200) {
 
     }
 }catch (Exception $exception){
+
     $error_file = fopen("errorlog.txt", "a+");
     fwrite($error_file, "發生未知錯誤，錯誤發生時間：" .
         date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
