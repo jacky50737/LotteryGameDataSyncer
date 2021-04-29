@@ -18,10 +18,10 @@ try {
         fclose($file);
 
         $start_time = microtime(true);
-
+echo "開始時間:".$start_time."\n";
         $url = 'https://videoracing.com/api/Issue/Search';
 
-    $data = 'LotteryGameCode=2&IssueCount=&OpenDateDateTime=';
+        $data = 'LotteryGameCode=2&IssueCount=5&OpenDateDateTime=';
 
         $file = fopen("log.txt", "r");
         $lastDay = fgets($file);
@@ -38,7 +38,7 @@ try {
         }
         $data_all = $data . $day;
 
-//echo $data_all;
+echo $data_all."\n";
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -51,6 +51,7 @@ try {
             $results = json_decode(curl_exec($ch));
             $info = curl_getinfo($ch);
             curl_close($ch);
+            echo "下載遊戲數據中...\n";
         } catch (Exception $exception) {
             $error_file = fopen("errorlog.txt", "a+");
             fwrite($error_file, "下載遊戲資料時發生錯誤，錯誤發生時間：" .
@@ -58,13 +59,18 @@ try {
                 " 下載錯誤日期：" . $day . " 錯誤訊息：" . $exception->getMessage() . "\n");
             fclose($error_file);
         }
-
+echo "下載遊戲數據完成...\n";
 
         if ($info['http_code'] == 200) {
-
+echo "寫入開始時間...\n";
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
+
+            echo "載入遊戲數據...\n";
+
+            $resultsCount = $results->count();
+            $doneStep = 0;
 
             foreach ($results as $result) {
                 try {
@@ -110,7 +116,7 @@ try {
 
                     $process_file = fopen("processlog.txt", "a+");
                     fwrite($process_file, "驗證期數：" . $game . "=>成功!\t驗證時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
                     fclose($process_file);
 
                     if (isset($is_have->dataFlag)) {
@@ -130,7 +136,7 @@ try {
                             curl_close($ch3);
                             if ($is_upload_data != false) {
                                 $is_upload = json_decode($is_upload_data);
-                            $upload_retry_tag = 3;
+                                $upload_retry_tag = 3;
                             } elseif ($upload_retry_tag == 2 && $is_upload_data == false) {
                                 $error_file = fopen("errorlog.txt", "a+");
                                 fwrite($error_file, "上傳資料時發生CURL錯誤，錯誤發生時間：" .
@@ -143,18 +149,29 @@ try {
                         }
 
 
-
                         if (isset($is_upload->uploadtag)) {
                             $process_file = fopen("processlog.txt", "a+");
                             fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
-                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
                             fclose($process_file);
                             echo $game . '期上傳成功!' . "\n";
                         }
-                    }else{
+                    } else {
                         $process_file = fopen("processlog.txt", "a+");
                         fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
-                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\t");
+                        fclose($process_file);
+                    }
+
+                    $doneStep++;
+                    $laststep = $resultsCount - $doneStep;
+                    if($laststep>1){
+                        $this_time = floatval(microtime(true));
+                        $cost_time = floatval($this_time) - floatval($start_time);
+                        $process_file = fopen("processlog.txt", "a+");
+                        $pDoneTime = date("Y-m-d A h:i:s", ($this_time+($laststep*($laststep/$doneStep))) + 8 * 60 * 60);
+                        fwrite($process_file, "預計完成時間：" . $pDoneTime . "\t 剩餘期數：" .
+                            $laststep . "\n");
                         fclose($process_file);
                     }
 
@@ -171,7 +188,7 @@ try {
 
                 }
             }
-
+            echo "讀寫完成...\n";
             $end_time = microtime(true);
 
             $time_total = $end_time - $start_time;
@@ -181,32 +198,41 @@ try {
             fclose($file);
 
             $process_file = fopen("processlog.txt", "a+");
-            fwrite($process_file, "日期：" . $day . "執行了：" . $time_total."\n");
+            fwrite($process_file, "日期：" . $day . "執行了：" . $time_total . "\n");
             fclose($process_file);
 
             $file = fopen("DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
 
+        }else{
+            echo "下載失敗...\n";
+            $error_file = fopen("errorlog.txt", "a+");
+            fwrite($error_file, "下載資料時發生錯誤，錯誤發生時間：" .
+                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                " 發生錯誤遊戲日期：" . $day .
+                " 錯誤code：" . $info['http_code'] . "\n");
+            fclose($error_file);
+//            var_dump($info);
         }
-    }else{
-    echo "正在爬號中 !\n";
-    $file = fopen("locktime.txt", "r");
-    $locktime = fgets($file);
-    fclose($file);
-    echo "距目前JOB已執行：" . (time() - $locktime) . "秒\n";
-
-    }
-$file = fopen("locktime.txt", "r");
-$locktime = fgets($file);
-fclose($file);if ((microtime(true) - $locktime) > 7200) {
-        echo "已解除鎖定\n";
-        $file = fopen("DailyLock.txt", "w");
-        fwrite($file, "off");
+    } else {
+        echo "正在爬號中 !\n";
+        $file = fopen("locktime.txt", "r");
+        $locktime = fgets($file);
         fclose($file);
+        echo "距目前JOB已執行：" . (floatval(microtime(true)) - floatval($locktime)). "秒\n";
+
+        if ((floatval(microtime(true)) - floatval($locktime)) > 7200) {
+            echo "已解除鎖定\n";
+            $file = fopen("DailyLock.txt", "w");
+            fwrite($file, "off");
+            fclose($file);
+
+        }
 
     }
-}catch (Exception $exception){
+
+} catch (Exception $exception) {
 
     $error_file = fopen("errorlog.txt", "a+");
     fwrite($error_file, "發生未知錯誤，錯誤發生時間：" .
