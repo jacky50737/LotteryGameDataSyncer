@@ -18,7 +18,7 @@ try {
         fclose($file);
 
         $start_time = microtime(true);
-echo "開始時間:".$start_time."\n";
+        echo "開始時間:" . $start_time . "\n";
         $url = 'https://videoracing.com/api/Issue/Search';
 
         $data = 'LotteryGameCode=2&IssueCount=5&OpenDateDateTime=';
@@ -38,7 +38,7 @@ echo "開始時間:".$start_time."\n";
         }
         $data_all = $data . $day;
 
-echo $data_all."\n";
+        echo $data_all . "\n";
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -59,10 +59,10 @@ echo $data_all."\n";
                 " 下載錯誤日期：" . $day . " 錯誤訊息：" . $exception->getMessage() . "\n");
             fclose($error_file);
         }
-echo "下載遊戲數據完成...\n";
+        echo "下載遊戲數據完成...\n";
 
         if ($info['http_code'] == 200) {
-echo "寫入開始時間...\n";
+            echo "寫入開始時間...\n";
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
@@ -165,11 +165,12 @@ echo "寫入開始時間...\n";
 
                     $doneStep++;
                     $laststep = $resultsCount - $doneStep;
-                    if($laststep>1){
+                    if ($laststep > 1) {
                         $this_time = floatval(microtime(true));
                         $cost_time = floatval($this_time) - floatval($start_time);
                         $process_file = fopen("processlog.txt", "a+");
-                        $pDoneTime = date("Y-m-d A h:i:s", (($this_time+($laststep*($laststep/$doneStep)))/1000) + 8 * 60 * 60);
+                        $pDate = intval($this_time + ($laststep * ($laststep / $doneStep)) / 1000);
+                        $pDoneTime = date("Y-m-d A h:i:s", ($pDate + (8 * 60 * 60)));
                         fwrite($process_file, "預計完成時間：" . $pDoneTime . "\t 剩餘期數：" .
                             $laststep . "\n");
                         fclose($process_file);
@@ -205,7 +206,7 @@ echo "寫入開始時間...\n";
             fwrite($file, "off");
             fclose($file);
 
-        }else{
+        } else {
             echo "下載失敗...\n";
             $error_file = fopen("errorlog.txt", "a+");
             fwrite($error_file, "下載資料時發生錯誤，錯誤發生時間：" .
@@ -220,7 +221,7 @@ echo "寫入開始時間...\n";
         $file = fopen("locktime.txt", "r");
         $locktime = fgets($file);
         fclose($file);
-        echo "距目前JOB已執行：" . (floatval(microtime(true)) - floatval($locktime)). "秒\n";
+        echo "距目前JOB已執行：" . (floatval(microtime(true)) - floatval($locktime)) . "秒\n";
 
         if ((floatval(microtime(true)) - floatval($locktime)) > 7200) {
             echo "已解除鎖定\n";
