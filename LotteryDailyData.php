@@ -175,7 +175,7 @@ echo "寫入開始時間...\n";
                         fclose($process_file);
                     }
 
-                    usleep(1);
+                    usleep(1000);
 
                 } catch (Exception $exception) {
 
