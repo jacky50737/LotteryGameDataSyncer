@@ -21,6 +21,7 @@ $sqlQuery = "SELECT game FROM DATA WHERE game = '99998';";
 if ($result = $connection->query($sqlQuery)) {
     # 取得結果
     if(!$row = $result->fetch_row()) {
+        echo $row;
         echo "有資料";
     }
 
