@@ -26,6 +26,7 @@ function pingTest(): bool
 }
 
 try {
+
     $file = fopen("DailyLock.txt", "r");
     $lock = fgets($file);
     fclose($file);
