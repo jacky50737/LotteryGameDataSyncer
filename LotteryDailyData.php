@@ -76,10 +76,6 @@ try {
 
             echo "載入遊戲數據...\n";
 
-            $fp = fsockopen("script.google.com", 80, $errno, $errstr, 30);
-            $resultsCount = count($results);
-            $doneStep = 0;
-
             foreach ($results as $result) {
                 try {
                     $game = $result->NumberOfPeriod;
