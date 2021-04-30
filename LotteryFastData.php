@@ -60,7 +60,7 @@ if ($info['http_code'] == 200) {
 
             if ($dbresult = $connection->query($sqlQuery)) {
 
-                $process_file = fopen("processlog.txt", "a+");
+                $process_file = fopen("processFastlog.txt", "a+");
                 fwrite($process_file, "驗證期數：" . $game . "=>成功!\t驗證時間：" .
                     date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                 fclose($process_file);
@@ -76,7 +76,7 @@ if ($info['http_code'] == 200) {
                         "$gno[6]" . ", " . "$gno[7]" . ", " . "$gno[8]" . ", " . "$gno[9]" . ")";
 
                     if ($connection->query($sqlQuery) === TRUE) {
-                        $process_file = fopen("processlog.txt", "a+");
+                        $process_file = fopen("processFastlog.txt", "a+");
                         fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
                             date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                         fclose($process_file);
@@ -91,7 +91,7 @@ if ($info['http_code'] == 200) {
                     }
 
                 } else {
-                    $process_file = fopen("processlog.txt", "a+");
+                    $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
                         date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                         " 錯誤訊息：" . $connection->connect_error . "\n");
