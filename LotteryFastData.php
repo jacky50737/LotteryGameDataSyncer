@@ -7,6 +7,11 @@
 
 declare(strict_types=1);
 
+$server = "localhost";         # MySQL/MariaDB 伺服器
+$dbuser = "pjtvqdla_jacky50737";       # 使用者帳號
+$dbpassword = "Aa174677178508123"; # 使用者密碼
+$dbname = "pjtvqdla_PK10";    # 資料庫名稱
+
 $url = 'https://videoracing.com/api/Issue/Search';
 
 $data = 'LotteryGameCode=2&IssueCount=1&OpenDateDateTime=';
@@ -34,90 +39,83 @@ try {
 if ($info['http_code'] == 200) {
     foreach ($results as $result) {
         try {
-            $excel_url = 'https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec';
             $game = $result->NumberOfPeriod;
-            $action = "checkData";
-            $excel_url .= "?game=" . $game;
+            $gno = [];
             foreach ($result->WinningNumbers as $key => $winningNumber) {
-                $excel_url .= "&n" . ($key + 1) . "=" . $winningNumber;
-            }
-            $excel_url_checkData = $excel_url . "&action=" . $action;
-            $check_retry_tag = 0;
-
-            if ($check_retry_tag < 3) {
-                $ch2 = curl_init();
-                curl_setopt($ch2, CURLOPT_URL, $excel_url_checkData);
-                curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'GET');
-                curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch2, CURLOPT_TIMEOUT, 100);
-                $is_have_data = curl_exec($ch2);
-                curl_close($ch2);
-                if ($is_have_data != false) {
-                    $check_retry_tag = 3;
-                } elseif ($check_retry_tag == 2 && $is_have_data == false) {
-                    $error_file = fopen("errorFASTlog.txt", "a+");
-                    fwrite($error_file, "檢查資料時發生CURL錯誤，錯誤發生時間：" .
-                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)). "\n");
-                    fclose($error_file);
-                } else {
-                    $check_retry_tag++;
-                }
+                $gno[$key] = $winningNumber;
             }
 
-            for ($i = 0; $i < 3; $i++) {
-                if ($is_have_data != false) {
-                    $is_have = json_decode($is_have_data);
-                    $i = 3;
-                }
+            # 連接 MySQL/MariaDB 資料庫
+            $connection = new mysqli($server, $dbuser, $dbpassword, $dbname);
+
+            # 檢查連線是否成功
+            if ($connection->connect_error) {
+                $error_file = fopen("errorlog.txt", "a+");
+                fwrite($error_file, "DB連線失敗時發生錯誤，錯誤發生時間：" .
+                    date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
+                    " 錯誤訊息：" . $connection->connect_error . "\n");
+                fclose($error_file);
             }
+            $sqlQuery = "SELECT * FROM DATA WHERE game = " . $game . ";";
 
-            $process_file = fopen("processFastlog.txt", "a+");
-            fwrite($process_file, "驗證期數：" . $game . "=>成功!\t嘗試次數：".$i."次，驗證時間：" .
-                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
-            fclose($process_file);
+            if ($dbresult = $connection->query($sqlQuery)) {
 
-            if (isset($is_have->dataFlag)) {
-
-                $action = "uploadData";
-                $excel_url_uploadData = $excel_url . "&action=" . $action;
-
-                $ch3 = curl_init();
-                curl_setopt($ch3, CURLOPT_URL, $excel_url_uploadData);
-                curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'GET');
-                curl_setopt($ch3, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch3, CURLOPT_TIMEOUT, 100);
-                $is_upload_data = curl_exec($ch3);
-                curl_close($ch3);
-
-                for ($j = 0; $j < 3; $j++) {
-                    if ($is_upload_data != false) {
-                        $is_upload = json_decode($is_upload_data);
-                        $j = 3;
-                    }
-                }
-                if (isset($is_upload->uploadtag)) {
-                    $process_file = fopen("processFastlog.txt", "a+");
-                    fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
-                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
-                    fclose($process_file);
-                    echo $game . '期上傳成功!' . "\n";
-                }
-            }else{
-                $process_file = fopen("processFastlog.txt", "a+");
-                fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證時間：" .
+                $process_file = fopen("processlog.txt", "a+");
+                fwrite($process_file, "驗證期數：" . $game . "=>成功!\t驗證時間：" .
                     date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                 fclose($process_file);
+
+                # 取得結果
+                if ($row = $dbresult->fetch_row()) {
+
+                    $sqlQuery = "INSERT INTO DATA" .
+                        "(game, no1, no2, no3, no4, no5, no6, no7, no8, no9, no10)" .
+                        " VALUES (" . $game . ", " .
+                        "$gno[0]" . ", " . "$gno[1]" . ", " . "$gno[2]" . ", " .
+                        "$gno[3]" . ", " . "$gno[4]" . ", " . "$gno[5]" . ", " .
+                        "$gno[6]" . ", " . "$gno[7]" . ", " . "$gno[8]" . ", " . "$gno[9]" . ")";
+
+                    if ($connection->query($sqlQuery) === TRUE) {
+                        $process_file = fopen("processlog.txt", "a+");
+                        fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
+                            date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
+                        fclose($process_file);
+                        echo $game . '期上傳成功!' . "\n";
+
+                    } else {
+                        $error_file = fopen("errorlog.txt", "a+");
+                        fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
+                            date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
+                            " 發生錯誤遊戲期數：" . $game . " 錯誤訊息：" . $connection->connect_error . "\n");
+                        fclose($error_file);
+                    }
+
+                } else {
+                    $process_file = fopen("processlog.txt", "a+");
+                    fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
+                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
+                        " 錯誤訊息：" . $connection->connect_error . "\n");
+                    fclose($process_file);
+                }
+                # 釋放資源
+                $dbresult->close();
+            } else {
+                $error_file = fopen("errorlog.txt", "a+");
+                fwrite($error_file, "DB連線失敗時發生錯誤，錯誤發生時間：" .
+                    date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
+                    " 錯誤訊息：" . $connection->connect_error . "\n");
+                fclose($error_file);
             }
-            usleep(1);
+
         } catch (Exception $exception) {
-            $error_file = fopen("errorFastlog.txt", "a+");
+
+            $error_file = fopen("errorlog.txt", "a+");
             fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                 " 發生錯誤遊戲期數：" . $game .
-                " 錯誤訊息：" . $exception->getMessage());
+                " 錯誤訊息：" . $exception->getMessage() . "\n");
             fclose($error_file);
+
         }
     }
 }
