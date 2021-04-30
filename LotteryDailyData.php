@@ -6,6 +6,23 @@
  */
 
 declare(strict_types=1);
+
+function pingTest(): bool
+{
+    $fp = fsockopen("script.google.com", 80, $errno, $errstr, 30);
+    if ($fp) {
+        echo "連線正常!";
+        return true;
+    }else{
+        $error_file = fopen("errorlog.txt", "a+");
+        fwrite($error_file, "網路發生錯誤，錯誤發生時間：" .
+            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+            " 錯誤代碼：" . $errno . " 錯誤訊息：" . $errstr . "\n");
+        fclose($error_file);
+        return false;
+    }
+}
+
 try {
     $file = fopen("DailyLock.txt", "r");
     $lock = fgets($file);
@@ -69,6 +86,7 @@ try {
 
             echo "載入遊戲數據...\n";
 
+            $fp = fsockopen("script.google.com", 80, $errno, $errstr, 30);
             $resultsCount = count($results);
             $doneStep = 0;
 
@@ -104,6 +122,9 @@ try {
                             fclose($error_file);
                         } else {
                             $check_retry_tag++;
+                        }
+                        if(!pingTest()){
+                            $check_retry_tag = 0;
                         }
                     }
 
@@ -145,6 +166,9 @@ try {
                                 fclose($error_file);
                             } else {
                                 $upload_retry_tag++;
+                            }
+                            if(!pingTest()){
+                                $check_retry_tag = 0;
                             }
                         }
 
