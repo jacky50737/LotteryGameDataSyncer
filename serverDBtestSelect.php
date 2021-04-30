@@ -15,13 +15,13 @@ if ($connection->connect_error) {
 }
 
 # MySQL/MariaDB 指令
-$sqlQuery = "SELECT * FROM DATA WHERE game = '99998';";
+$sqlQuery = "SELECT game FROM DATA WHERE game = '99998';";
 
 # 執行 MySQL/MariaDB 指令
 if ($result = $connection->query($sqlQuery)) {
     # 取得結果
-    while ($row = $result->fetch_row()) {
-        printf ("查詢成功 %s：%d\n", $row[0], $row[1]);
+    if($row = $result->fetch_row()) {
+        echo "有資料";
     }
 
     # 釋放資源
