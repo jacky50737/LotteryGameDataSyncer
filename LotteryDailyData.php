@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 function pingTest(): bool
 {
-    $fp = fsockopen("www.google.com", 80, $errno, $errstr, 30);
+    $fp = fsockopen("script.google.com", 443, $errno, $errstr, 30);
     if ($fp) {
         echo "連線正常!";
         fclose($fp);

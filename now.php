@@ -11,7 +11,7 @@ echo "現在時間(UTC)：" . date("Y-m-d A h:i:s", time()) . "\n";
 
 echo "現在時間(UTC+8)：" . date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n";
 
-$fp = fsockopen("www.google.com", 80, $errno, $errstr, 30);
+$fp = fsockopen("script.google.com", 80, $errno, $errstr, 30);
 if (!$fp) {
     $net =  "ERROR: $errno - $errstr\n";
 } else {
