@@ -21,7 +21,7 @@ if (!$fp) {
 
 echo "網路狀況：".$net."\n";
 
-$url = "https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec?game=20210428059&n1=1&n2=2&n3=3&n4=4&n5=5&n6=6&n7=7&n8=8&n9=9&n10=10&action=checkData";
+$url = "https://script.google.com/macros/s/AKfycbxWe91kaGcVApKgBuszP-_8XbsEn4IqMY0BDRnXzXuaXwST5ePAF7eit0HrS5eLlwtjjQ/exec&action=ping";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
