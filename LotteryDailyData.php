@@ -105,7 +105,7 @@ try {
                         fclose($process_file);
 
                         # 取得結果
-                        if ($row = $dbresult->fetch_row()) {
+                        if (!$row = $dbresult->fetch_row()) {
 
                             $sqlQuery = "INSERT INTO DATA" .
                                 "(game, no1, no2, no3, no4, no5, no6, no7, no8, no9, no10)" .
