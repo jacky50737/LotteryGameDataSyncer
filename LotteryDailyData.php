@@ -12,6 +12,7 @@ function pingTest(): bool
     $fp = fsockopen("script.google.com", 443, $errno, $errstr, 30);
     if ($fp) {
         echo "連線正常!";
+        fclose($fp);
         return true;
     }else{
         $error_file = fopen("errorlog.txt", "a+");
