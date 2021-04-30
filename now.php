@@ -20,3 +20,18 @@ if (!$fp) {
 }
 
 echo "網路狀況：".$net."\n";
+
+$url = "https://script.google.com/macros/s/AKfycbybr5ubG0nKLIJ9mlBbWg9WVzltk5KtNrsxCs0GuQ/exec?game=20210428059&n1=1&n2=2&n3=3&n4=4&n5=5&n6=6&n7=7&n8=8&n9=9&n10=10&action=checkData";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+
+$results = json_decode(curl_exec($ch));
+$info = curl_getinfo($ch);
+curl_close($ch);
+
+var_dump($results);
