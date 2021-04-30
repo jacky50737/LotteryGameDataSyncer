@@ -38,7 +38,7 @@ if ($connection->connect_error) {
 }
 
 # MySQL/MariaDB 指令
-$sqlQuery = "SELECT * FROM DATA WHERE game = '99999';";
+$sqlQuery = "SELECT * FROM DATA WHERE game = '99998';";
 
 # 執行 MySQL/MariaDB 指令
 if ($result = $connection->query($sqlQuery)) {
