@@ -21,7 +21,7 @@ try {
         echo "開始時間:" . $start_time . "\n";
         $url = 'https://videoracing.com/api/Issue/Search';
 
-        $data = 'LotteryGameCode=2&IssueCount=&OpenDateDateTime=';
+        $data = 'LotteryGameCode=2&IssueCount=10&OpenDateDateTime=';
 
         $file = fopen("log.txt", "r");
         $lastDay = fgets($file);
@@ -162,14 +162,13 @@ try {
                             date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
                         fclose($process_file);
                     }
-
                     $doneStep++;
                     $laststep = $resultsCount - $doneStep;
                     if ($laststep > 1) {
                         $this_time = floatval(microtime(true));
                         $cost_time = floatval($this_time) - floatval($start_time);
                         $process_file = fopen("processlog.txt", "a+");
-                        $pDate = intval($this_time + ($laststep * ($cost_time / $doneStep)) / 1000);
+                        $pDate = intval((($this_time + ($laststep * ($cost_time / $doneStep))) / 1000));
                         $pDoneTime = date("Y-m-d A h:i:s", ($pDate + (8 * 60 * 60)));
                         fwrite($process_file, "預計完成時間：" . $pDoneTime . "\t 剩餘期數：" .
                             $laststep . "\n");
