@@ -42,6 +42,7 @@ try {
             $day = $tomorrow;
         } else {
             $day = $today;
+			sleep(1800);
         }
         $data_all = $data . $day;
 
