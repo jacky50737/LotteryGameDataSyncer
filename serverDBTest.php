@@ -44,7 +44,7 @@ $sqlQuery = "SELECT * FROM DATA WHERE game = '99998';";
 if ($result = $connection->query($sqlQuery)) {
     # 取得結果
     while ($row = $result->fetch_row()) {
-        printf ("%s：%d\n", $row[0], $row[1]);
+        printf ("查詢成功 %s：%d\n", $row[0], $row[1]);
     }
 
     # 釋放資源
