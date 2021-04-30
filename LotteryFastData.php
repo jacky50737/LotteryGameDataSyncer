@@ -26,7 +26,7 @@ try {
 } catch (Exception $exception) {
     $error_file = fopen("errorlog.txt", "a+");
     fwrite($error_file, "下載遊戲資料時發生錯誤，錯誤發生時間：" .
-        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
         " 錯誤訊息：" . $exception->getMessage());
     fclose($error_file);
 }
@@ -58,7 +58,7 @@ if ($info['http_code'] == 200) {
                 } elseif ($check_retry_tag == 2 && $is_have_data == false) {
                     $error_file = fopen("errorFASTlog.txt", "a+");
                     fwrite($error_file, "檢查資料時發生CURL錯誤，錯誤發生時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60). "\n");
+                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)). "\n");
                     fclose($error_file);
                 } else {
                     $check_retry_tag++;
@@ -74,7 +74,7 @@ if ($info['http_code'] == 200) {
 
             $process_file = fopen("processFastlog.txt", "a+");
             fwrite($process_file, "驗證期數：" . $game . "=>成功!\t嘗試次數：".$i."次，驗證時間：" .
-                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
             fclose($process_file);
 
             if (isset($is_have->dataFlag)) {
@@ -100,21 +100,21 @@ if ($info['http_code'] == 200) {
                 if (isset($is_upload->uploadtag)) {
                     $process_file = fopen("processFastlog.txt", "a+");
                     fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                     fclose($process_file);
                     echo $game . '期上傳成功!' . "\n";
                 }
             }else{
                 $process_file = fopen("processFastlog.txt", "a+");
                 fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t嘗試次數：".$i."次 驗證時間：" .
-                    date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                    date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                 fclose($process_file);
             }
             usleep(1);
         } catch (Exception $exception) {
             $error_file = fopen("errorFastlog.txt", "a+");
             fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
-                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                 " 發生錯誤遊戲期數：" . $game .
                 " 錯誤訊息：" . $exception->getMessage());
             fclose($error_file);

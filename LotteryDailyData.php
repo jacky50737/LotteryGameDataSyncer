@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 function pingTest(): bool
 {
-    $fp = fsockopen("script.google.com", 443, $errno, $errstr, 30);
+    $fp = fsockopen("www.google.com", 80, $errno, $errstr, 30);
     if ($fp) {
         echo "連線正常!";
         fclose($fp);
@@ -17,7 +17,7 @@ function pingTest(): bool
     }else{
         $error_file = fopen("errorlog.txt", "a+");
         fwrite($error_file, "網路發生錯誤，錯誤發生時間：" .
-            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+            date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
             " 錯誤代碼：" . $errno . " 錯誤訊息：" . $errstr . "\n");
         fclose($error_file);
         return false;
@@ -74,7 +74,7 @@ try {
         } catch (Exception $exception) {
             $error_file = fopen("errorlog.txt", "a+");
             fwrite($error_file, "下載遊戲資料時發生錯誤，錯誤發生時間：" .
-                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                 " 下載錯誤日期：" . $day . " 錯誤訊息：" . $exception->getMessage() . "\n");
             fclose($error_file);
         }
@@ -119,7 +119,7 @@ try {
                         } elseif ($check_retry_tag == 2 && $is_have_data == false) {
                             $error_file = fopen("errorlog.txt", "a+");
                             fwrite($error_file, "檢查資料時發生CURL錯誤，錯誤發生時間：" .
-                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                                 " 下載錯誤日期：" . $day . "\n");
                             fclose($error_file);
                         } else {
@@ -139,7 +139,7 @@ try {
 
                     $process_file = fopen("processlog.txt", "a+");
                     fwrite($process_file, "驗證期數：" . $game . "=>成功!\t驗證時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                     fclose($process_file);
 
                     if (isset($is_have->dataFlag)) {
@@ -163,7 +163,7 @@ try {
                             } elseif ($upload_retry_tag == 2 && $is_upload_data == false) {
                                 $error_file = fopen("errorlog.txt", "a+");
                                 fwrite($error_file, "上傳資料時發生CURL錯誤，錯誤發生時間：" .
-                                    date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                                    date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                                     " 下載錯誤日期：" . $day . "\n");
                                 fclose($error_file);
                             } else {
@@ -178,14 +178,14 @@ try {
                         if (isset($is_upload->uploadtag)) {
                             $process_file = fopen("processlog.txt", "a+");
                             fwrite($process_file, "上傳期數：" . $game . "=>成功!\t上傳時間：" .
-                                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                             fclose($process_file);
                             echo $game . '期上傳成功!' . "\n";
                         }
                     } else {
                         $process_file = fopen("processlog.txt", "a+");
                         fwrite($process_file, "驗證期數：" . $game . "=>已存在!\t 驗證時間：" .
-                            date("Y-m-d A h:i:s", time() + 8 * 60 * 60) . "\n");
+                            date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) . "\n");
                         fclose($process_file);
                     }
                     $doneStep++;
@@ -207,7 +207,7 @@ try {
 
                     $error_file = fopen("errorlog.txt", "a+");
                     fwrite($error_file, "上傳資料時發生錯誤，錯誤發生時間：" .
-                        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                         " 發生錯誤遊戲期數：" . $game .
                         " 錯誤訊息：" . $exception->getMessage() . "\n");
                     fclose($error_file);
@@ -235,7 +235,7 @@ try {
             echo "下載失敗...\n";
             $error_file = fopen("errorlog.txt", "a+");
             fwrite($error_file, "下載資料時發生錯誤，錯誤發生時間：" .
-                date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                 " 發生錯誤遊戲日期：" . $day .
                 " 錯誤code：" . $info['http_code'] . "\n");
             fclose($error_file);
@@ -262,7 +262,7 @@ try {
 
     $error_file = fopen("errorlog.txt", "a+");
     fwrite($error_file, "發生未知錯誤，錯誤發生時間：" .
-        date("Y-m-d A h:i:s", time() + 8 * 60 * 60) .
+        date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
         " 發生錯誤行：" . $exception->getLine() .
         " 錯誤訊息：" . $exception->getMessage() . "\n");
     fclose($error_file);
