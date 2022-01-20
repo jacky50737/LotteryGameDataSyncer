@@ -76,7 +76,7 @@ try {
                     }
                     $objDBTool->closeDB();
 
-                    usleep(2000000);
+                    usleep(1500000);
 
                 } catch (Exception $exception) {
                     $error_msg = "\n" . '[error]' . "\n" .
