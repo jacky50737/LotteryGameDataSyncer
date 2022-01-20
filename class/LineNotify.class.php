@@ -12,6 +12,7 @@ class LineNotify
         "9geMEQ7E1EemVaZwvWxPNgFdKP4UbnkCBwhetO1WFpT",
         "PYtkGFJFyqPWYuAgA6dZHp8vXbWrPMKprgapNarwykG",
         "9HUFoPvXgt1nvh64mwalFot0ZcNYC9PgCQbsMgPsUIn",
+        "ckwfUw1XWB41SOE8DDXKYxSZRZy3n8siG9npJX0pAG4",
     ];
 
     public function doLineNotify (string $msg): string
@@ -23,12 +24,11 @@ class LineNotify
 
         $curl = new CurlTool();
 
-        for($i=0;$i<3;$i++)
+        for($i=0;$i<4;$i++)
         {
             $header = array('Authorization:Bearer ' . $this->token[$i]);
             $results = $curl->doPost($url,$header,$payload);
             if($results->message == "ok" || $results->status == 200){
-                $i=3;
                 return true;
             }
         }
