@@ -22,7 +22,7 @@ try {
     if ($lock == 'off') {
 
         $file = fopen("DailyLock.txt", "w");
-//        fwrite($file, "on");
+        fwrite($file, "on");
         fclose($file);
 
         $start_time = microtime(true);
