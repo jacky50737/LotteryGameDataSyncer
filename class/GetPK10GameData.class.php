@@ -18,7 +18,7 @@ class getPK10GameData
      * @param string $date
      * @return array|string
      */
-    public function getPK10Data(string $type, string $date): array|string
+    public function getPK10Data(string $type, string $date)
     {
         try {
             $game = "";
