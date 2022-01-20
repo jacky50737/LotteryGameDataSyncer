@@ -96,23 +96,23 @@ try {
             $file = fopen("DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
+        }
 
-        } else {
-            $objLineTool->doLineNotify("\n" . "正在爬號中 !");
-            $file = fopen("locktime.txt", "r");
-            $locktime = fgets($file);
+    } else {
+        $objLineTool->doLineNotify("\n" . "正在爬號中 !");
+        $file = fopen("locktime.txt", "r");
+        $locktime = fgets($file);
+        fclose($file);
+        $objLineTool->doLineNotify("\n" . "距目前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
+
+        if ((microtime(true) - floatval($locktime)) > 7200) {
+            $objLineTool->doLineNotify("\n" . "已解除鎖定");
+            $file = fopen("DailyLock.txt", "w");
+            fwrite($file, "off");
             fclose($file);
-            $objLineTool->doLineNotify("\n" . "距目前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
-
-            if ((microtime(true) - floatval($locktime)) > 7200) {
-                $objLineTool->doLineNotify("\n" . "已解除鎖定");
-                $file = fopen("DailyLock.txt", "w");
-                fwrite($file, "off");
-                fclose($file);
-
-            }
 
         }
+
     }
 
 } catch (Exception $exception) {
