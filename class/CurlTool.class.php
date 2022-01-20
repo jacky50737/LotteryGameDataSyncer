@@ -13,9 +13,9 @@ class CurlTool
      * @param string $url
      * @param array $header
      * @param array $payload
-     * @return mixed
+     * @return object
      */
-    public function doPost(string $url,array $header,array $payload): mixed
+    public function doPost(string $url,array $header,array $payload): object
     {
 
         $ch = curl_init();
