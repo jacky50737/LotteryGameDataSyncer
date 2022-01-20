@@ -6,8 +6,6 @@
  * Date Time: 2021/4/21 下午 06:01.
  */
 
-include('class/CurlTool.class.php');
-
 class LineNotify
 {
     private string $token = "9geMEQ7E1EemVaZwvWxPNgFdKP4UbnkCBwhetO1WFpT";
