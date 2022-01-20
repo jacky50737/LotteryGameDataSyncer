@@ -19,7 +19,8 @@ try {
     $lock = fgets($file);
     fclose($file);
 
-    if ($lock == 'off') {
+    if ($lock == 'off')
+    {
 
         $file = fopen("DailyLock.txt", "w");
         fwrite($file, "on");
@@ -36,9 +37,12 @@ try {
 
         $today = date("Y-m-d");
 
-        if ($tomorrow < $today) {
+        if ($tomorrow < $today)
+        {
             $day = $tomorrow;
-        } else {
+        }
+        else
+        {
             $day = $today;
             sleep(1800);
         }
@@ -46,29 +50,33 @@ try {
         $objGameTool = new getPK10GameData();
         $arrGameData = $objGameTool->getPK10Data("Date", $day);
 
-        if (!empty($arrGameData)) {
-            $objLineTool->doLineNotify("\n" . "寫入開始時間...");
+        if (!empty($arrGameData))
+        {
+            $objLineTool->doLineNotify("\n" . "寫入開始時間..."."\n" . "載入遊戲數據中...");
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
 
-            $objLineTool->doLineNotify("\n" . "載入遊戲數據...");
-            $doneStep = 0;
-            foreach ($arrGameData as $result) {
-                try {
+            foreach ($arrGameData as $result)
+            {
+                try
+                {
                     $game = $result[0];
                     $gno = $result[1];
 
                     $objDBTool = new DataBaseTool();
 
-                    if ($objDBTool->checkGame(strval($game)) == false) {
+                    if ($objDBTool->checkGame(strval($game)) == false)
+                    {
                         $objDBTool->upLoadGame(strval($game), $gno);
-                    } else {
-                        $objLineTool->doLineNotify("\n" . "今日完畢 前往下一日最新賽事");
+                    }
+                    else
+                    {
+                        $objLineTool->doLineNotify("\n" . "本期已存在 前往下一期最新賽事");
                     }
                     $objDBTool->closeDB();
 
-                    usleep(500000);
+                    usleep(2000000);
 
                 } catch (Exception $exception) {
                     $error_msg = "\n" . '[error]' . "\n" .
@@ -97,22 +105,22 @@ try {
             fwrite($file, "off");
             fclose($file);
         }
-
-    } else {
+    }
+    else
+    {
         $objLineTool->doLineNotify("\n" . "正在爬號中 !");
         $file = fopen("locktime.txt", "r");
         $locktime = fgets($file);
         fclose($file);
-        $objLineTool->doLineNotify("\n" . "距目前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
+        $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
 
-        if ((microtime(true) - floatval($locktime)) > 7200) {
+        if ((microtime(true) - floatval($locktime)) > 7200)
+        {
             $objLineTool->doLineNotify("\n" . "已解除鎖定");
             $file = fopen("DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
-
         }
-
     }
 
 } catch (Exception $exception) {

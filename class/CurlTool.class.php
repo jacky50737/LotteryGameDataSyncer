@@ -24,12 +24,23 @@ class CurlTool
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
 
-        $results = json_decode(curl_exec($ch));
-//        $info = curl_getInfo($ch);
+        $results = curl_exec($ch);
+
+        // Header 分割
+        $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
+        $headerStr = substr( $results , 0 , $headerSize );
+        $body = json_decode(substr( $results , $headerSize ));
+
+        // 轉換 Header 成陣列
+        $headers = $this->headersToArray( $headerStr );
+
+//        var_dump(intval($headers['X-RateLimit-Remaining']));
+//        var_dump($body);
         curl_close($ch);
 
-        return $results;
+        return $body;
 
     }
 
@@ -49,5 +60,30 @@ class CurlTool
 
         return $results;
 
+    }
+
+    /**
+     * @param $str
+     * @return array
+     */
+    function headersToArray( $str ): array
+    {
+        $headers = array();
+        $headersTmpArray = explode( "\r\n" , $str );
+        for ( $i = 0 ; $i < count( $headersTmpArray ) ; ++$i )
+        {
+            // we dont care about the two \r\n lines at the end of the headers
+            if ( strlen( $headersTmpArray[$i] ) > 0 )
+            {
+                // the headers start with HTTP status codes, which do not contain a colon so we can filter them out too
+                if ( strpos( $headersTmpArray[$i] , ":" ) )
+                {
+                    $headerName = substr( $headersTmpArray[$i] , 0 , strpos( $headersTmpArray[$i] , ":" ) );
+                    $headerValue = substr( $headersTmpArray[$i] , strpos( $headersTmpArray[$i] , ":" )+1 );
+                    $headers[$headerName] = $headerValue;
+                }
+            }
+        }
+        return $headers;
     }
 }
