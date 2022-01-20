@@ -35,9 +35,9 @@ class CurlTool
 
     /**
      * @param string $url
-     * @return mixed
+     * @return object
      */
-    public function doGet(string $url): mixed
+    public function doGet(string $url): object
     {
 
         $ch = curl_init();
