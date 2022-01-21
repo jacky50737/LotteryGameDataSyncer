@@ -12,10 +12,7 @@ require_once('class/GetPK10GameData.class.php');
 require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 
-$strSourceName = pathinfo(__FILE__, PATHINFO_FILENAME) ;
-
 try {
-    cli_set_process_title($strSourceName) ;
     $objLineTool = new LineNotify();
     $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查..."."\n" . "終端名稱".$strSourceName);
     $file = fopen("DailyLock.txt", "r");
@@ -106,11 +103,8 @@ try {
         fclose($file);
         $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
 
-        if ((microtime(true) - floatval($locktime)) > 2100) 
+        if ((microtime(true) - floatval($locktime)) > 2100)
         {
-            $strPids = shell_exec(sprintf("ps auwx | grep %s | grep -v grep | grep -v kill | awk '{print $2}'", $strSourceName)) ;
-            echo shell_exec(sprintf('/usr/bin/kill -9 %s', str_replace("\n", ' ', $strPids))) ;
-            $objLineTool->doLineNotify("\n" . "已殺掉上次處理程序");
             $file = fopen("DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
