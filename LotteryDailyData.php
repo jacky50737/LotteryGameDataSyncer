@@ -114,7 +114,7 @@ try {
         fclose($file);
         $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
 
-        if ((microtime(true) - floatval($locktime)) > 7200)
+        if ((microtime(true) - floatval($locktime)) > 2100)
         {
             $objLineTool->doLineNotify("\n" . "已解除鎖定");
             $file = fopen("DailyLock.txt", "w");
