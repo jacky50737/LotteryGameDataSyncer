@@ -11,6 +11,7 @@ require_once('class/LineNotify.class.php');
 require_once('class/GetPK10GameData.class.php');
 require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
+require_once('class/timeTool.class.php');
 
 try {
     $objLineTool = new LineNotify();
@@ -18,7 +19,7 @@ try {
     $file = fopen("DailyLock.txt", "r");
     $lock = fgets($file);
     fclose($file);
-
+    $timeTool = new timeTool();
     if ($lock == 'off') {
 
         $file = fopen("DailyLock.txt", "w");
@@ -44,6 +45,7 @@ try {
         }
 
         $objGameTool = new getPK10GameData();
+
         $arrGameData = $objGameTool->getPK10Data("Date", $day);
 
         if (!empty($arrGameData)) {
@@ -61,20 +63,21 @@ try {
 
                     $objDBTool = new DataBaseTool();
                     $done++;
-
                     if ($objDBTool->checkGame(strval($game)) == false) {
                         $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
-                        $maybeDone = intval($start_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
+                        $maybeDone = intval($now_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
+                        $excess_time = $timeTool->changeTimeType(intval(($cost_time / $done) * ($total-$done)));
                         $objLineTool = new LineNotify();
 
                         if ($isSuccess) {
-                            $info_msg = "\n" . '[info]' . "\n" .
-                                '上傳期數：' . $game .
+                            $info_msg = "\n" . '[info]' .
+                                "\n".'查詢日期：' . $day .
+                                "\n".'上傳期數：' . $game .
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
-                                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)).
-                                "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
+                                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
+                                "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "剩餘時間： {$excess_time}"."\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
                             $objLineTool->doLineNotify($info_msg);
 
                         } else {
@@ -82,14 +85,14 @@ try {
                                 '上傳資料時發生錯誤，錯誤發生時間，' .
                                 "\n" . '錯誤發生時間： ' . "\n" .
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
-                                "\n" . ' 錯誤訊息： ' . $this->connection->connect_error.
+                                "\n" . ' 錯誤訊息： ' . $this->connection->connect_error .
                                 "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
                             $objLineTool->doLineNotify($error_msg);
 
                         }
 
                     } else {
-                       $objLineTool->doLineNotify("\n" . "本期[" . $game . "]已存在，前往下一期賽事"."\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        $objLineTool->doLineNotify("\n".'查詢日期：' . $day ."\n" . "本期[" . $game . "]已存在，前往下一期賽事"."\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
                     $objDBTool->closeDB();
                     usleep(800000);
@@ -113,7 +116,7 @@ try {
             fwrite($file, $day);
             fclose($file);
 
-            $process_msg = "\n" . "日期：" . $day . "執行了：" . $time_total . "\n";
+            $process_msg = "\n" . "日期：" . $day . "執行了：" . $timeTool->changeTimeType($time_total) . "\n";
             $objLineTool = new LineNotify();
             $objLineTool->doLineNotify($process_msg);
 
@@ -127,7 +130,7 @@ try {
         $file = fopen("locktime.txt", "r");
         $locktime = fgets($file);
         fclose($file);
-        $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . (microtime(true) - floatval($locktime)) . "秒");
+        $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
 
         if ((microtime(true) - floatval($locktime)) > 2100) {
             $file = fopen("DailyLock.txt", "w");
