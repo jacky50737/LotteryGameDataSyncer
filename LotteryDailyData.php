@@ -76,7 +76,7 @@ try {
                         $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
-                        $maybeDone = intval($now_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
+                        $maybeDone = intval($now_time + (($cost_time / $done) * ($total - $done))) + (8 * 60 * 60);
                         $excess_time = $timeTool->changeTimeType(intval(($cost_time / $done) * ($total - $done)));
                         $objLineTool = new LineNotify();
 
