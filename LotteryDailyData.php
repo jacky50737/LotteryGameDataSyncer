@@ -13,6 +13,8 @@ require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 require_once('class/TimeTool.class.php');
 
+$fileName = basename(__FILE__, '.php');
+
 try {
     $objLineTool = new LineNotify();
     $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
@@ -55,29 +57,37 @@ try {
             fwrite($file, $start_time . "\n");
             fclose($file);
 
+
+            $objDBTool = new DataBaseTool();
+            $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+
             $done = 0;
             foreach ($arrGameData as $result) {
                 try {
                     $game = $result[0];
                     $gno = $result[1];
 
-                    $objDBTool = new DataBaseTool();
                     $done++;
+                    if($game < $lastGame){
+                        continue;
+                    }
+
                     if ($objDBTool->checkGame(strval($game)) == false) {
                         $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
                         $maybeDone = intval($now_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
-                        $excess_time = $timeTool->changeTimeType(intval(($cost_time / $done) * ($total-$done)));
+                        $excess_time = $timeTool->changeTimeType(intval(($cost_time / $done) * ($total - $done)));
                         $objLineTool = new LineNotify();
 
                         if ($isSuccess) {
+                            $objDBTool->logLastTimeProcess("save", $fileName, $game, $day); //紀錄執行成功進度
                             $info_msg = "\n" . '[info]' .
-                                "\n".'查詢日期：' . $day .
-                                "\n".'上傳期數：' . $game .
+                                "\n" . '查詢日期：' . $day .
+                                "\n" . '上傳期數：' . $game .
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
-                                "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "剩餘時間： {$excess_time}"."\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
+                                "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "剩餘時間： {$excess_time}" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
                             $objLineTool->doLineNotify($info_msg);
 
                         } else {
@@ -92,11 +102,10 @@ try {
                         }
 
                     } else {
-                        $objLineTool->doLineNotify("\n".'查詢日期：' . $day ."\n" . "本期[" . $game . "]已存在，前往下一期賽事"."\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        $objLineTool->doLineNotify("\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
-                    $objDBTool->closeDB();
-                    usleep(800000);
 
+                    usleep(800000);
                 } catch (Exception $exception) {
                     $error_msg = "\n" . '[error]' . "\n" .
                         '上傳資料時發生錯誤，錯誤發生時間，' .
@@ -107,6 +116,7 @@ try {
                     $objLineTool->doLineNotify($error_msg);
                 }
             }
+            $objDBTool->closeDB();
             $objLineTool->doLineNotify("\n讀寫完成...");
             $end_time = microtime(true);
 

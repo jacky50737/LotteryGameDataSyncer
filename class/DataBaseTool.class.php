@@ -34,10 +34,8 @@ class DataBaseTool
     {
         $sqlQuery = "SELECT * FROM DATA WHERE game = " . $game . ";";
 
-        if ($this->connection->query($sqlQuery))
-        {
-            if(!is_null($this->connection->query($sqlQuery)->fetch_row()))
-            {
+        if ($this->connection->query($sqlQuery)) {
+            if (!is_null($this->connection->query($sqlQuery)->fetch_row())) {
                 return true;
             }
         }
@@ -49,7 +47,7 @@ class DataBaseTool
      * @param array $gno
      * @return bool
      */
-    public function upLoadGame(string $game,array $gno): bool
+    public function upLoadGame(string $game, array $gno): bool
     {
         $sqlQuery = "INSERT INTO DATA" .
             "(game, no1, no2, no3, no4, no5, no6, no7, no8, no9, no10)" .
@@ -58,18 +56,41 @@ class DataBaseTool
             "$gno[3]" . ", " . "$gno[4]" . ", " . "$gno[5]" . ", " .
             "$gno[6]" . ", " . "$gno[7]" . ", " . "$gno[8]" . ", " . "$gno[9]" . ")";
 
-        if ($this->connection->query($sqlQuery) !== TRUE)
-        {
-            return false;
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
         }
-        else
-        {
-            return true;
-        }
-
+        return false;
     }
 
-    public function closeDB(){
+    public function logLastTimeProcess(string $type, string $process, string $game, string $date)
+    {
+
+        if ($type == "save") {
+            $sqlQuery = "UPDATE LOG SET game=" . "$game" . ", date=" . "$date" . " WHERE process='" . $process . "'";
+            for ($i = 0; $i < 5; $i++) {
+                if ($this->connection->query($sqlQuery) == TRUE) {
+                    return true;
+                }
+            }
+        }
+
+        if ($type == "getListTime") {
+            $sqlQuery = "SELECT game FROM LOG WHERE process = '" . $process . " 'AND date = " . $date . ";";
+
+            for ($i = 0; $i < 5; $i++) {
+                if ($this->connection->query($sqlQuery) == TRUE) {
+                    return $this->connection->query($sqlQuery)->fetch_assoc()['game'];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function closeDB()
+    {
         # 釋放資源
         $this->connection->close();
     }
