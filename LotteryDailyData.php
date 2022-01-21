@@ -89,7 +89,7 @@ try {
                         }
 
                     } else {
-                        $objLineTool->doLineNotify("\n" . "本期[" . $game . "]已存在，前往下一期賽事");
+                       $objLineTool->doLineNotify("\n" . "本期[" . $game . "]已存在，前往下一期賽事"."\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
                     $objDBTool->closeDB();
                     usleep(800000);
