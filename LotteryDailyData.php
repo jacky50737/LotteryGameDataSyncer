@@ -47,11 +47,13 @@ try {
         $arrGameData = $objGameTool->getPK10Data("Date", $day);
 
         if (!empty($arrGameData)) {
-            $objLineTool->doLineNotify("\n" . "寫入開始時間..."."\n" . "載入遊戲數據中...");
+            $total = count($arrGameData);
+            $objLineTool->doLineNotify("\n" . "寫入開始時間..."."\n" . "載入遊戲數據中..."."\n" . "共{$total}筆遊戲賽事");
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
 
+            $done = 0;
             foreach ($arrGameData as $result) {
                 try {
                     $game = $result[0];
@@ -66,6 +68,11 @@ try {
                     }
                     $objDBTool->closeDB();
 
+                    $done++;
+                    $now_time = microtime(true);
+                    $cost_time = $now_time - $start_time;
+                    $maybeDone = $now_time + (($cost_time/$done)*$total);
+                    $objLineTool->doLineNotify("\n" . "還有[".($total-$done)."]筆賽事，"."\n"."預計完成時間：".date("Y-m-d A h:i:s",$maybeDone));
                     usleep(800000);
 
                 } catch (Exception $exception) {
