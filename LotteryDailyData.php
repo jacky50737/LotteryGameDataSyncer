@@ -62,7 +62,7 @@ try {
                     if ($objDBTool->checkGame(strval($game)) == false) {
                         $objDBTool->upLoadGame(strval($game), $gno);
                     } else {
-                        $objLineTool->doLineNotify("\n" . "本期已存在 前往下一期最新賽事");
+                        $objLineTool->doLineNotify("\n" . "本期[".$game."]已存在，前往下一期賽事");
                     }
                     $objDBTool->closeDB();
 
