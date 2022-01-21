@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-class timeTool
+class TimeTool
 {
     public function changeTimeType($seconds): string
     {
