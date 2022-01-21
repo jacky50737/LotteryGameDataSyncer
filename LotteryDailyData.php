@@ -60,10 +60,10 @@ try {
                     $gno = $result[1];
 
                     $objDBTool = new DataBaseTool();
+                    $done++;
 
                     if ($objDBTool->checkGame(strval($game)) == false) {
                         $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
-                        $done++;
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
                         $maybeDone = intval($now_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
