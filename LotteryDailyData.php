@@ -131,7 +131,7 @@ try {
         fclose($file);
         $objLineTool->doLineNotify("\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
 
-        if ((microtime(true) - floatval($locktime)) > 2100) {
+        if ((microtime(true) - floatval($locktime)) > 3600) {
             $file = fopen("DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
