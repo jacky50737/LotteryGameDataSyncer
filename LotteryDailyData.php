@@ -12,10 +12,11 @@ require_once('class/GetPK10GameData.class.php');
 require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 
-$strSourceName = "LotteryDailyData" ;
+$strSourceName = pathinfo(__FILE__, PATHINFO_FILENAME) ;
 
 cli_set_process_title($strSourceName) ;
-
+var_dump($strSourceName);
+exit(0);
 try {
     $objLineTool = new LineNotify();
     $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
