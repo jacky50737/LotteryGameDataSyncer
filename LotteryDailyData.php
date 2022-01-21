@@ -149,7 +149,7 @@ try {
 
         }
     }
-
+exit(0);
 } catch (Exception $exception) {
     $error_msg = "\n" . '[error]' . "\n" .
         '發生未知錯誤，錯誤發生時間，' .
