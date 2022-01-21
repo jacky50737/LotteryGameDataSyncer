@@ -22,6 +22,18 @@ try {
     $lock = fgets($file);
     fclose($file);
     $timeTool = new timeTool();
+    $objDBTool = new DataBaseTool();
+    $life = $objDBTool->checkGame($fileName);
+
+    if ($life > 210) {
+        $file = fopen("DailyLock.txt", "w");
+        fwrite($file, "off");
+        fclose($file);
+        $objLineTool->doLineNotify("\n" . "因過久未執行，已解除鎖定");
+    } else {
+        $objDBTool->setLife($fileName, $life + 70);
+    }
+
     if ($lock == 'off') {
 
         $file = fopen("DailyLock.txt", "w");
@@ -58,7 +70,6 @@ try {
             fclose($file);
 
 
-            $objDBTool = new DataBaseTool();
             $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
 
             $done = 0;
@@ -68,7 +79,7 @@ try {
                     $gno = $result[1];
 
                     $done++;
-                    if($game < $lastGame){
+                    if ($game < $lastGame) {
                         continue;
                     }
 
@@ -82,6 +93,8 @@ try {
 
                         if ($isSuccess) {
                             $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
+                            $life = $objDBTool->checkGame($fileName);
+                            $objDBTool->setLife($fileName, $life - 1);
                             $info_msg = "\n" . '[info]' .
                                 "\n" . '查詢日期：' . $day .
                                 "\n" . '上傳期數：' . $game .
@@ -116,7 +129,7 @@ try {
                     $objLineTool->doLineNotify($error_msg);
                 }
             }
-            $objDBTool->closeDB();
+
             $objLineTool->doLineNotify("\n讀寫完成...");
             $end_time = microtime(true);
 
@@ -149,7 +162,8 @@ try {
 
         }
     }
-exit(0);
+    $objDBTool->closeDB();
+    exit(0);
 } catch (Exception $exception) {
     $error_msg = "\n" . '[error]' . "\n" .
         '發生未知錯誤，錯誤發生時間，' .
