@@ -60,23 +60,10 @@ class DataBaseTool
 
         if ($this->connection->query($sqlQuery) !== TRUE)
         {
-            $error_msg = "\n" . '[error]' . "\n" .
-                '上傳資料時發生錯誤，錯誤發生時間，' .
-                "\n" . '錯誤發生時間： ' . "\n" .
-                date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
-                "\n" . ' 錯誤訊息： ' . $this->connection->connect_error;
-            $objLineTool = new LineNotify();
-            $objLineTool->doLineNotify($error_msg);
             return false;
         }
         else
         {
-            $info_msg = "\n" . '[info]' . "\n" .
-                '上傳期數：' .$game.
-                "\n" . '=>成功!'."\t".'上傳時間： ' . "\n" .
-                date("Y-m-d A h:i:s", time() + (8 * 60 * 60));
-            $objLineTool = new LineNotify();
-            $objLineTool->doLineNotify($info_msg);
             return true;
         }
 
