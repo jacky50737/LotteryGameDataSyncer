@@ -66,7 +66,7 @@ try {
                         $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
-                        $maybeDone = intval($now_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
+                        $maybeDone = intval($start_time + (($cost_time / $done) * $total)) + (8 * 60 * 60);
                         $objLineTool = new LineNotify();
 
                         if ($isSuccess) {
