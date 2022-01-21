@@ -13,13 +13,11 @@ require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 
 $strSourceName = pathinfo(__FILE__, PATHINFO_FILENAME) ;
-var_dump($strSourceName);
-cli_set_process_title($strSourceName) ;
 
-exit(0);
 try {
+    cli_set_process_title($strSourceName) ;
     $objLineTool = new LineNotify();
-    $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
+    $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查..."."\n" . "終端名稱".$strSourceName);
     $file = fopen("DailyLock.txt", "r");
     $lock = fgets($file);
     fclose($file);
