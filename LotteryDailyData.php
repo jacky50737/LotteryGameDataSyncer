@@ -95,7 +95,7 @@ try {
                             $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
                             $life = $objDBTool->checkGame($fileName);
                             $objDBTool->setLife($fileName, $life - 1);
-                            $info_msg = "\n" . '[info]' .
+                            $info_msg = "\n" . '[info] Life：' .$life.
                                 "\n" . '查詢日期：' . $day .
                                 "\n" . '上傳期數：' . $game .
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
