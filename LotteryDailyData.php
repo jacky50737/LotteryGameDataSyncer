@@ -23,7 +23,7 @@ try {
     fclose($file);
     $timeTool = new timeTool();
     $objDBTool = new DataBaseTool();
-    $life = $objDBTool->checkGame($fileName);
+    $life = $objDBTool->checkLife($fileName);
 
     if ($life > 210) {
         $file = fopen("DailyLock.txt", "w");
