@@ -30,6 +30,8 @@ try {
         fwrite($file, "off");
         fclose($file);
         $objLineTool->doLineNotify("\n" . "因過久未執行，已解除鎖定");
+        $objDBTool->setLife($fileName, 0);
+
     } else {
         $objDBTool->setLife($fileName, $life + 70);
     }
