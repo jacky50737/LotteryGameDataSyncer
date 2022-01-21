@@ -139,7 +139,7 @@ try {
             fwrite($file, $day);
             fclose($file);
 
-            $process_msg = "\n" . "日期：" . $day . "執行了：" . $timeTool->changeTimeType($time_total) . "\n";
+            $process_msg = "\n" . "日期：" . $day . "執行了：" . $timeTool->changeTimeType(intval($time_total)) . "\n";
             $objLineTool->doLineNotify($process_msg);
 
             $file = fopen("DailyLock.txt", "w");
