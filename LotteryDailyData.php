@@ -14,7 +14,7 @@ require_once('class/DataBaseTool.class.php');
 
 try {
     $objLineTool = new LineNotify();
-    $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查..."."\n" . "終端名稱".$strSourceName);
+    $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
     $file = fopen("DailyLock.txt", "r");
     $lock = fgets($file);
     fclose($file);
