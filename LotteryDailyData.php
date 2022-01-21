@@ -81,7 +81,7 @@ try {
                         $objLineTool = new LineNotify();
 
                         if ($isSuccess) {
-                            $objDBTool->logLastTimeProcess("save", $fileName, $game, $day); //紀錄執行成功進度
+                            $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
                             $info_msg = "\n" . '[info]' .
                                 "\n" . '查詢日期：' . $day .
                                 "\n" . '上傳期數：' . $game .
