@@ -66,7 +66,7 @@ try {
                         $done++;
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
-                        $maybeDone = $now_time + (($cost_time / $done) * $total);
+                        $maybeDone = intval($now_time + (($cost_time / $done) * $total));
                         $objLineTool = new LineNotify();
 
                         if ($isSuccess) {
