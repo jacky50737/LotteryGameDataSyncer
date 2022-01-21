@@ -13,9 +13,9 @@ require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 
 $strSourceName = pathinfo(__FILE__, PATHINFO_FILENAME) ;
-
-cli_set_process_title($strSourceName) ;
 var_dump($strSourceName);
+cli_set_process_title($strSourceName) ;
+
 exit(0);
 try {
     $objLineTool = new LineNotify();
