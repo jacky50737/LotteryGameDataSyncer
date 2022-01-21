@@ -11,7 +11,7 @@ require_once('class/LineNotify.class.php');
 require_once('class/GetPK10GameData.class.php');
 require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
-require_once('class/timeTool.class.php');
+require_once('class/TimeTool.class.php');
 
 try {
     $objLineTool = new LineNotify();
