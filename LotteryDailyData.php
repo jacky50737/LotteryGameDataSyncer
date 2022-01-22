@@ -26,7 +26,7 @@ try {
     $objDBTool = new DataBaseTool();
     $life = $objDBTool->checkLife($fileName);
 
-    if ($life > 210) {
+    if ($life > 7000) {
         $file = fopen("DailyLock.txt", "w");
         fwrite($file, "off");
         fclose($file);
