@@ -15,6 +15,6 @@ $file = fopen("DailyLock.txt", "w");
 fwrite($file, "off");
 fclose($file);
 
-$objDBTool->setLife($fileName, 0);
+$objDBTool->setLife("LotteryDailyData", 0);
 
 echo "已解除鎖定";
