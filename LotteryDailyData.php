@@ -146,6 +146,7 @@ try {
             }
 
             $objLineTool->doLineNotify("\n讀寫完成...");
+            $objDBTool->setLife($fileName, 0);
             $end_time = microtime(true);
 
             $time_total = $end_time - $start_time;
