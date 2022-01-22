@@ -90,7 +90,7 @@ try {
                     $lock = fgets($file);
                     fclose($file);
                     if ($lock == 'off') {
-                        exit($objLineTool->doLineNotify("\n" . 'Pid：' . $pid ."\n" . "差斷中止!"));
+                        exit($objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . "差斷中止!"));
                     }
 
                     if ($objDBTool->checkGame(strval($game)) == false) {
@@ -129,11 +129,11 @@ try {
                     } else {
                         $life = $objDBTool->checkLife($fileName);
                         $objDBTool->setLife($fileName, $life - 1);
-                        $objLineTool->doLineNotify("\n" . 'Pid：'. $pid. "\n" . 'Life：' . $life ."\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                         usleep(100000);
                     }
 
-                   
+
                 } catch (Exception $exception) {
                     $error_msg = "\n" . '[error]' . "\n" .
                         '上傳資料時發生錯誤，錯誤發生時間，' .
@@ -168,7 +168,7 @@ try {
         $file = fopen("locktime.txt", "r");
         $locktime = fgets($file);
         fclose($file);
-        $objLineTool->doLineNotify("\n" . "Life：" .$life."\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
+        $objLineTool->doLineNotify("\n" . "Life：" . $life . "\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
 
         if ((microtime(true) - floatval($locktime)) > 3600) {
             $file = fopen("DailyLock.txt", "w");

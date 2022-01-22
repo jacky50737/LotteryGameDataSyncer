@@ -12,24 +12,27 @@ require_once('class/CurlTool.class.php');
 require_once('class/DataBaseTool.class.php');
 
 $objLineTool = new LineNotify();
-$objLineTool->doLineNotify("\n"."最新賽車資訊檢查...");
-
-
-$objGameTool = new getPK10GameData();
-$arrGameData = $objGameTool->getPK10Data("New","");
+$objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
+try {
+    $objGameTool = new getPK10GameData();
+    $arrGameData = $objGameTool->getPK10Data("New", "");
 //var_dump($strGameData);
-
-$objDBTool = new DataBaseTool();
+    if ($arrGameData == false) {
+        throw new Exception("取得資料失敗");
+    }
+    $objDBTool = new DataBaseTool();
 //var_dump($objDBTool->checkGame(strval($arrGameData[0])));
 
-if($objDBTool->checkGame(strval($arrGameData[0])) == false)
-{
-    $objDBTool->upLoadGame(strval($arrGameData[0]),$arrGameData[1]);
+    if ($objDBTool->checkGame(strval($arrGameData[0])) == false) {
+        $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
+    } else {
+        $objLineTool->doLineNotify("\n" . "檢查完畢 暫無最新賽事");
+    }
+    $objDBTool->closeDB();
+} catch (Exception $exception) {
+    if (isset($objDBTool)) {
+        $objDBTool->closeDB();
+    }
+    $objLineTool->doLineNotify("\n" . $exception->getMessage());
 }
-else
-{
-    $objLineTool->doLineNotify("\n"."檢查完畢 暫無最新賽事");
-}
-$objDBTool->closeDB();
-
 exit(0);

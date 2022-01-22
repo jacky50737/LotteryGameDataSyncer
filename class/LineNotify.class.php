@@ -15,20 +15,19 @@ class LineNotify
         "ckwfUw1XWB41SOE8DDXKYxSZRZy3n8siG9npJX0pAG4",
     ];
 
-    public function doLineNotify (string $msg): string
+    public function doLineNotify(string $msg): string
     {
 
-        $url="https://notify-api.line.me/api/notify";
+        $url = "https://notify-api.line.me/api/notify";
 
-        $payload['message'] =  $msg;
+        $payload['message'] = $msg;
 
         $curl = new CurlTool();
 
-        for($i=0;$i<4;$i++)
-        {
+        for ($i = 0; $i < 4; $i++) {
             $header = array('Authorization:Bearer ' . $this->token[$i]);
-            $results = $curl->doPost($url,$header,$payload);
-            if($results->message == "ok" || $results->status == 200){
+            $results = $curl->doPost($url, $header, $payload);
+            if ($results->message == "ok" || $results->status == 200) {
                 return true;
             }
         }

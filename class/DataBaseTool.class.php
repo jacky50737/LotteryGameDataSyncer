@@ -98,7 +98,7 @@ class DataBaseTool
 
     public function checkLife(string $id): int
     {
-        $sqlQuery = "SELECT IS_LIFE FROM LIFE WHERE ID = '". $id ."';";
+        $sqlQuery = "SELECT IS_LIFE FROM LIFE WHERE ID = '" . $id . "';";
 
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
@@ -110,7 +110,7 @@ class DataBaseTool
 
     public function setLife(string $id, int $life): int
     {
-        $sqlQuery = "UPDATE LIFE SET IS_LIFE = ".$life." WHERE LIFE.ID = '". $id ."';";
+        $sqlQuery = "UPDATE LIFE SET IS_LIFE = " . $life . " WHERE LIFE.ID = '" . $id . "';";
 
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {

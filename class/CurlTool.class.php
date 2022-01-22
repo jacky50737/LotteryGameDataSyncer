@@ -13,35 +13,37 @@ class CurlTool
      * @param string $url
      * @param array $header
      * @param array $payload
-     * @return object
      */
-    public function doPost(string $url,array $header,array $payload): object
+    public function doPost(string $url,array $header,array $payload)
     {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+            $results = curl_exec($ch);
 
-        $results = curl_exec($ch);
+            // Header 分割
+            $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
+            $headerStr = substr( $results , 0 , $headerSize );
+            $body = json_decode(substr( $results , $headerSize ));
 
-        // Header 分割
-        $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
-        $headerStr = substr( $results , 0 , $headerSize );
-        $body = json_decode(substr( $results , $headerSize ));
-
-        // 轉換 Header 成陣列
-        $headers = $this->headersToArray( $headerStr );
+            // 轉換 Header 成陣列
+            $headers = $this->headersToArray( $headerStr );
 
 //        var_dump(intval($headers['X-RateLimit-Remaining']));
 //        var_dump($body);
-        curl_close($ch);
+            curl_close($ch);
 
-        return $body;
-
+            return $body;
+        }catch (Exception $exception){
+            curl_close($ch);
+            return false;
+        }
     }
 
     /**
