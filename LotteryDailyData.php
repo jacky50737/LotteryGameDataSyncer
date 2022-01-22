@@ -90,7 +90,7 @@ try {
                     $lock = fgets($file);
                     fclose($file);
                     if ($lock == 'off') {
-                        exit($objLineTool->doLineNotify("\n" . "差斷中止!"));
+                        exit($objLineTool->doLineNotify("\n" . 'Pid：' . $pid ."\n" . "差斷中止!"));
                     }
 
                     if ($objDBTool->checkGame(strval($game)) == false) {
