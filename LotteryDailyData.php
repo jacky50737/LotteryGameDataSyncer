@@ -16,6 +16,7 @@ require_once('class/TimeTool.class.php');
 $fileName = basename(__FILE__, '.php');
 
 try {
+    $pid = rand();
     $objLineTool = new LineNotify();
     $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
     $file = fopen("DailyLock.txt", "r");
@@ -104,7 +105,9 @@ try {
                             $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
                             $life = $objDBTool->checkLife($fileName);
                             $objDBTool->setLife($fileName, $life - 1);
-                            $info_msg = "\n" . '[info] Life：' .$life.
+                            $info_msg = "\n" . '[info]' .
+                                "\n" . 'Pid：' . $pid .
+                                "\n" . 'Life：' . $life .
                                 "\n" . '查詢日期：' . $day .
                                 "\n" . '上傳期數：' . $game .
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
