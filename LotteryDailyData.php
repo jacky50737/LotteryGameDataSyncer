@@ -81,8 +81,15 @@ try {
                     $gno = $result[1];
 
                     $done++;
-                    if ($game < $lastGame) {
+                    if ($game <= $lastGame) {
                         continue;
+                    }
+
+                    $file = fopen("DailyLock.txt", "r");
+                    $lock = fgets($file);
+                    fclose($file);
+                    if ($lock == 'off') {
+                        exit($objLineTool->doLineNotify("\n" . "差斷中止!"));
                     }
 
                     if ($objDBTool->checkGame(strval($game)) == false) {
