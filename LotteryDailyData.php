@@ -127,7 +127,7 @@ try {
                         }
 
                     } else {
-                        $objLineTool->doLineNotify("\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid ."\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
 
                     usleep(800000);
