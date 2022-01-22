@@ -34,7 +34,7 @@ try {
         $objDBTool->setLife($fileName, 0);
 
     } else {
-        $objDBTool->setLife($fileName, $life + 70);
+        $objDBTool->setLife($fileName, $life + 45);
     }
 
     if ($lock == 'off') {
