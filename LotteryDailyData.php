@@ -125,14 +125,15 @@ try {
                             $objLineTool->doLineNotify($error_msg);
 
                         }
-
+                        usleep(800000);
                     } else {
                         $life = $objDBTool->checkLife($fileName);
                         $objDBTool->setLife($fileName, $life - 1);
-                        $objLineTool->doLineNotify("\n" . 'Pid：'. "\n" . 'Life：' . $life . $pid ."\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        $objLineTool->doLineNotify("\n" . 'Pid：'. $pid. "\n" . 'Life：' . $life ."\n" . '查詢日期：' . $day . "\n" . "本期[" . $game . "]已存在，前往下一期賽事" . "\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        usleep(100000);
                     }
 
-                    usleep(800000);
+                   
                 } catch (Exception $exception) {
                     $error_msg = "\n" . '[error]' . "\n" .
                         '上傳資料時發生錯誤，錯誤發生時間，' .
