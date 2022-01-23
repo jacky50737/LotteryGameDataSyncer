@@ -75,7 +75,7 @@ class DataBaseTool
     {
 
         if ($type == "save") {
-            $sqlQuery = "UPDATE LOG SET game=" . "$game" . ", LAST_DATE='" . "$date" . "' WHERE process='" . $process . "'";
+            $sqlQuery = "UPDATE LOG SET game='" . $game . "', LAST_DATE='" . $date . "' WHERE process='" . $process . "'";
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
                     return true;
