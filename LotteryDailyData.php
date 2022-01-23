@@ -78,9 +78,6 @@ try {
             fwrite($file, $start_time . "\n");
             fclose($file);
 
-
-
-
             $done = 0;
             foreach ($arrGameData as $result) {
                 try {
