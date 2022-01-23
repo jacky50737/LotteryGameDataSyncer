@@ -136,7 +136,7 @@ try {
                             $objLineTool->doLineNotify($error_msg);
 
                         }
-                        usleep(800000);
+                        usleep(400000);
                     } else {
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
@@ -193,7 +193,7 @@ try {
             $end_time = microtime(true);
             $time_total = $end_time - $start_time;
 
-            $process_msg = "\n" . "日期：" . $day . "執行了：" . $timeTool->changeTimeType(intval($time_total)) . "\n";
+            $process_msg = "\n" . "日期：" . $day . "\n執行了：" . $timeTool->changeTimeType(intval($time_total)) . "\n";
 
             $objLineTool->doLineNotify($process_msg);
 
