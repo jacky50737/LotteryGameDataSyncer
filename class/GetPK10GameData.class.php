@@ -35,6 +35,7 @@ class getPK10GameData
                     if($results->errorCode == 0 ){
                         break;
                     }
+                    usleep(100000);
                 }
 
                 if($i >= 5)
@@ -60,6 +61,7 @@ class getPK10GameData
                     if($results->errorCode == 0){
                         break;
                     }
+                    usleep(100000);
                 }
 
                 if($i >= 5)
