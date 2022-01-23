@@ -29,7 +29,7 @@ declare(strict_types=1);
 //
 
 $start_time = microtime(true);
-$today = date("Y-m-d",intval($start_time + (8 * 60 * 60)));
+$today = date("Y-m-d A h:i:s",intval($start_time + (8 * 60 * 60)));
 var_dump($today);
 echo "done";
 
