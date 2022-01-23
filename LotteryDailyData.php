@@ -44,7 +44,7 @@ try {
         fclose($file);
 
         $start_time = microtime(true);
-        $objLineTool->doLineNotify("\n" . "開始時間:" . $start_time);
+        $objLineTool->doLineNotify("\n" . "開始時間:" . date("Y-m-d A h:i:s",intval($start_time + (8 * 60 * 60))));
 
         $file = fopen("log.txt", "r");
         $lastDay = fgets($file);
