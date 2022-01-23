@@ -155,6 +155,11 @@ try {
                 $file = fopen("log.txt", "w");
                 fwrite($file, $day);
                 fclose($file);
+
+                $msg = "\n共{$total}筆" .
+                    "\n已完成{$done}筆" .
+                    "\n核對完成!";
+                $objLineTool->doLineNotify($msg);
             }else{
                 $lost = $total - $done;
                 $msg = "\n共{$total}筆" .
