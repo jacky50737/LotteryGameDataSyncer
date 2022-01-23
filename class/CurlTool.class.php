@@ -17,6 +17,7 @@ class CurlTool
     public function doPost(string $url,array $header,array $payload)
     {
         try {
+            set_time_limit(0)
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -52,7 +53,7 @@ class CurlTool
      */
     public function doGet(string $url): object
     {
-
+        set_time_limit(0)
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
