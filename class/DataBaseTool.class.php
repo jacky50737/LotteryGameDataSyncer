@@ -75,7 +75,7 @@ class DataBaseTool
     {
 
         if ($type == "save") {
-            $sqlQuery = "UPDATE LOG SET game=" . "$game" . ", date=" . "$date" . " WHERE process='" . $process . "'";
+            $sqlQuery = "UPDATE LOG SET game=" . "$game" . ", LAST_DATE=" . "$date" . " WHERE process='" . $process . "'";
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
                     return true;
@@ -84,7 +84,7 @@ class DataBaseTool
         }
 
         if ($type == "getListTime") {
-            $sqlQuery = "SELECT game FROM LOG WHERE process = '" . $process . " 'AND date = " . $date . ";";
+            $sqlQuery = "SELECT game FROM LOG WHERE process = '" . $process . " 'AND LAST_DATE = " . $date . ";";
 
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
