@@ -27,5 +27,9 @@ declare(strict_types=1);
 //
 //var_dump($lastGame);
 //
-//echo "done";
+
+$start_time = microtime(true);
+$today = date("Y-m-d",intval($start_time + (8 * 60 * 60)));
+var_dump($today);
+echo "done";
 
