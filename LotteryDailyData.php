@@ -82,7 +82,7 @@ try {
                     $gno = $result[1];
 
                     $done++;
-                    if ($game <= $lastGame) {
+                    if (intval($game) <= intval($lastGame)) {
                         continue;
                     }
 
