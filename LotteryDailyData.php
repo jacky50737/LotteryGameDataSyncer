@@ -71,13 +71,13 @@ try {
             $objLineTool->doLineNotify(
                 "\n" . "寫入開始時間..." .
                 "\n" . "載入遊戲數據中..." .
-                "\n" . "共{$total}筆遊戲賽事".
+                "\n" . "共{$total}筆遊戲賽事" .
                 "\n" . "上次執行位置：{$lastGame}"
             );
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
-
+            $jumpTag = 0;
             $done = 0;
             foreach ($arrGameData as $result) {
                 try {
@@ -86,8 +86,13 @@ try {
 
                     $done++;
                     if (intval($game) <= intval($lastGame)) {
-                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . "上次執行位置：{$lastGame}");
+                        $jumpTag = 1;
                         continue;
+                    }
+
+                    if ($jumpTag == 1) {
+                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . "正在跳躍至上次執行位置：{$lastGame}");
+                        $jumpTag = 0;
                     }
 
                     $file = fopen("DailyLock.txt", "r");
@@ -109,7 +114,8 @@ try {
                             $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
                             $life = $objDBTool->checkLife($fileName);
                             $objDBTool->setLife($fileName, $life - 1);
-                            $info_msg = "\n" . '[info]' .
+                            $info_msg =
+                                "\n" . '[info]' .
                                 "\n" . 'Pid：' . $pid .
                                 "\n" . 'Life：' . $life .
                                 "\n" . '查詢日期：' . $day .
@@ -120,7 +126,8 @@ try {
                             $objLineTool->doLineNotify($info_msg);
 
                         } else {
-                            $error_msg = "\n" . '[error]' . "\n" .
+                            $error_msg =
+                                "\n" . '[error]' . "\n" .
                                 '上傳資料時發生錯誤，錯誤發生時間，' .
                                 "\n" . '錯誤發生時間： ' . "\n" .
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
@@ -139,7 +146,8 @@ try {
 
 
                 } catch (Exception $exception) {
-                    $error_msg = "\n" . '[error]' . "\n" .
+                    $error_msg =
+                        "\n" . '[error]' . "\n" .
                         '上傳資料時發生錯誤，錯誤發生時間，' .
                         "\n" . '錯誤發生時間： ' . "\n" .
                         date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
@@ -156,16 +164,18 @@ try {
                 fwrite($file, $day);
                 fclose($file);
 
-                $msg = "\n共{$total}筆" .
-                    "\n已完成{$done}筆" .
-                    "\n核對完成!";
+                $msg =
+                    "\n" . "共{$total}筆" .
+                    "\n" . "已完成{$done}筆" .
+                    "\n" . "核對完成!";
                 $objLineTool->doLineNotify($msg);
-            }else{
+            } else {
                 $lost = $total - $done;
-                $msg = "\n共{$total}筆" .
-                    "\n已完成{$done}筆" .
-                    "\n遺漏{$lost}筆" .
-                    "\n即將重試...";
+                $msg =
+                    "\n" . "共{$total}筆" .
+                    "\n" . "已完成{$done}筆" .
+                    "\n" . "遺漏{$lost}筆" .
+                    "\n" . "即將重試...";
                 $objLineTool->doLineNotify($msg);
             }
 
