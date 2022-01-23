@@ -7,25 +7,25 @@
 
 declare(strict_types=1);
 
-require_once('class/DataBaseTool.class.php');
-
-$fileName = "test";
-
-$day = date("Y-m-d");
-
-$objDBTool = new DataBaseTool();
-
-$lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
-
-var_dump($lastGame);
-
-$game = rand();
-
-$objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
-
-$lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
-
-var_dump($lastGame);
-
-echo "done";
+//require_once('class/DataBaseTool.class.php');
+//
+//$fileName = "test";
+//
+//$day = date("Y-m-d");
+//
+//$objDBTool = new DataBaseTool();
+//
+//$lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+//
+//var_dump($lastGame);
+//
+//$game = rand();
+//
+//$objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
+//
+//$lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+//
+//var_dump($lastGame);
+//
+//echo "done";
 

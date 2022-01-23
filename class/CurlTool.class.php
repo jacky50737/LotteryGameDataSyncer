@@ -13,6 +13,7 @@ class CurlTool
      * @param string $url
      * @param array $header
      * @param array $payload
+     * @return false|mixed
      */
     public function doPost(string $url,array $header,array $payload)
     {
