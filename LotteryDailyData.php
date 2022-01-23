@@ -67,13 +67,19 @@ try {
 
         if (!empty($arrGameData)) {
             $total = count($arrGameData);
-            $objLineTool->doLineNotify("\n" . "寫入開始時間..." . "\n" . "載入遊戲數據中..." . "\n" . "共{$total}筆遊戲賽事");
+            $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+            $objLineTool->doLineNotify(
+                "\n" . "寫入開始時間..." .
+                "\n" . "載入遊戲數據中..." .
+                "\n" . "共{$total}筆遊戲賽事".
+                "\n" . "上次執行位置：{$lastGame}"
+            );
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
             fclose($file);
 
 
-            $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+
 
             $done = 0;
             foreach ($arrGameData as $result) {
@@ -83,6 +89,7 @@ try {
 
                     $done++;
                     if (intval($game) <= intval($lastGame)) {
+                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . "上次執行位置：{$lastGame}");
                         continue;
                     }
 
@@ -146,16 +153,27 @@ try {
             }
 
             $objLineTool->doLineNotify("\n讀寫完成...");
-            $objDBTool->setLife($fileName, 0);
-            $end_time = microtime(true);
 
+            if ($done == $total) {
+                $file = fopen("log.txt", "w");
+                fwrite($file, $day);
+                fclose($file);
+            }else{
+                $lost = $total - $done;
+                $msg = "\n共{$total}筆" .
+                    "\n已完成{$done}筆" .
+                    "\n遺漏{$lost}筆" .
+                    "\n即將重試...";
+                $objLineTool->doLineNotify($msg);
+            }
+
+            $objDBTool->setLife($fileName, 0);
+
+            $end_time = microtime(true);
             $time_total = $end_time - $start_time;
 
-            $file = fopen("log.txt", "w");
-            fwrite($file, $day);
-            fclose($file);
-
             $process_msg = "\n" . "日期：" . $day . "執行了：" . $timeTool->changeTimeType(intval($time_total)) . "\n";
+
             $objLineTool->doLineNotify($process_msg);
 
             $file = fopen("DailyLock.txt", "w");
