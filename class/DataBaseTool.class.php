@@ -86,7 +86,7 @@ class DataBaseTool
 
         if ($type == "getListTime") {
             $sqlQuery = "SELECT game FROM LOG WHERE process = " . $process . " AND LAST_DATE = '" . $date . "';";
-            var_dump($this->connection->query($sqlQuery)->fetch_assoc()['game']);
+            var_dump($this->connection->query($sqlQuery)->fetch_assoc());
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
                     return $this->connection->query($sqlQuery)->fetch_assoc()['game'];
