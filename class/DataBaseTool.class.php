@@ -84,7 +84,7 @@ class DataBaseTool
         }
 
         if ($type == "getListTime") {
-            $sqlQuery = "SELECT game FROM LOG WHERE process = '" . $process . "' AND LAST_DATE = '" . $date . "';";
+            $sqlQuery = "SELECT game FROM LOG WHERE process = " . $process . " AND LAST_DATE = '" . $date . "';";
 
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
