@@ -23,6 +23,8 @@ $game = rand();
 
 $objDBTool->logLastTimeProcess("save", $fileName, strval($game), $day); //紀錄執行成功進度
 
+$lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+
 var_dump($lastGame);
 
 echo "done";
