@@ -58,7 +58,6 @@ try {
             $day = $tomorrow;
         } else {
             $day = $today;
-            sleep(1800);
         }
 
         $objGameTool = new getPK10GameData();
