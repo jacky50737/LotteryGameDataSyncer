@@ -123,7 +123,7 @@ try {
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                                 "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "剩餘時間： {$excess_time}" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
-                            $objLineTool->doLineNotify($info_msg);
+//                            $objLineTool->doLineNotify($info_msg);
 
                         } else {
                             $error_msg =
@@ -136,21 +136,21 @@ try {
                             $objLineTool->doLineNotify($error_msg);
 
                         }
-                        usleep(400000);
+                        usleep(10000);
                     } else {
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
                         $speed = floatval($cost_time/$done);
                         $life = $objDBTool->checkLife($fileName);
                         $objDBTool->setLife($fileName, $life - 1);
-                        $objLineTool->doLineNotify(
-                            "\n" . 'Pid：' . $pid .
-                            "\n" . 'Life：' . $life .
-                            "\n" . '目前速率：' . round($speed,2) ."筆/秒".
-                            "\n" . '查詢日期：' . $day .
-                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
-                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
-                        usleep(100000);
+//                        $objLineTool->doLineNotify(
+//                            "\n" . 'Pid：' . $pid .
+//                            "\n" . 'Life：' . $life .
+//                            "\n" . '目前速率：' . round($speed,2) ."筆/秒".
+//                            "\n" . '查詢日期：' . $day .
+//                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
+//                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
+                        usleep(10000);
                     }
 
 
