@@ -152,6 +152,18 @@ try {
 //                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                         usleep(10000);
                     }
+                    if($done%50 == 0){
+                        $now_time = microtime(true);
+                        $cost_time = $now_time - $start_time;
+                        $speed = floatval($cost_time/$done);
+                        $life = $objDBTool->checkLife($fileName);
+                        $objLineTool->doLineNotify(
+                            "\n" . 'Pid：' . $pid .
+                            "\n" . 'Life：' . $life .
+                            "\n" . '目前速率：' . round($speed,2) ."筆/秒".
+                            "\n" . '查詢日期：' . $day .
+                            "\n" . "還有[" . ($total - $done) . "]筆賽事。");
+                    }
 
 
                 } catch (Exception $exception) {
