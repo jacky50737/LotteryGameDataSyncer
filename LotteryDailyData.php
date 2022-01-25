@@ -68,13 +68,14 @@ try {
         if (!empty($arrGameData)) {
             $total = count($arrGameData);
             $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
+            $lastTag = $lastGame?:"無";
             $needDay=ceil(((strtotime(date("Y-m-d")))-(strtotime($day)))/86400); //60s*60min*24h
             $objLineTool->doLineNotify(
                 "\n" . "寫入開始時間..." .
                 "\n" . "距離最新日期尚有{$needDay}天..." .
                 "\n" . "載入遊戲數據中..." .
                 "\n" . "共{$total}筆遊戲賽事" .
-                "\n" . "上次執行位置：{$lastGame}"
+                "\n" . "上次執行位置：{$lastTag}"
             );
             $file = fopen("locktime.txt", "w");
             fwrite($file, $start_time . "\n");
