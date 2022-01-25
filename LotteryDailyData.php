@@ -146,7 +146,7 @@ try {
 //                        $objLineTool->doLineNotify(
 //                            "\n" . 'Pid：' . $pid .
 //                            "\n" . 'Life：' . $life .
-//                            "\n" . '目前速率：' . round($speed,2) ."筆/秒".
+//                            "\n" . '目前速率：' . round($speed,2) ."秒/筆".
 //                            "\n" . '查詢日期：' . $day .
 //                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
 //                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
@@ -160,7 +160,7 @@ try {
                         $objLineTool->doLineNotify(
                             "\n" . 'Pid：' . $pid .
                             "\n" . 'Life：' . $life .
-                            "\n" . '目前速率：' . round($speed,2) ."筆/秒".
+                            "\n" . '目前速率：' . round($speed,2) ."秒/筆".
                             "\n" . '查詢日期：' . $day .
                             "\n" . "還有[" . ($total - $done) . "]筆賽事。");
                     }
