@@ -58,7 +58,12 @@ try {
             $day = $tomorrow;
         } else {
             $day = $today;
-            sleep(1800);
+            $objLineTool->doLineNotify("\n" . "歷史資料已更新到最新!");
+            $file = fopen("DailyLock.txt", "w");
+            fwrite($file, "off");
+            fclose($file);
+            $objLineTool->doLineNotify("\n" . "已解除鎖定");
+            exit("done!");
         }
 
         $objGameTool = new getPK10GameData();
