@@ -16,15 +16,15 @@ $objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
 try {
     $objGameTool = new getPK10GameData();
     $arrGameData = $objGameTool->getPK10Data("New", "");
-//var_dump($strGameData);
+//var_dump($arrGameData);
     if ($arrGameData == false) {
         throw new Exception("取得資料失敗");
     }
     $objDBTool = new DataBaseTool();
 //var_dump($objDBTool->checkGame(strval($arrGameData[0])));
-
     if ($objDBTool->checkGame(strval($arrGameData[0])) == false) {
         $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
+        $objLineTool->doLineNotify("\n" . "檢查完畢 新增賽事{$arrGameData[0]}");
     } else {
         $objLineTool->doLineNotify("\n" . "檢查完畢 暫無最新賽事");
     }
