@@ -183,9 +183,12 @@ try {
             $objLineTool->doLineNotify("\n讀寫完成...");
 
             if ($done == $total) {
+                if($day!=$today)
+                {
                 $file = fopen("log.txt", "w");
                 fwrite($file, $day);
                 fclose($file);
+                }
 
                 $msg =
                     "\n" . "共{$total}筆" .
