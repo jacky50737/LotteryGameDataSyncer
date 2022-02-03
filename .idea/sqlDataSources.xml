@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="a0bd8159-2928-45c0-8d18-1a49e13e52d1" name="MySQL - pjtvqdla_PK10@104.168.139.189 Mapping">
+      <data-sources db="97da2651-a9c8-4555-897e-ab8b786a263a" ddl="bae98b12-f80e-454e-9eb6-767840d6be31" />
+      <scope>
+        <node kind="schema" qname="pjtvqdla_PK10" />
+      </scope>
+    </mapping>
+  </component>
+</project>
