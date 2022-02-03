@@ -32,7 +32,7 @@ try {
         }
         sleep(1);
     }
-    $objLineTool->doLineNotify("\n" . "檢查完畢 暫無最新賽事");
+    $objLineTool->doLineNotify("\n" . "本次檢查完畢!");
 } catch (Exception $exception) {
     if (isset($objDBTool)) {
         $objDBTool->closeDB();
