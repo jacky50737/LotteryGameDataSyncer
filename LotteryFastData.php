@@ -27,13 +27,12 @@ try {
             if ($objDBTool->checkGame(strval($arrGameData[0])) == false) {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
                 $objLineTool->doLineNotify("\n" . "檢查完畢 新增賽事{$arrGameData[0]}");
-            } else {
-                $objLineTool->doLineNotify("\n" . "檢查完畢 暫無最新賽事");
             }
             $objDBTool->closeDB();
         }
         sleep(1);
     }
+    $objLineTool->doLineNotify("\n" . "檢查完畢 暫無最新賽事");
 } catch (Exception $exception) {
     if (isset($objDBTool)) {
         $objDBTool->closeDB();
