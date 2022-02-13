@@ -1,0 +1,20 @@
+name: project deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: centos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy to vm
+        uses: appleboy/ssh-action@main
+        with:
+          host: ${{ secrets.LINUX_HOST }}
+          username: ${{ secrets.LINUX_USERNAME }}
+          key: ${{ secrets.LINUX_SSHKEY }}
+          script: |
+            cd {PATH}
+            git pull
