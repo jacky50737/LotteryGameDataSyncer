@@ -4,3 +4,4 @@ log.txt
 errorlog.txt
 locktime.txt
 DailyLock.txt
+config/database.php

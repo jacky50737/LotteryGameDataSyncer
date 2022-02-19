@@ -2,14 +2,20 @@
 
 class DataBaseTool
 {
-    protected string $server = "localhost";         # MySQL/MariaDB 伺服器
-    protected string $user = "pjtvqdla_jacky50737";       # 使用者帳號
-    protected string $password = "Aa174677178508123"; # 使用者密碼
-    protected string $dbname = "pjtvqdla_PK10";    # 資料庫名稱
+    protected string $server;    # MySQL/MariaDB 伺服器
+    protected string $user;      # 使用者帳號
+    protected string $password;  # 使用者密碼
+    protected string $dbname;    # 資料庫名稱
     protected object $connection;
 
     public function __construct()
     {
+        $configs = include('config/database.php');
+        $this->server = $configs['server'];
+        $this->user = $configs['user'];
+        $this->password = $configs['password'];
+        $this->dbname = $configs['dbname'];
+
         # 連接 MySQL/MariaDB 資料庫
         $this->connection = new mysqli($this->server, $this->user, $this->password, $this->dbname);
 
