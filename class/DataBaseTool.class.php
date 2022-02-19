@@ -10,7 +10,7 @@ class DataBaseTool
 
     public function __construct()
     {
-        $configs = include('config/database.php');
+        $configs = include(__DIR__ . '/../config/database.php');
         $this->server = $configs['server'];
         $this->user = $configs['user'];
         $this->password = $configs['password'];
