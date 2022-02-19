@@ -59,7 +59,13 @@ class CurlTool
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        $results = json_decode(curl_exec($ch));
+
+        for($i=0;$i<10;$i++){
+            $results = json_decode(curl_exec($ch));
+            if(is_object($results)){
+                break;
+            }
+        }
         curl_close($ch);
 
         return $results;
