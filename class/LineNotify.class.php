@@ -24,11 +24,13 @@ class LineNotify
 
         $curl = new CurlTool();
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $header = array('Authorization:Bearer ' . $this->token[$i]);
             $results = $curl->doPost($url, $header, $payload);
-            if ($results->message == "ok" || $results->status == 200) {
-                return true;
+            if(!is_null($results->status)){
+                if ($results->message == "ok" || $results->status == 200) {
+                    return true;
+                } 
             }
         }
 
