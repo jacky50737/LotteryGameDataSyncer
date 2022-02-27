@@ -93,6 +93,9 @@ class DataBaseTool
             $sqlQuery = "SELECT game FROM LOG WHERE process = '" . $process . "' AND LAST_DATE = '" . $date . "';";
             for ($i = 0; $i < 5; $i++) {
                 if ($this->connection->query($sqlQuery) == TRUE) {
+                    if(is_null($this->connection->query($sqlQuery)->fetch_assoc()['game'])){
+                        return "無";
+                    }
                     return $this->connection->query($sqlQuery)->fetch_assoc()['game'];
                 }
             }
