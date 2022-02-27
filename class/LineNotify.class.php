@@ -28,14 +28,15 @@ class LineNotify
             $header = array('Authorization:Bearer ' . $this->token[$i]);
             for ($try = 0; $try < 10; $try++) {
                 $results = $curl->doPost($url, $header, $payload);
-                if(!is_null($results->status)){
+                if (!is_null($results->status) && !is_null($results->message)) {
                     if ($results->message == "ok" || $results->status == 200) {
                         $try = 10;
                         return true;
                     }
+                } else {
+                    var_dump($results);
                 }
             }
-
         }
 
         return false;

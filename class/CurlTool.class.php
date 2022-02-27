@@ -43,6 +43,7 @@ class CurlTool
 
             return $body;
         }catch (Exception $exception){
+            var_dump($exception->getMessage());
             curl_close($ch);
             return false;
         }
