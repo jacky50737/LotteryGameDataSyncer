@@ -8,7 +8,24 @@ class DataBaseTool
     protected string $dbname;    # 資料庫名稱
     protected object $connection;
 
-    public function __construct()
+    /**
+     * @var
+     */
+    private static $instance;
+
+    /**
+     * @return DataBaseTool
+     */
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function __construct()
     {
         $configs = include(__DIR__ . '/../config/database.php');
         $this->server = $configs['server'];

@@ -22,7 +22,7 @@ try {
             if ($arrGameData == false) {
                 throw new Exception("取得資料失敗");
             }
-            $objDBTool = new DataBaseTool();
+            $objDBTool = DataBaseTool::getInstance();
 //var_dump($objDBTool->checkGame(strval($arrGameData[0])));
             if ($objDBTool->checkGame(strval($arrGameData[0])) == false) {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);

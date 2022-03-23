@@ -23,7 +23,7 @@ try {
     $lock = fgets($file);
     fclose($file);
     $timeTool = new timeTool();
-    $objDBTool = new DataBaseTool();
+    $objDBTool = DataBaseTool::getInstance();
     $life = $objDBTool->checkLife($fileName);
 
     if ($life > 700) {
@@ -54,11 +54,7 @@ try {
 
         $today = date("Y-m-d");
 
-        if ($tomorrow < $today) {
-            $day = $tomorrow;
-        } else {
-            $day = $today;
-        }
+        $day = min($tomorrow, $today);
 
         $objGameTool = new getPK10GameData();
 
@@ -138,7 +134,6 @@ try {
                             $objLineTool->doLineNotify($error_msg);
 
                         }
-                        usleep(10000);
                     } else {
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
@@ -152,8 +147,8 @@ try {
 //                            "\n" . '查詢日期：' . $day .
 //                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
 //                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
-                        usleep(10000);
                     }
+                    usleep(10000);
                     if($done%50 == 0){
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
@@ -191,7 +186,6 @@ try {
                     "\n" . "共{$total}筆" .
                     "\n" . "已完成{$done}筆" .
                     "\n" . "核對完成!";
-                $objLineTool->doLineNotify($msg);
             } else {
                 $lost = $total - $done;
                 $msg =
@@ -199,8 +193,8 @@ try {
                     "\n" . "已完成{$done}筆" .
                     "\n" . "遺漏{$lost}筆" .
                     "\n" . "即將重試...";
-                $objLineTool->doLineNotify($msg);
             }
+            $objLineTool->doLineNotify($msg);
 
             $objDBTool->setLife($fileName, 0);
 
