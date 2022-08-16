@@ -7,11 +7,7 @@
 
 declare(strict_types=1);
 
-require_once('class/LineNotify.class.php');
-require_once('class/GetPK10GameData.class.php');
-require_once('class/CurlTool.class.php');
-require_once('class/DataBaseTool.class.php');
-require_once('class/TimeTool.class.php');
+require_once('class/autoload.php');
 
 $fileName = basename(__FILE__, '.php');
 

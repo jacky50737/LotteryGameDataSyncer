@@ -6,10 +6,7 @@
  */
 declare(strict_types=1);
 
-require_once('class/LineNotify.class.php');
-require_once('class/GetPK10GameData.class.php');
-require_once('class/CurlTool.class.php');
-require_once('class/DataBaseTool.class.php');
+require_once('class/autoload.php');
 
 $objLineTool = new LineNotify();
 $objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
