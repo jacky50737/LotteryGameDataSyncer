@@ -150,7 +150,7 @@ class DataBaseTool
                 }
                 foreach ($this->connection->query($sqlQuery)->fetch_all() as $key => $item) {
                     foreach ($item as $num => $row) {
-                        $data[$key][$arraykN['$num']] = $row;
+                        $data[$key][$arraykN[$num]] = $row;
                     }
                 }
                 return $data;
