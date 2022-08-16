@@ -68,7 +68,7 @@ class ForecastTool
 
         for ($i = 1; $i < $yards; $i++) {
             if(isset($gno["no{$i}"])){
-                if ($gno["no{$i}"] == strval($predict)) {
+                if (intval($gno["no{$i}"]) == intval($predict)) {
                     print("比對成功!");
                     return true;
                 }
