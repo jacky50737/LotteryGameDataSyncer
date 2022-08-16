@@ -169,14 +169,14 @@ class DataBaseTool
      */
     public function updateForecastData($name, $game, $predict, $status)
     {
-        $sqlQuery = "UPDATE forecast SET GAME = '" . $game . "' AND PREDICT = '" . $predict . "' AND STATUS = '" . $status . "' WHERE NAME = '" . $name . "';";
-var_dump($sqlQuery);
+        $sqlQuery = "UPDATE FORECAST SET GAME = '" . $game . "', PREDICT = '" . $predict . "', STATUS = '" . $status . "' WHERE NAME = '" . $name . "';";
+
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 return true;
             }
         }
-        var_dump($this->connection->query($sqlQuery));
+
         return false;
     }
 
