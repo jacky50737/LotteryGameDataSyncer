@@ -21,7 +21,7 @@ try {
             if (!$arrGameData) {
                 throw new Exception("取得資料失敗");
             }
-//var_dump($objDBTool->checkGame(strval($arrGameData[0])));
+
             if (!$objDBTool->checkGame(strval($arrGameData[0]))) {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
 
@@ -29,9 +29,11 @@ try {
 //var_dump($forecastData);
                 $msg = "";
                 foreach ($forecastData as $row) {
+                    $getPredict = $row['predict'];
+                    $forecastTag = $forecastTool->explodeForecast($row['name']);
                     $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
                     $status_C = "初始化";
-                    $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status);
+                    $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status, $forecastTag['LEVELS']);
                     $row['status'] = $forecastResult['status'];
 //    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
                     if (in_array($row['status'], ['SHOOT', 'DOWN'])) {
@@ -41,15 +43,17 @@ try {
 //        var_dump($gameData);
 //        var_dump($pass2Data);
                         $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
-                        $objDBTool->updateForecastData($row['name'], $arrGameData[1], $getPredict, $row['status']);
+
                     }
+                    $objDBTool->updateForecastData($row['name'], $arrGameData[1], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
                         $msg .= "\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
                     }
                 }
+                $gameNum = implode('|',$arrGameData[1]);
                 $objLineTool->doLineNotify(
-                    "\n" . "檢查完畢 新增賽事{$arrGameData[0]}".$msg);
+                    "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：$gameNum".$msg);
             }
         }
         sleep(1);

@@ -46,6 +46,15 @@ class ForecastTool
     }
 
     /**
+     * @param string $name
+     * @return array
+     */
+    public function explodeForecast(string $name){
+        $rows = explode("_", $name);
+        return ['YARDS'=>$rows[1],'LEVELS'=>$rows[3]];
+    }
+
+    /**
      * @param $gno
      * @param $predict
      * @param $name
@@ -66,11 +75,17 @@ class ForecastTool
     /**
      * @param $rowDataStatus
      * @param $status
+     * @param $levels
      * @return array
      */
-    public function processeForecastStatus($rowDataStatus, $status)
+    public function processeForecastStatus($rowDataStatus, $status, $levels)
     {
-        $status_C = "初始化";
+        $miss = 0;
+        if (str_contains($rowDataStatus, "MISS")) {
+            $miss = explode("MISS", $rowDataStatus)[1];
+            var_dump($miss);
+        }
+
         if ($status) {
             $rowDataStatus = 'SHOOT';
             $status_C = '中';
@@ -81,14 +96,15 @@ class ForecastTool
                     $rowDataStatus = 'MISS1';
                     $status_C = '凹1';
                     break;
-                case 'MISS1':
-                    $rowDataStatus = 'MISS2';
-                    $status_C = '凹2';
-                    break;
-                case 'MISS2':
-                    $rowDataStatus = 'DOWN';
-                    $status_C = '倒';
-                    break;
+                default:
+                    if ($miss == ($levels - 1)) {
+                        $rowDataStatus = 'DOWN';
+                        $status_C = '倒';
+                    } else {
+                        $tag = $miss + 1;
+                        $rowDataStatus = "MISS{$tag}";
+                        $status_C = "凹{$tag}";
+                    }
             }
         }
         return ['status' => $rowDataStatus, 'result' => $status_C];
