@@ -65,7 +65,7 @@ $arrGameData[1] = [
 
 
 $forecastData = $objDBTool->getForecastData();
-var_dump($forecastData);
+//var_dump($forecastData);
 foreach ($forecastData as $row){
     $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
     $status_C = "初始化";
@@ -76,8 +76,10 @@ foreach ($forecastData as $row){
         $pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2)); //抓-2期資料
         $gameData = $pass2Data['game'];
         unset($pass2Data['game']);
-        var_dump($gameData);
-        var_dump($pass2Data);
+//        var_dump($gameData);
+//        var_dump($pass2Data);
+        $getPredict = $forecastTool->forecastNextGame($row['name'],$pass2Data);
+        var_dump($getPredict);
     }
 }
 
