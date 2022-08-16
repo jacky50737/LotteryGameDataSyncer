@@ -63,14 +63,18 @@ class ForecastTool
     public function checkForecastStatus($gno, $predict, $name)
     {
         $yards = intval(explode('_', $name)[1]);
+        print("預測{$predict}最新：");
+        print_r($gno);
+
         for ($i = 1; $i < $yards; $i++) {
             if(isset($gno["no{$i}"])){
                 if ($gno["no{$i}"] == strval($predict)) {
+                    print("比對成功!");
                     return true;
                 }
             }
         }
-
+        print("比對失敗!");
         return false;
     }
 
