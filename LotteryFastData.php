@@ -11,17 +11,17 @@ require_once('class/autoload.php');
 $objLineTool = new LineNotify();
 $objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
 try {
+    $objDBTool = DataBaseTool::getInstance();
     while (date("s") < 58) {
-        if(intval(date("s")) % 5 == 0){
+        if (intval(date("s")) % 5 == 0) {
             $objGameTool = new getPK10GameData();
             $arrGameData = $objGameTool->getPK10Data("New", "");
 //var_dump($arrGameData);
-            if ($arrGameData == false) {
+            if (!$arrGameData) {
                 throw new Exception("取得資料失敗");
             }
-            $objDBTool = DataBaseTool::getInstance();
 //var_dump($objDBTool->checkGame(strval($arrGameData[0])));
-            if ($objDBTool->checkGame(strval($arrGameData[0])) == false) {
+            if (!$objDBTool->checkGame(strval($arrGameData[0]))) {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
                 $objLineTool->doLineNotify("\n" . "檢查完畢 新增賽事{$arrGameData[0]}");
             }
