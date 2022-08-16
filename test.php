@@ -50,9 +50,31 @@ require_once('class/autoload.php');
 $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 $arrGameData[0] = '32437750';
-$pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2));
-var_dump($pass2Data);
+$arrGameData[1] = [
+    'no1'=>7,
+    'no2'=>6,
+    'no3'=>5,
+    'no4'=>4,
+    'no5'=>1,
+    'no6'=>3,
+    'no7'=>2,
+    'no8'=>10,
+    'no9'=>8,
+    'no10'=>9,
+    ];
+//$pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2));
+//var_dump($pass2Data);
 $forecastData = $objDBTool->getForecastData();
 var_dump($forecastData);
+foreach ($forecastData as $row){
+    $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
+    if($status){
+        $status_C = '正確';
+    }else{
+        $status_C = '錯誤';
+    }
+    var_dump($row['c_name']."-本期預測結果：".$status_C);
+}
+
 //$getPredict = $forecastTool->forecastNextGame();
 

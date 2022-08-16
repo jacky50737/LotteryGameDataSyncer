@@ -160,6 +160,18 @@ class DataBaseTool
         return false;
     }
 
+    public function updateForecastData($name, $game, $predict, $status)
+    {
+        $sqlQuery = "UPDATE forecast SET GAME = '" . $game . "' AND PREDICT = '" . $predict . "' AND STATUS = '" . $status . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public function checkLife(string $id): int
     {

@@ -39,4 +39,15 @@ class ForecastTool
         }
         return $forecastData;
     }
+
+    public function checkForecastStatus($gno, $predict, $name){
+        $yards = intval(explode('_',$name)[1]);
+        for($i=1;$i<$yards;$i++){
+            if($gno["no{$i}"] == strval($predict)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
