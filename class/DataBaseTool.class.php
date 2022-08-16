@@ -142,7 +142,7 @@ class DataBaseTool
     {
         $arraykN = ['name', 'c_name', 'game', 'predict', 'status'];
         $data = [];
-        $sqlQuery = "SELECT * FROM forecast;";
+        $sqlQuery = "SELECT * FROM forecast ORDER BY TAG;";
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 if (empty($this->connection->query($sqlQuery)->fetch_all())) {
