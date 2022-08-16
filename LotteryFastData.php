@@ -36,7 +36,7 @@ try {
                     $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status, $forecastTag['LEVELS']);
                     $row['status'] = $forecastResult['status'];
 //    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
-                    if (in_array($row['status'], ['SHOOT', 'DOWN'])) {
+                    if (in_array($row['status'], ['SHOOT', 'DOWN']) or $row['game'] == '0') {
                         $pass2Data = $objDBTool->getGameData(intval($arrGameData[0] - 2)); //抓-2期資料
                         $gameData = $pass2Data['game'];
                         unset($pass2Data['game']);
