@@ -72,6 +72,9 @@ foreach ($forecastData as $row){
     $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status);
     $row['status'] = $forecastResult['status'];
     var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
+    if(in_array($row['status'],['SHOOT','DOWN'])){
+        var_dump("預測下期");
+    }
 }
 
 //$getPredict = $forecastTool->forecastNextGame();

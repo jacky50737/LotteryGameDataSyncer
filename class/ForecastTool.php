@@ -19,10 +19,14 @@ class ForecastTool
         return self::$instance;
     }
 
+    /**
+     * @param string $name
+     * @param array $gameData
+     * @return int
+     */
     public function forecastNextGame(string $name, array $gameData)
     {
         $forecastData = 0;
-//        $yards = intval(explode('_',$name)[1]);
 
         switch ($name) {
             case 'YARDS_9_LEVELS_3':
@@ -41,6 +45,12 @@ class ForecastTool
         return $forecastData;
     }
 
+    /**
+     * @param $gno
+     * @param $predict
+     * @param $name
+     * @return bool
+     */
     public function checkForecastStatus($gno, $predict, $name)
     {
         $yards = intval(explode('_', $name)[1]);
