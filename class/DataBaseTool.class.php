@@ -147,6 +147,7 @@ class DataBaseTool
                 if(empty($this->connection->query($sqlQuery)->fetch_assoc())){
                     return "無";
                 }
+                var_dump($this->connection->query($sqlQuery));
                 return $this->connection->query($sqlQuery)->fetch_assoc();
             }
         }
