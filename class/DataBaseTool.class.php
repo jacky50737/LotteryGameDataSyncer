@@ -138,7 +138,7 @@ class DataBaseTool
         return false;
     }
 
-    public function getForecastData($game)
+    public function getForecastData()
     {
 
         $sqlQuery = "SELECT * FROM forecast;";
