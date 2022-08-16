@@ -52,5 +52,7 @@ $forecastTool = ForecastTool::getInstance();
 $arrGameData[0] = '32437750';
 $pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2));
 var_dump($pass2Data);
+$forecastData = $objDBTool->getForecastData();
+var_dump($forecastData);
 //$getPredict = $forecastTool->forecastNextGame();
 
