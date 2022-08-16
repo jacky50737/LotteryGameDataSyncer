@@ -140,9 +140,9 @@ class DataBaseTool
 
     public function getForecastData()
     {
-        $arraykN = ['name', 'c_name', 'game', 'predict', 'status'];
+        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag'];
         $data = [];
-        $sqlQuery = "SELECT * FROM forecast;";
+        $sqlQuery = "SELECT * FROM forecast ORDER BY TAG;";
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 if (empty($this->connection->query($sqlQuery)->fetch_all())) {
