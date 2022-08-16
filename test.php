@@ -62,33 +62,16 @@ $arrGameData[1] = [
     'no9'=>8,
     'no10'=>9,
     ];
-//$pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2));
+//$pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2)); //抓-2期資料
 //var_dump($pass2Data);
 $forecastData = $objDBTool->getForecastData();
 var_dump($forecastData);
 foreach ($forecastData as $row){
     $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
     $status_C = "初始化";
-    if($status){
-        $row['status'] = 'SHOOT';
-        $status_C = '中';
-    }else{
-        switch ($row['status']){
-            case 'SHOOT':
-                $row['status'] = 'MISS1';
-                $status_C = '凹1';
-                break;
-            case 'MISS1':
-                $row['status'] = 'MISS2';
-                $status_C = '凹2';
-                break;
-            case 'MISS2':
-                $row['status'] = 'DOWN';
-                $status_C = '倒';
-                break;
-        }
-    }
-    var_dump($row['c_name']."-本期預測結果：".$status_C);
+    $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status);
+    $row['status'] = $forecastResult['status'];
+    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
 }
 
 //$getPredict = $forecastTool->forecastNextGame();

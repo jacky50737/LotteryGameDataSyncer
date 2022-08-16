@@ -19,18 +19,19 @@ class ForecastTool
         return self::$instance;
     }
 
-    public function forecastNextGame(string $name, array $gameData){
+    public function forecastNextGame(string $name, array $gameData)
+    {
         $forecastData = 0;
 //        $yards = intval(explode('_',$name)[1]);
 
-        switch ($name){
+        switch ($name) {
             case 'YARDS_9_LEVELS_3':
             case 'YARDS_7_LEVELS_5':
                 $total = intval($gameData['no1']) + intval($gameData['no10']);
 
-                if($total <= 10){
+                if ($total <= 10) {
                     $forecastData = $total;
-                }else{
+                } else {
                     $forecastData = $total - 10;
                 }
                 break;
@@ -40,14 +41,45 @@ class ForecastTool
         return $forecastData;
     }
 
-    public function checkForecastStatus($gno, $predict, $name){
-        $yards = intval(explode('_',$name)[1]);
-        for($i=1;$i<$yards;$i++){
-            if($gno["no{$i}"] == strval($predict)){
+    public function checkForecastStatus($gno, $predict, $name)
+    {
+        $yards = intval(explode('_', $name)[1]);
+        for ($i = 1; $i < $yards; $i++) {
+            if ($gno["no{$i}"] == strval($predict)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * @param $rowDataStatus
+     * @param $status
+     * @return array
+     */
+    public function processeForecastStatus($rowDataStatus, $status)
+    {
+        $status_C = "初始化";
+        if ($status) {
+            $rowDataStatus = 'SHOOT';
+            $status_C = '中';
+        } else {
+            switch ($rowDataStatus) {
+                case 'SHOOT':
+                    $rowDataStatus = 'MISS1';
+                    $status_C = '凹1';
+                    break;
+                case 'MISS1':
+                    $rowDataStatus = 'MISS2';
+                    $status_C = '凹2';
+                    break;
+                case 'MISS2':
+                    $rowDataStatus = 'DOWN';
+                    $status_C = '倒';
+                    break;
+            }
+        }
+        return ['status' => $rowDataStatus, 'result' => $status_C];
     }
 }
