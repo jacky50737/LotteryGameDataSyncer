@@ -54,7 +54,7 @@ try {
                 }
                 $gameNum = implode('|',$arrGameData[1]);
                 $objLineTool->doLineNotify(
-                    "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：\n$gameNum\n上期預測號碼：{$lastMsg}".$msg);
+                    "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：\n$gameNum".$msg);
             }
         }
         sleep(1);
