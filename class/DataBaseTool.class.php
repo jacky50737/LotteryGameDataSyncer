@@ -140,15 +140,20 @@ class DataBaseTool
 
     public function getForecastData()
     {
-
+        $arraykN = ['name', 'c_name', 'game', 'predict', 'status'];
+        $data = [];
         $sqlQuery = "SELECT * FROM forecast;";
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
-                if(empty($this->connection->query($sqlQuery)->fetch_assoc())){
+                if (empty($this->connection->query($sqlQuery)->fetch_all())) {
                     return "無";
                 }
-                var_dump($this->connection->query($sqlQuery)->fetch_all());
-                return $this->connection->query($sqlQuery)->fetch_assoc();
+                foreach ($this->connection->query($sqlQuery)->fetch_all() as $key => $item) {
+                    foreach ($item as $num => $row) {
+                        $data[$key][$arraykN['$num']] = $row;
+                    }
+                }
+                return $data;
             }
         }
 
