@@ -45,7 +45,7 @@ try {
                         $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
 
                     }
-                    $objDBTool->updateForecastData($row['name'], $arrGameData[1], $getPredict, $row['status']);
+                    $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
                         $msg .= "\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
