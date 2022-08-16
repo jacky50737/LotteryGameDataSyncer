@@ -25,10 +25,10 @@ try {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
                 $objLineTool->doLineNotify("\n" . "檢查完畢 新增賽事{$arrGameData[0]}");
             }
-            $objDBTool->closeDB();
         }
         sleep(1);
     }
+//    $objDBTool->closeDB();
     $objLineTool->doLineNotify("\n" . "本次檢查完畢!");
 } catch (Exception $exception) {
     if (isset($objDBTool)) {

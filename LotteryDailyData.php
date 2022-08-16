@@ -221,7 +221,7 @@ try {
 
         }
     }
-    $objDBTool->closeDB();
+//    $objDBTool->closeDB();
     exit(0);
 } catch (Exception $exception) {
     $error_msg = "\n" . '[error]' . "\n" .
@@ -231,6 +231,7 @@ try {
         "\n" . ' 發生錯誤行： ' . $exception->getLine() .
         "\n" . ' 錯誤訊息： ' . $exception->getMessage();
     $objLineTool = new LineNotify();
+    $objDBTool->closeDB();
     $objLineTool->doLineNotify($error_msg);
 
     $file = fopen(__DIR__."/DailyLock.txt", "w");
