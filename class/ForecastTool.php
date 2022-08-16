@@ -64,8 +64,10 @@ class ForecastTool
     {
         $yards = intval(explode('_', $name)[1]);
         for ($i = 1; $i < $yards; $i++) {
-            if ($gno["no{$i}"] == strval($predict)) {
-                return true;
+            if(isset($gno["no{$i}"])){
+                if ($gno["no{$i}"] == strval($predict)) {
+                    return true;
+                }
             }
         }
 
@@ -83,7 +85,7 @@ class ForecastTool
         $miss = 0;
         if (str_contains($rowDataStatus, "MISS")) {
             $miss = explode("MISS", $rowDataStatus)[1];
-            var_dump($miss);
+//            var_dump($miss);
         }
 
         if ($status) {
