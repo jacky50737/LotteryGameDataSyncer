@@ -40,11 +40,17 @@ require_once('class/autoload.php');
 //$dbpassword = "Aa174677178508123"; # 使用者密碼
 //$dbname = "pjtvqdla_PK10";    # 資料庫名稱
 
-# 連接 MySQL/MariaDB 資料庫
+//# 連接 MySQL/MariaDB 資料庫
 //$connection = new mysqli($server, $dbuser, $dbpassword, $dbname);
-
-# 檢查連線是否成功
+//# 檢查連線是否成功
 //if ($connection->connect_error) {
 //    die("連線失敗：" . $connection->connect_error);
 //}
+
+$objDBTool = DataBaseTool::getInstance();
+$forecastTool = ForecastTool::getInstance();
+$arrGameData[0] = '32437750';
+$pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2));
+var_dump($pass2Data);
+//$getPredict = $forecastTool->forecastNextGame();
 
