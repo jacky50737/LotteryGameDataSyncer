@@ -76,6 +76,7 @@ foreach ($forecastData as $row){
         $pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2)); //抓-2期資料
         $gameData = $pass2Data['game'];
         unset($pass2Data['game']);
+        var_dump($gameData);
         var_dump($pass2Data);
     }
 }
