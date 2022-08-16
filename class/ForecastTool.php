@@ -62,8 +62,8 @@ class ForecastTool
      */
     public function checkForecastStatus($gno, $predict, $name)
     {
-        $yards = intval(explode('_', $name)[1])-1;
-        print("預測{$predict}最新：");
+        $yards = intval(explode('_', $name)[1]);
+        print("為{$yards}碼預測{$predict}最新：");
         print_r($gno);
 
         for ($i = 0; $i < $yards; $i++) {

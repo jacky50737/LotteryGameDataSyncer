@@ -29,6 +29,7 @@ try {
 //var_dump($forecastData);
                 $msg = "";
                 foreach ($forecastData as $row) {
+                    $lastMsg ="上期預測號碼：{$row['predict']}";
                     $getPredict = $row['predict'];
                     $forecastTag = $forecastTool->explodeForecast($row['name']);
                     $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
@@ -48,12 +49,12 @@ try {
                     $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
-                        $msg .= "\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
+                        $msg .= "\n$lastMsg\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
                     }
                 }
                 $gameNum = implode('|',$arrGameData[1]);
                 $objLineTool->doLineNotify(
-                    "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：$gameNum".$msg);
+                    "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：\n$gameNum\n上期預測號碼：{$lastMsg}".$msg);
             }
         }
         sleep(1);
