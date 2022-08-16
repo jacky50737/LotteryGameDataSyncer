@@ -121,6 +121,40 @@ class DataBaseTool
         return false;
     }
 
+
+    public function getGameData($game)
+    {
+
+        $sqlQuery = "SELECT * FROM DATA WHERE game = '" . $game . "';";
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                if(empty($this->connection->query($sqlQuery)->fetch_assoc())){
+                    return "無";
+                }
+                return $this->connection->query($sqlQuery)->fetch_assoc();
+            }
+        }
+
+        return false;
+    }
+
+    public function getForecastData($game)
+    {
+
+        $sqlQuery = "SELECT * FROM forecast;";
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                if(empty($this->connection->query($sqlQuery)->fetch_assoc())){
+                    return "無";
+                }
+                return $this->connection->query($sqlQuery)->fetch_assoc();
+            }
+        }
+
+        return false;
+    }
+
+
     public function checkLife(string $id): int
     {
         $sqlQuery = "SELECT IS_LIFE FROM LIFE WHERE ID = '" . $id . "';";
