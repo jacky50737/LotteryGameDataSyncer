@@ -12,6 +12,7 @@ $objLineTool = new LineNotify();
 $objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
 try {
     $objDBTool = DataBaseTool::getInstance();
+    $forecastTool = ForecastTool::getInstance();
     while (date("s") < 58) {
         if (intval(date("s")) % 5 == 0) {
             $objGameTool = new getPK10GameData();
@@ -23,7 +24,32 @@ try {
 //var_dump($objDBTool->checkGame(strval($arrGameData[0])));
             if (!$objDBTool->checkGame(strval($arrGameData[0]))) {
                 $objDBTool->upLoadGame(strval($arrGameData[0]), $arrGameData[1]);
-                $objLineTool->doLineNotify("\n" . "檢查完畢 新增賽事{$arrGameData[0]}");
+
+                $forecastData = $objDBTool->getForecastData();
+//var_dump($forecastData);
+                $msg = "";
+                foreach ($forecastData as $row) {
+                    $status = $forecastTool->checkForecastStatus($arrGameData[1], $row['predict'], $row['name']);
+                    $status_C = "初始化";
+                    $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status);
+                    $row['status'] = $forecastResult['status'];
+//    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
+                    if (in_array($row['status'], ['SHOOT', 'DOWN'])) {
+                        $pass2Data = $objDBTool->getGameData(intval($arrGameData[0] - 2)); //抓-2期資料
+                        $gameData = $pass2Data['game'];
+                        unset($pass2Data['game']);
+//        var_dump($gameData);
+//        var_dump($pass2Data);
+                        $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
+                        $objDBTool->updateForecastData($row['name'], $arrGameData[1], $getPredict, $row['status']);
+                    }
+                    if(!empty($getPredict)){
+                        $msg .="-------";
+                        $msg .= "\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
+                    }
+                }
+                $objLineTool->doLineNotify(
+                    "\n" . "檢查完畢 新增賽事{$arrGameData[0]}".$msg);
             }
         }
         sleep(1);

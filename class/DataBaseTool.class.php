@@ -160,6 +160,13 @@ class DataBaseTool
         return false;
     }
 
+    /**
+     * @param $name
+     * @param $game
+     * @param $predict
+     * @param $status
+     * @return bool
+     */
     public function updateForecastData($name, $game, $predict, $status)
     {
         $sqlQuery = "UPDATE forecast SET GAME = '" . $game . "' AND PREDICT = '" . $predict . "' AND STATUS = '" . $status . "' WHERE NAME = '" . $name . "';";

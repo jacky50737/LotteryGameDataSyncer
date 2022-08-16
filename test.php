@@ -71,7 +71,7 @@ foreach ($forecastData as $row){
     $status_C = "初始化";
     $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status);
     $row['status'] = $forecastResult['status'];
-    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
+//    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
     if(in_array($row['status'],['SHOOT','DOWN'])){
         $pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2)); //抓-2期資料
         $gameData = $pass2Data['game'];
@@ -79,7 +79,7 @@ foreach ($forecastData as $row){
 //        var_dump($gameData);
 //        var_dump($pass2Data);
         $getPredict = $forecastTool->forecastNextGame($row['name'],$pass2Data);
-        var_dump($getPredict);
+        $objDBTool->updateForecastData($row['name'],$arrGameData[1],$row['predict'],$row['status']);
     }
 }
 
