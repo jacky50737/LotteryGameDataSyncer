@@ -74,6 +74,8 @@ foreach ($forecastData as $row){
     var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
     if(in_array($row['status'],['SHOOT','DOWN'])){
         $pass2Data = $objDBTool->getGameData(intval($arrGameData[0]-2)); //抓-2期資料
+        $gameData = $pass2Data['game'];
+        unset($pass2Data['game']);
         var_dump($pass2Data);
     }
 }
