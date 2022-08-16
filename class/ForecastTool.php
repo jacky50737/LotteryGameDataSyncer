@@ -67,6 +67,7 @@ class ForecastTool
         } else {
             switch ($rowDataStatus) {
                 case 'SHOOT':
+                case 'DOWN':
                     $rowDataStatus = 'MISS1';
                     $status_C = '凹1';
                     break;
