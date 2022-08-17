@@ -14,8 +14,8 @@ $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
 $startGame = '31333331';
-//$endGame   = '31333431'; //For Test
-$endGame = '32439158'; //正式
+$endGame   = '31333341'; //For Test
+//$endGame = '32439158'; //正式
 
 $count = $endGame - $startGame;
 

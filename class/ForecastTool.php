@@ -139,9 +139,9 @@ class ForecastTool
         ];
 
         if($status == 'SHOOT'){
-            $newBalance = $balance + $betStrategy[$name][$status][$lastStatus][1];
+            $newBalance = intval($balance) + $betStrategy[$name][$status][$lastStatus][1];
         }else{
-            $newBalance = $balance - $betStrategy[$name][$status][$lastStatus][0];
+            $newBalance = intval($balance) - $betStrategy[$name][$status][$lastStatus][0];
         }
         $fee = $fee + ($betStrategy[$name][$status][$lastStatus][0] * 0.005);
 
