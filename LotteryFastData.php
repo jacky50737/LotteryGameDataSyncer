@@ -59,6 +59,9 @@ try {
                     if(!empty($getPredict)){
                         $msg .="\n-------";
                         $msg .= "\n$lastMsg\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
+                    }else{
+                        echo "getPredict is empty!";
+                        var_dump($getPredict);
                     }
                 }
                 $gameNum = implode('|',$arrGameData[1]);
