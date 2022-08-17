@@ -49,9 +49,9 @@ try {
 
                     if(!$status and $row['name'] == 'YARDS_8_LEVELS_3' and !in_array($row['status'], ['SHOOT', 'DOWN']))
                     {
-                        print "getPredict is ：".$getPredict;
+                        print "getPredict is ：".$getPredict."\n";
                         $getPredict = intval($row['predict']) + 3;
-                        print "to getPredict is ：".$getPredict;
+                        print "to getPredict is ：".$getPredict."\n";
                         if($getPredict >= 11){
                             var_dump("getPredict大於十為：");
                             var_dump($getPredict);
