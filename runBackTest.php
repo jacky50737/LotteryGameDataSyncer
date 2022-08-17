@@ -56,7 +56,7 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
         }
 
         if($balanceData[0] < 10000){
-            $objLineTool->doLineNotify("\n回測第{$game}局\n策略{$row['name']}\n金額小於1萬\n目前金額：".$balanceData[0]);
+            $objLineTool->doLineNotify("\n回測第{$game}局\n策略{$row['c_name']}\n金額小於1萬\n目前金額：".$balanceData[0]);
             $balanceData[0] = 30000;
         }
 
@@ -79,7 +79,7 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
         }
 
         if($balanceData[0] > 80000){
-            $objLineTool->doLineNotify("\n回測第{$game}局\n策略{$row['name']}\n金額小於8萬\n目前金額：".$balanceData[0]);
+            $objLineTool->doLineNotify("\n回測第{$game}局\n策略{$row['c_name']}\n金額小於8萬\n目前金額：".$balanceData[0]);
         }
     }
     echo "局{$game}數據\n".$msg."\n";
