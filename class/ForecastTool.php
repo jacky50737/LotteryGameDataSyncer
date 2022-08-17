@@ -62,10 +62,10 @@ class ForecastTool
         $betStrategy = [
             'YARDS_9_LEVELS_3'=>[
                 'SHOOT'=>[
-                    'DOWN' =>[18,1.2],
-                    'SHOOT'=>[18,1.2],
-                    'MISS1'=>[18,2.4],
-                    'MISS2'=>[18,6],
+                    'DOWN' =>[18,19.2],
+                    'SHOOT'=>[18,19.2],
+                    'MISS1'=>[18,326.4],
+                    'MISS2'=>[18,5280],
                 ],
                 'MISS1'=>[
                     'DOWN' =>[306,0],
@@ -88,12 +88,12 @@ class ForecastTool
             ],
             'YARDS_7_LEVELS_5'=>[
                 'SHOOT'=>[
-                    'DOWN' =>[14,5.2],
-                    'SHOOT'=>[14,5.2],
-                    'MISS1'=>[14,9.4],
-                    'MISS2'=>[14,19.2],
-                    'MISS3'=>[14,28],
-                    'MISS4'=>[14,88],
+                    'DOWN' =>[14,19.2],
+                    'SHOOT'=>[14,19.2],
+                    'MISS1'=>[14,86.4],
+                    'MISS2'=>[14,355.2],
+                    'MISS3'=>[14,1344],
+                    'MISS4'=>[14,5184],
                 ],
                 'MISS1'=>[
                     'DOWN' =>[63,0],
