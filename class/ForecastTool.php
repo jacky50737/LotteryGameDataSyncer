@@ -193,7 +193,7 @@ class ForecastTool
         print("為{$yards}碼預測{$predict}最新：");
         print_r($gno);
 
-        for ($i = 0; $i < $yards; $i++) {
+        for ($i = 1; $i <= $yards; $i++) {
             if(isset($gno["no".$i])){
                 if (intval($gno["no".$i]) == intval($predict)) {
                     print("比對成功!");
