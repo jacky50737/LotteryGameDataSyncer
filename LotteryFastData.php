@@ -47,12 +47,14 @@ try {
 
                     }
 
-                    if(!$status and $row['name'] == 'YARDS_8_LEVELS_3'){
+                    if(!$status and $row['name'] == 'YARDS_8_LEVELS_3' and !in_array($row['status'], ['SHOOT', 'DOWN']))
+                    {
                         $getPredict = intval($row['predict']) + 3;
-                        if($getPredict > 10){
+                        if($getPredict >= 11){
                             $getPredict = $getPredict - 10;
                         }
                     }
+
                     $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
