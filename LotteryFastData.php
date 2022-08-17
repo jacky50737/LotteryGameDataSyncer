@@ -68,6 +68,7 @@ try {
                         $msg .="\n-------";
                         $msg .= "\n$lastMsg\n{$row['c_name']}-本期預測結果：".$forecastResult['result']."\n下期預測號碼：".$getPredict;
                         $msg .= "\n目前策略準確度：".round((intval($row['shoot_times']))/intval($row['total_times'])*100,2)."%";
+                        $msg .= "\n總預測次數：".$row['total_times'];
                     }else{
                         echo "getPredict is empty!";
                         var_dump($getPredict);
