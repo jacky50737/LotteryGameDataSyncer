@@ -46,6 +46,13 @@ try {
                         $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
 
                     }
+
+                    if(!$status and $row['name'] == 'YARDS_8_LEVELS_3'){
+                        $getPredict = intval($row['predict']) + 3;
+                        if($getPredict > 10){
+                            $getPredict = $getPredict - 10;
+                        }
+                    }
                     $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
