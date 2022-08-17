@@ -140,7 +140,7 @@ class DataBaseTool
 
     public function getForecastData()
     {
-        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag'];
+        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag', 'shoot_times', 'total_times'];
         $data = [];
         $sqlQuery = "SELECT * FROM forecast ORDER BY TAG;";
         for ($i = 0; $i < 5; $i++) {
