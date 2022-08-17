@@ -143,7 +143,7 @@ class ForecastTool
         }else{
             $newBalance = intval($balance) - $betStrategy[$name][$status][$lastStatus][0];
         }
-        $fee = $fee + ($betStrategy[$name][$status][$lastStatus][0] * 0.005);
+        $fee = floatval($fee) + ($betStrategy[$name][$status][$lastStatus][0] * 0.005);
 
         return [$newBalance, $fee];
     }
