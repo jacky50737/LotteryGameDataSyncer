@@ -194,7 +194,7 @@ class ForecastTool
         print_r($gno);
 
         for ($i = 0; $i < $yards; $i++) {
-            if(isset($gno[$i])){
+            if(isset($gno["no".$i])){
                 if (intval($gno["no".$i]) == intval($predict)) {
                     print("比對成功!");
                     return true;
