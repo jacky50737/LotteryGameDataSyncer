@@ -32,6 +32,7 @@ class ForecastTool
             case 'YARDS_9_LEVELS_3':
             case 'YARDS_7_LEVELS_5':
             case 'YARDS_8_LEVELS_3':
+            case 'YARDS_5_LEVELS_3':
                 $total = intval($gameData['no1']) + intval($gameData['no10']);
 
                 if ($total <= 10) {
