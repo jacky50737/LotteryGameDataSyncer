@@ -180,6 +180,42 @@ class DataBaseTool
         return false;
     }
 
+    /**
+     * @param $name
+     * @param $totalTimes
+     * @return bool
+     */
+    public function updateForecastTotalTimes($name, $totalTimes)
+    {
+        $sqlQuery = "UPDATE FORECAST SET TOTAL_TIMES = '" . $totalTimes . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $name
+     * @param $shootTimes
+     * @return bool
+     */
+    public function updateForecastShootTimes($name, $shootTimes)
+    {
+        $sqlQuery = "UPDATE FORECAST SET SHOOT_TIMES = '" . $shootTimes . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public function checkLife(string $id): int
     {

@@ -45,6 +45,10 @@ try {
 //        var_dump($pass2Data);
                         $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
 
+                        if($row['status'] == 'SHOOT'){
+                            $objDBTool->updateForecastShootTimes($row['name'],intval($row['shoot_times']+1));
+                        }
+
                     }
 
                     if(!$status and $row['name'] == 'YARDS_8_LEVELS_3' and !in_array($row['status'], ['SHOOT', 'DOWN']))
@@ -58,7 +62,7 @@ try {
                             $getPredict = $getPredict - 10;
                         }
                     }
-
+                    $objDBTool->updateForecastTotalTimes($row['name'],intval($row['total_times'] + 1));
                     $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
