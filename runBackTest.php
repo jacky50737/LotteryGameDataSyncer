@@ -71,12 +71,12 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
             var_dump($getPredict);
         }
 
-        if($row['balance'] < 80000){
-            $objLineTool->doLineNotify("\n回測{$count}局結果\n金額小於80000\n目前金額：".$row['balance']);
+        if($row['balance'] > 80000){
+            $objLineTool->doLineNotify("\n回測{$count}局結果\n金額小於8萬\n目前金額：".$row['balance']);
         }
 
-        if($row['balance'] < 100){
-            $objLineTool->doLineNotify("\n回測{$count}局結果\n金額小於100\n目前金額：".$row['balance']);
+        if($row['balance'] < 10000){
+            $objLineTool->doLineNotify("\n回測{$count}局結果\n金額小於1萬\n目前金額：".$row['balance']);
         }
     }
     echo $msg;
