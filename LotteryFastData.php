@@ -44,6 +44,7 @@ try {
 //        var_dump($gameData);
 //        var_dump($pass2Data);
                         $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
+                        $objDBTool->updateForecastTotalTimes($row['name'],intval($row['total_times'] + 1));
 
                         if($row['status'] == 'SHOOT'){
                             $objDBTool->updateForecastShootTimes($row['name'],intval($row['shoot_times']+1));
@@ -62,7 +63,6 @@ try {
                             $getPredict = $getPredict - 10;
                         }
                     }
-                    $objDBTool->updateForecastTotalTimes($row['name'],intval($row['total_times'] + 1));
                     $objDBTool->updateForecastData($row['name'], $arrGameData[0], $getPredict, $row['status']);
                     if(!empty($getPredict)){
                         $msg .="\n-------";
