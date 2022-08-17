@@ -30,7 +30,7 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
         $lastMsg ="上期預測號碼：{$row['predict']}";
         $getPredict = $row['predict'];
         $forecastTag = $forecastTool->explodeForecast($row['name']);
-        $status = $forecastTool->checkForecastStatus($gameData, $row['predict'], $row['name']);
+        $status = $forecastTool->checkForecastTestStatus($gameData, $row['predict'], $row['name']);
         $status_C = "初始化";
 
         $forecastResult = $forecastTool->processeForecastStatus($row['status'], $status, $forecastTag['LEVELS']);

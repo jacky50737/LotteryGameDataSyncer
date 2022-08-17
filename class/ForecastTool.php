@@ -182,6 +182,30 @@ class ForecastTool
     }
 
     /**
+     * @param $gno
+     * @param $predict
+     * @param $name
+     * @return bool
+     */
+    public function checkForecastTestStatus($gno, $predict, $name)
+    {
+        $yards = intval(explode('_', $name)[1]);
+        print("為{$yards}碼預測{$predict}最新：");
+        print_r($gno);
+
+        for ($i = 0; $i < $yards; $i++) {
+            if(isset($gno[$i])){
+                if (intval($gno["no".$i]) == intval($predict)) {
+                    print("比對成功!");
+                    return true;
+                }
+            }
+        }
+        print("比對失敗!");
+        return false;
+    }
+
+    /**
      * @param $rowDataStatus
      * @param $status
      * @param $levels
