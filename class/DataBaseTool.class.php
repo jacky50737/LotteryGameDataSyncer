@@ -160,6 +160,28 @@ class DataBaseTool
         return false;
     }
 
+    public function getForecastTestData()
+    {
+        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag', 'shoot_times', 'total_times', 'balance', 'fee'];
+        $data = [];
+        $sqlQuery = "SELECT * FROM forecast_test ORDER BY TAG;";
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                if (empty($this->connection->query($sqlQuery)->fetch_all())) {
+                    return "無";
+                }
+                foreach ($this->connection->query($sqlQuery)->fetch_all() as $key => $item) {
+                    foreach ($item as $num => $row) {
+                        $data[$key][$arraykN[$num]] = $row;
+                    }
+                }
+                return $data;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param $name
      * @param $game
@@ -170,6 +192,28 @@ class DataBaseTool
     public function updateForecastData($name, $game, $predict, $status)
     {
         $sqlQuery = "UPDATE FORECAST SET GAME = '" . $game . "', PREDICT = '" . $predict . "', STATUS = '" . $status . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $name
+     * @param $game
+     * @param $predict
+     * @param $status
+     * @param $balance
+     * @param $fee
+     * @return bool
+     */
+    public function updateForecastTestData($name, $game, $predict, $status, $balance, $fee)
+    {
+        $sqlQuery = "UPDATE FORECAST_TEST SET GAME = '" . $game . "', PREDICT = '" . $predict . "', STATUS = '" . $status . "', BALANCE ='".$balance."', FEE ='".$fee."' WHERE NAME = '" . $name . "';";
 
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
@@ -200,12 +244,48 @@ class DataBaseTool
 
     /**
      * @param $name
+     * @param $totalTimes
+     * @return bool
+     */
+    public function updateForecastTestTotalTimes($name, $totalTimes)
+    {
+        $sqlQuery = "UPDATE FORECAST_TEST SET TOTAL_TIMES = '" . $totalTimes . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $name
      * @param $shootTimes
      * @return bool
      */
     public function updateForecastShootTimes($name, $shootTimes)
     {
         $sqlQuery = "UPDATE FORECAST SET SHOOT_TIMES = '" . $shootTimes . "' WHERE NAME = '" . $name . "';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $name
+     * @param $shootTimes
+     * @return bool
+     */
+    public function updateForecastTestShootTimes($name, $shootTimes)
+    {
+        $sqlQuery = "UPDATE FORECAST_TEST SET SHOOT_TIMES = '" . $shootTimes . "' WHERE NAME = '" . $name . "';";
 
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {

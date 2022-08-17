@@ -50,6 +50,105 @@ class ForecastTool
     }
 
     /**
+     * @param $balance
+     * @param $name
+     * @param $status
+     * @param $lastStatus
+     * @param $fee
+     * @return mixed
+     */
+    public function processBalance($balance, $name, $status, $lastStatus, $fee)
+    {
+        $betStrategy = [
+            'YARDS_9_LEVELS_3'=>[
+                'SHOOT'=>[
+                    'DOWN' =>[18,1.2],
+                    'SHOOT'=>[18,1.2],
+                    'MISS1'=>[18,2.4],
+                    'MISS2'=>[18,6],
+                ],
+                'MISS1'=>[
+                    'DOWN' =>[306,0],
+                    'SHOOT'=>[306,0],
+                    'MISS1'=>[306,0],
+                    'MISS2'=>[306,0],
+                ],
+                'MISS2'=>[
+                    'DOWN' =>[4950,0],
+                    'SHOOT'=>[4950,0],
+                    'MISS1'=>[4950,0],
+                    'MISS2'=>[4950,0],
+                ],
+                'DOWN'=>[
+                    'DOWN' =>[18,0],
+                    'SHOOT'=>[18,0],
+                    'MISS1'=>[18,0],
+                    'MISS2'=>[18,0],
+                ]
+            ],
+            'YARDS_7_LEVELS_5'=>[
+                'SHOOT'=>[
+                    'DOWN' =>[14,5.2],
+                    'SHOOT'=>[14,5.2],
+                    'MISS1'=>[14,9.4],
+                    'MISS2'=>[14,19.2],
+                    'MISS3'=>[14,28],
+                    'MISS4'=>[14,88],
+                ],
+                'MISS1'=>[
+                    'DOWN' =>[63,0],
+                    'SHOOT'=>[63,0],
+                    'MISS1'=>[63,0],
+                    'MISS2'=>[63,0],
+                    'MISS3'=>[63,0],
+                    'MISS4'=>[63,0],
+                ],
+                'MISS2'=>[
+                    'DOWN' =>[259,0],
+                    'SHOOT'=>[259,0],
+                    'MISS1'=>[259,0],
+                    'MISS2'=>[259,0],
+                    'MISS3'=>[259,0],
+                    'MISS4'=>[259,0],
+                ],
+                'MISS3'=>[
+                    'DOWN' =>[980,0],
+                    'SHOOT'=>[980,0],
+                    'MISS1'=>[980,0],
+                    'MISS2'=>[980,0],
+                    'MISS3'=>[980,0],
+                    'MISS4'=>[980,0],
+                ],
+                'MISS4'=>[
+                    'DOWN' =>[3780,0],
+                    'SHOOT'=>[3780,0],
+                    'MISS1'=>[3780,0],
+                    'MISS2'=>[3780,0],
+                    'MISS3'=>[3780,0],
+                    'MISS4'=>[3780,0],
+                ],
+                'DOWN'=>[
+                    'DOWN'=>[14,0],
+                    'SHOOT'=>[14,0],
+                    'MISS1'=>[14,0],
+                    'MISS2'=>[14,0],
+                    'MISS3'=>[14,0],
+                    'MISS4'=>[14,0],
+                ],
+            ]
+        ];
+
+        if($status == 'SHOOT'){
+            $newBalance = $balance + $betStrategy[$name][$status][$lastStatus][1];
+        }else{
+            $newBalance = $balance - $betStrategy[$name][$status][$lastStatus][0];
+        }
+        $fee = $fee + ($betStrategy[$name][$status][$lastStatus][0] * 0.005);
+
+        return [$newBalance, $fee];
+    }
+
+    /**
      * @param string $name
      * @return array
      */
