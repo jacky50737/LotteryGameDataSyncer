@@ -107,6 +107,13 @@ function get_server_cpu_usage(){
     return $load[0];
 
 }
+
+if(function_exists('shell_exec')) {
+    echo "shell_exec is enabled";
+} else {
+    echo "shell_exec is disabled";
+}
+
 echo "RAM：";
 print get_server_memory_usage();
 echo "\nCPU";
