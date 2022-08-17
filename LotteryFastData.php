@@ -53,6 +53,8 @@ try {
                         $getPredict = intval($row['predict']) + 3;
                         print "to getPredict is ：".$getPredict;
                         if($getPredict >= 11){
+                            var_dump("getPredict大於十為：");
+                            var_dump($getPredict);
                             $getPredict = $getPredict - 10;
                         }
                     }
