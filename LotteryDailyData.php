@@ -144,7 +144,7 @@ try {
 //                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
 //                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
-                    usleep(1000000);
+                    usleep(10000);
                     if($done%50 == 0){
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
