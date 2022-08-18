@@ -31,8 +31,8 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
     }
 }
 
-$dd = 1;
-while ($dd<31){
+$dd = 31;
+while ($dd<32){
     $sDay = $lastDay.$dd;
     $day = date('Y-m-d', strtotime($sDay));
     echo "Day：".$day."\n";
