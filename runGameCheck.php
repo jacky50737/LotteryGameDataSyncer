@@ -35,6 +35,8 @@ while ($dd){
             $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
             if($isSuccess){
                 echo "期數：{$game} 已補上!\n";
+            }else {
+                echo "期數：{$game} 補失敗!\n";
             }
         }
     }
