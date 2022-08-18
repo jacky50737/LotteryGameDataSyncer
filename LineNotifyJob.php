@@ -10,7 +10,7 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 $objDBTool = DataBaseTool::getInstance();
 $objLineTool = new LineNotify();
-//while (date('s') < 58){
+while (date('s') < 58){
     $data = $objDBTool->getQueueLineNotify();
     if(!empty($data['id'])){
         echo "處理待發送訊息[{$data['msg']}]...";
@@ -22,4 +22,4 @@ $objLineTool = new LineNotify();
             echo "失敗!\n";
         }
     }
-//}
+}
