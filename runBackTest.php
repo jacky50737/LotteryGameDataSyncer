@@ -13,9 +13,9 @@ $objLineTool = new LineNotify();
 $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
-$startGame = '31333331';
+$startGame = '31333331'; //頭31333329
 //$endGame   = '31334331'; //For Test
-$endGame = '32439251'; //正式
+$endGame = '32176592'; //正式 (2020/01/01~2022/01/01)
 
 $count = $endGame - $startGame;
 
