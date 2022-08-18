@@ -9,9 +9,9 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 
 $objLineTool = new LineNotify();
+$objDBTool = DataBaseTool::getInstance();
 $objDBTool->inQueueLineNotify("\n" . "最新賽車資訊檢查...");
 try {
-    $objDBTool = DataBaseTool::getInstance();
     $forecastTool = ForecastTool::getInstance();
     while (date("s") < 58) {
         if (intval(date("s")) % 5 == 0) {
