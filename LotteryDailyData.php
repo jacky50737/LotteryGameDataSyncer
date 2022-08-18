@@ -66,7 +66,7 @@ try {
                 "\n" . "載入遊戲數據中..." .
                 "\n" . "共{$total}筆遊戲賽事" .
                 "\n" . "賽事編號頭：{$arrGameData[$total-1][0]}" .
-                "\n" . "遊戲賽事尾：{$arrGameData[0][0]}" .
+                "\n" . "賽事編號尾：{$arrGameData[0][0]}" .
                 "\n" . "上次執行位置：$lastTag"
             );
             $file = fopen(__DIR__."/locktime.txt", "w");
