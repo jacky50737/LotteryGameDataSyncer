@@ -11,6 +11,7 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 
 $objLineTool = new LineNotify();
+$objGameTool = new getPK10GameData();
 $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
@@ -20,12 +21,22 @@ $startGame = '32135120'; //頭31333329
 $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
-
+$lastDay = '2021-11-26';
 $msg = "";
 for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
-    $gameData = $objDBTool->getGameData(intval($gameTag));
-    if(!isset($gameData['game'])){
-        echo "期數：{$gameTag} 缺失!\n";
-        exit(0);
+    $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
+    $arrGameData = $objGameTool->getPK10Data("Date", $day);
+    foreach ($arrGameData as $result) {
+        $game = $result[0];
+        $gno = $result[1];
+        $dbGameData = $objDBTool->getGameData(intval($game));
+        if(!isset($gameData['game'])){
+            echo "期數：{$gameTag} 缺失!\n";
+            $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
+            if($isSuccess){
+                echo "期數：{$gameTag} 已補上!\n";
+            }
+        }
+
     }
 }
