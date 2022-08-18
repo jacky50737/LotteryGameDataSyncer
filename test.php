@@ -48,20 +48,20 @@ require_once('class/autoload.php');
 //}
 
 $objDBTool = DataBaseTool::getInstance();
-$forecastTool = ForecastTool::getInstance();
-$arrGameData[0] = '32437750';
-$arrGameData[1] = [
-    'no1'=>7,
-    'no2'=>6,
-    'no3'=>5,
-    'no4'=>4,
-    'no5'=>1,
-    'no6'=>3,
-    'no7'=>2,
-    'no8'=>10,
-    'no9'=>8,
-    'no10'=>9,
-    ];
+//$forecastTool = ForecastTool::getInstance();
+//$arrGameData[0] = '32437750';
+//$arrGameData[1] = [
+//    'no1'=>7,
+//    'no2'=>6,
+//    'no3'=>5,
+//    'no4'=>4,
+//    'no5'=>1,
+//    'no6'=>3,
+//    'no7'=>2,
+//    'no8'=>10,
+//    'no9'=>8,
+//    'no10'=>9,
+//    ];
 
 
 //$forecastData = $objDBTool->getForecastData();
@@ -88,33 +88,35 @@ $arrGameData[1] = [
 //----KNN TEST-----
 
 //取得主機使用狀況
-function get_server_memory_usage(){
-
-    $free = shell_exec('free');
-    $free = (string)trim($free);
-    $free_arr = explode("\n", $free);
-    $mem = explode(" ", $free_arr[1]);
-    $mem = array_filter($mem);
-    $mem = array_merge($mem);
-    $memory_usage = $mem[2]/$mem[1]*100;
-
-    return round($memory_usage,2)."%";
-}
-
-function get_server_cpu_usage(){
-
-    $load = sys_getloadavg();
-    return $load[0]."%";
-
-}
-
-if(function_exists('shell_exec')) {
-    echo "shell_exec is enabled";
-} else {
-    echo "shell_exec is disabled";
-}
-
-echo "RAM：";
-print get_server_memory_usage();
-echo "\nCPU";
-print get_server_cpu_usage();
+//function get_server_memory_usage(){
+//
+//    $free = shell_exec('free');
+//    $free = (string)trim($free);
+//    $free_arr = explode("\n", $free);
+//    $mem = explode(" ", $free_arr[1]);
+//    $mem = array_filter($mem);
+//    $mem = array_merge($mem);
+//    $memory_usage = $mem[2]/$mem[1]*100;
+//
+//    return round($memory_usage,2)."%";
+//}
+//
+//function get_server_cpu_usage(){
+//
+//    $load = sys_getloadavg();
+//    return $load[0]."%";
+//
+//}
+//
+//if(function_exists('shell_exec')) {
+//    echo "shell_exec is enabled";
+//} else {
+//    echo "shell_exec is disabled";
+//}
+//
+//echo "RAM：";
+//print get_server_memory_usage();
+//echo "\nCPU";
+//print get_server_cpu_usage();
+$msg = "Line排程測試! R：".rand(1,99999);
+$objDBTool->inQueueLineNotify($msg);

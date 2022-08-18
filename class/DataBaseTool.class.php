@@ -88,6 +88,58 @@ class DataBaseTool
     }
 
     /**
+     * @param string $msg
+     * @return bool
+     */
+    public function inQueueLineNotify(string $msg): bool
+    {
+        $sqlQuery = "INSERT INTO LINE_QUEUE" .
+            "(MSG) VALUES (" . json_encode($msg) . ")";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return array|false
+     */
+    public function getQueueLineNotify()
+    {
+        $sqlQuery = "SELECT ID, MSG FROM LINE_QUEUE ORDER BY ID ASC LIMIT 1;";
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                if(empty($this->connection->query($sqlQuery)->fetch_assoc()['MSG'])){
+                    return false;
+                }
+                return [
+                    'id'=>$this->connection->query($sqlQuery)->fetch_assoc()['ID'],
+                    'msg'=>json_decode($this->connection->query($sqlQuery)->fetch_assoc()['MSG'])];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function deQueueLineNotify(string $id): bool
+    {
+        $sqlQuery = "DELETE FROM LINE_QUEUE WHERE ID ='" .$id."';";
+
+        for ($i = 0; $i < 5; $i++) {
+            if ($this->connection->query($sqlQuery) == TRUE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param string $type
      * @param string $process
      * @param string $game
