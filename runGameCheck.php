@@ -16,15 +16,16 @@ $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
 //$startGame = '31333329'; //頭31333329
-$startGame = '32135120'; //頭31333329
+$startGame = '32135121'; //頭31333329
 //$endGame   = '31334331'; //For Test
 $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
 $lastDay = '2021-11-26';
 $msg = "";
+$c1152 = 1;
+$day = date('Y-m-d', strtotime($lastDay . "+1 days"));
 for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
-    $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
     foreach ($arrGameData as $result) {
         $game = $result[0];
@@ -38,5 +39,11 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
             }
         }
 
+    }
+
+    $c1152++;
+    if($c1152 == 1152){
+        $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
+        $c1152 = 1;
     }
 }
