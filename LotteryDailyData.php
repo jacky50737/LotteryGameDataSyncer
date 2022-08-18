@@ -11,7 +11,6 @@ require_once('class/autoload.php');
 
 $fileName = basename(__FILE__, '.php');
 $objDBTool = DataBaseTool::getInstance();
-echo "開跑!\n";
 try {
     $pid = rand();
     $objLineTool = new LineNotify();
