@@ -21,7 +21,7 @@ $startGame = '32135120'; //頭31333329
 $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
-$lastDay = '2021-11-';
+$lastDay = '2021-12-';
 $lostGame = [];
 for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
     $gameData = $objDBTool->getGameData(intval($gameTag));
