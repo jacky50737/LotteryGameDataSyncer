@@ -95,7 +95,7 @@ class DataBaseTool
     {
         $sqlQuery = "INSERT INTO LINE_QUEUE" .
             "(MSG) VALUES ('" . $msg . "')";
-var_dump($sqlQuery);
+
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 return true;
