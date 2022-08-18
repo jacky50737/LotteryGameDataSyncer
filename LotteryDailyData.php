@@ -10,7 +10,7 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 
 $fileName = basename(__FILE__, '.php');
-
+$objDBTool = DataBaseTool::getInstance();
 try {
     $pid = rand();
     $objLineTool = new LineNotify();
@@ -19,7 +19,6 @@ try {
     $lock = fgets($file);
     fclose($file);
     $timeTool = new timeTool();
-    $objDBTool = DataBaseTool::getInstance();
     $life = $objDBTool->checkLife($fileName);
 
     if ($life > 700) {
