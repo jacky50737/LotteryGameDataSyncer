@@ -22,28 +22,21 @@ $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
 $lastDay = '2021-11-26';
-$msg = "";
-$c1152 = 1;
-$day = date('Y-m-d', strtotime($lastDay . "+1 days"));
-for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
+$dd = 30;
+while ($dd){
+    $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
     foreach ($arrGameData as $result) {
         $game = $result[0];
         $gno = $result[1];
         $dbGameData = $objDBTool->getGameData(intval($game));
         if(!isset($gameData['game'])){
-            echo "期數：{$gameTag} 缺失!\n";
+            echo "期數：{$game} 缺失!\n";
             $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
             if($isSuccess){
-                echo "期數：{$gameTag} 已補上!\n";
+                echo "期數：{$game} 已補上!\n";
             }
         }
-
     }
-
-    $c1152++;
-    if($c1152 == 1152){
-        $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
-        $c1152 = 1;
-    }
+    $dd--;
 }
