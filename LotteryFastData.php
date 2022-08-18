@@ -9,7 +9,7 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 
 $objLineTool = new LineNotify();
-$objLineTool->doLineNotify("\n" . "最新賽車資訊檢查...");
+$objDBTool->inQueueLineNotify("\n" . "最新賽車資訊檢查...");
 try {
     $objDBTool = DataBaseTool::getInstance();
     $forecastTool = ForecastTool::getInstance();
@@ -82,18 +82,18 @@ try {
                     }
                 }
                 $gameNum = implode('|',$arrGameData[1]);
-                $objLineTool->doLineNotify(
+                $objDBTool->inQueueLineNotify(
                     "\n" . "檢查完畢 新增賽事$arrGameData[0]\n本期號碼：\n$gameNum".$msg);
             }
         }
         sleep(1);
     }
 //    $objDBTool->closeDB();
-    $objLineTool->doLineNotify("\n" . "本次檢查完畢!");
+    $objDBTool->inQueueLineNotify("\n" . "本次檢查完畢!");
 } catch (Exception $exception) {
     if (isset($objDBTool)) {
         $objDBTool->closeDB();
     }
-    $objLineTool->doLineNotify("\n" . $exception->getMessage());
+    $objDBTool->inQueueLineNotify("\n" . $exception->getMessage());
 }
 exit(0);

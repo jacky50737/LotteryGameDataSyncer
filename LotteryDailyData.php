@@ -14,7 +14,7 @@ $objDBTool = DataBaseTool::getInstance();
 try {
     $pid = rand();
     $objLineTool = new LineNotify();
-    $objLineTool->doLineNotify("\n" . "歷史賽車資訊檢查...");
+    $objDBTool->inQueueLineNotify("\n" . "歷史賽車資訊檢查...");
     $file = fopen(__DIR__."/DailyLock.txt", "r");
     $lock = fgets($file);
     fclose($file);
@@ -25,7 +25,7 @@ try {
         $file = fopen(__DIR__."/DailyLock.txt", "w");
         fwrite($file, "off");
         fclose($file);
-        $objLineTool->doLineNotify("\n" . "因過久未執行，已解除鎖定");
+        $objDBTool->inQueueLineNotify("\n" . "因過久未執行，已解除鎖定");
         $objDBTool->setLife($fileName, 0);
 
     } else {
@@ -39,7 +39,7 @@ try {
         fclose($file);
 
         $start_time = microtime(true);
-        $objLineTool->doLineNotify("\n" . "開始時間:" . date("Y-m-d A h:i:s",intval($start_time + (8 * 60 * 60))));
+        $objDBTool->inQueueLineNotify("\n" . "開始時間:" . date("Y-m-d A h:i:s",intval($start_time + (8 * 60 * 60))));
 
         $file = fopen(__DIR__."/log.txt", "r");
         $lastDay = fgets($file);
@@ -60,7 +60,7 @@ try {
             $lastGame = $objDBTool->logLastTimeProcess("getListTime", $fileName, "", $day);
             $lastTag = $lastGame?:"無";
             $needDay=ceil(((strtotime(date("Y-m-d")))-(strtotime($day)))/86400); //60s*60min*24h
-            $objLineTool->doLineNotify(
+            $objDBTool->inQueueLineNotify(
                 "\n" . "寫入開始時間..." .
                 "\n" . "距離最新日期尚有{$needDay}天..." .
                 "\n" . "載入遊戲數據中..." .
@@ -86,7 +86,7 @@ try {
                     }
 
                     if ($jumpTag == 1) {
-                        $objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . "正在跳躍至上次執行位置：{$lastGame}");
+                        $objDBTool->inQueueLineNotify("\n" . 'Pid：' . $pid . "\n" . 'Life：' . $life . "\n" . "正在跳躍至上次執行位置：{$lastGame}");
                         $jumpTag = 0;
                     }
 
@@ -94,7 +94,7 @@ try {
                     $lock = fgets($file);
                     fclose($file);
                     if ($lock == 'off') {
-                        exit($objLineTool->doLineNotify("\n" . 'Pid：' . $pid . "\n" . "差斷中止!"));
+                        exit($objDBTool->inQueueLineNotify("\n" . 'Pid：' . $pid . "\n" . "差斷中止!"));
                     }
 
                     if ($objDBTool->checkGame(strval($game)) == false) {
@@ -118,7 +118,7 @@ try {
                                 "\n" . '=>成功!' . "\t" . '上傳時間： ' . "\n" .
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                                 "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "剩餘時間： {$excess_time}" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
-//                            $objLineTool->doLineNotify($info_msg);
+//                            $objDBTool->inQueueLineNotify($info_msg);
 
                         } else {
                             $error_msg =
@@ -128,7 +128,7 @@ try {
                                 date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                                 "\n" . ' 錯誤訊息： ' . $this->connection->connect_error .
                                 "\n" . "還有[" . ($total - $done) . "]筆賽事，" . "\n" . "預計完成時間：" . date("Y-m-d A h:i:s", $maybeDone);
-                            $objLineTool->doLineNotify($error_msg);
+                            $objDBTool->inQueueLineNotify($error_msg);
 
                         }
                     } else {
@@ -137,7 +137,7 @@ try {
                         $speed = floatval($cost_time/$done);
                         $life = $objDBTool->checkLife($fileName);
                         $objDBTool->setLife($fileName, $life - 1);
-//                        $objLineTool->doLineNotify(
+//                        $objDBTool->inQueueLineNotify(
 //                            "\n" . 'Pid：' . $pid .
 //                            "\n" . 'Life：' . $life .
 //                            "\n" . '目前速率：' . round($speed,2) ."秒/筆".
@@ -151,7 +151,7 @@ try {
                         $cost_time = $now_time - $start_time;
                         $speed = floatval($cost_time/$done);
                         $life = $objDBTool->checkLife($fileName);
-                        $objLineTool->doLineNotify(
+                        $objDBTool->inQueueLineNotify(
                             "\n" . 'Pid：' . $pid .
                             "\n" . 'Life：' . $life .
                             "\n" . '目前速率：' . round($speed,2) ."秒/筆".
@@ -168,11 +168,11 @@ try {
                         date("Y-m-d A h:i:s", time() + (8 * 60 * 60)) .
                         "\n" . ' 錯誤訊息： ' . $exception->getMessage();
                     $objLineTool = new LineNotify();
-                    $objLineTool->doLineNotify($error_msg);
+                    $objDBTool->inQueueLineNotify($error_msg);
                 }
             }
 
-            $objLineTool->doLineNotify("\n讀寫完成...");
+            $objDBTool->inQueueLineNotify("\n讀寫完成...");
 
             if ($done == $total) {
                 $file = fopen(__DIR__."/log.txt", "w");
@@ -191,7 +191,7 @@ try {
                     "\n" . "遺漏{$lost}筆" .
                     "\n" . "即將重試...";
             }
-            $objLineTool->doLineNotify($msg);
+            $objDBTool->inQueueLineNotify($msg);
 
             $objDBTool->setLife($fileName, 0);
 
@@ -200,7 +200,7 @@ try {
 
             $process_msg = "\n" . "日期：" . $day . "\n執行了：" . $timeTool->changeTimeType(intval($time_total)) . "\n";
 
-            $objLineTool->doLineNotify($process_msg);
+            $objDBTool->inQueueLineNotify($process_msg);
 
             $file = fopen(__DIR__."/DailyLock.txt", "w");
             fwrite($file, "off");
@@ -208,17 +208,17 @@ try {
         }
 
     } else {
-        $objLineTool->doLineNotify("\n" . "正在爬號中 !");
+        $objDBTool->inQueueLineNotify("\n" . "正在爬號中 !");
         $file = fopen(__DIR__."/locktime.txt", "r");
         $locktime = fgets($file);
         fclose($file);
-        $objLineTool->doLineNotify("\n" . "Life：" . $life . "\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
+        $objDBTool->inQueueLineNotify("\n" . "Life：" . $life . "\n" . "當前JOB已執行：" . $timeTool->changeTimeType(intval(microtime(true) - floatval($locktime))));
 
         if ((microtime(true) - floatval($locktime)) > 3600) {
             $file = fopen(__DIR__."/DailyLock.txt", "w");
             fwrite($file, "off");
             fclose($file);
-            $objLineTool->doLineNotify("\n" . "已解除鎖定");
+            $objDBTool->inQueueLineNotify("\n" . "已解除鎖定");
 
         }
     }
@@ -233,7 +233,7 @@ try {
         "\n" . ' 錯誤訊息： ' . $exception->getMessage();
     $objLineTool = new LineNotify();
     $objDBTool->closeDB();
-    $objLineTool->doLineNotify($error_msg);
+    $objDBTool->inQueueLineNotify($error_msg);
 
     $file = fopen(__DIR__."/DailyLock.txt", "w");
     fwrite($file, "off");
