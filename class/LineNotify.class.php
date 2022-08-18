@@ -15,7 +15,7 @@ class LineNotify
         "ckwfUw1XWB41SOE8DDXKYxSZRZy3n8siG9npJX0pAG4",
     ];
 
-    public function doLineNotify(string $msg): string
+    public function doLineNotify(string $msg,$is_Daily = false): string
     {
 
         $url = "https://notify-api.line.me/api/notify";
@@ -27,7 +27,10 @@ class LineNotify
         for ($i = 0; $i < 4; $i++) {
             $header = array('Authorization:Bearer ' . $this->token[$i]);
             for ($try = 0; $try < 10; $try++) {
-                $results = $curl->doPost($url, $header, $payload, true);
+                $results = $curl->doPost($url, $header, $payload, $is_Daily);
+                if ($is_Daily){
+                    return true;
+                }
                 if (!is_null($results->status) && !is_null($results->message)) {
                     if ($results->message == "ok" || $results->status == 200) {
                         $try = 10;
