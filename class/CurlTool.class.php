@@ -13,10 +13,9 @@ class CurlTool
      * @param string $url
      * @param array $header
      * @param array $payload
-     * @param bool $is_Daily
      * @return false|mixed
      */
-    public function doPost(string $url,array $header,array $payload, $is_Daily = false): mixed
+    public function doPost(string $url,array $header,array $payload)
     {
         try {
             set_time_limit(0);
@@ -25,16 +24,11 @@ class CurlTool
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
-            if($is_Daily){
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 1);
-            }
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HEADER, 1);
 
             $results = curl_exec($ch);
-            if($is_Daily){
-                return true;
-            }
+
             // Header 分割
             $headerSize = curl_getinfo( $ch , CURLINFO_HEADER_SIZE );
             $headerStr = substr( $results , 0 , $headerSize );
