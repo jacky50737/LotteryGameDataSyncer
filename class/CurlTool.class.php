@@ -27,7 +27,7 @@ class CurlTool
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             if($is_Daily){
-                curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 1);
             }
             curl_setopt($ch, CURLOPT_HEADER, 1);
 
