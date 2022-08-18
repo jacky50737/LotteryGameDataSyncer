@@ -65,7 +65,9 @@ try {
                 "\n" . "距離最新日期尚有{$needDay}天..." .
                 "\n" . "載入遊戲數據中..." .
                 "\n" . "共{$total}筆遊戲賽事" .
-                "\n" . "上次執行位置：{$lastTag}"
+                "\n" . "賽事編號頭：{$arrGameData[$total-1][0]}" .
+                "\n" . "遊戲賽事尾：{$arrGameData[0][0]}" .
+                "\n" . "上次執行位置：$lastTag"
             );
             $file = fopen(__DIR__."/locktime.txt", "w");
             fwrite($file, $start_time . "\n");
