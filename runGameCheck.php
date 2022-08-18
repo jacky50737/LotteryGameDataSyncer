@@ -32,9 +32,9 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
 }
 
 $dd = 30;
-
+$sDay = $lastDay;
 while ($dd){
-    $sDay = strtotime($lastDay . "+1 days");
+    $sDay = strtotime($sDay . "+1 days");
     $day = date('Y-m-d', $sDay);
     echo "Day：".$lastDay."\n";
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
