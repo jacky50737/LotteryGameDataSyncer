@@ -10,7 +10,7 @@ declare(strict_types=1);
 require_once('class/autoload.php');
 
 $fileName = basename(__FILE__, '.php');
-
+$objDBTool = DataBaseTool::getInstance();
 try {
     $pid = rand();
     $objLineTool = new LineNotify();
@@ -19,7 +19,6 @@ try {
     $lock = fgets($file);
     fclose($file);
     $timeTool = new timeTool();
-    $objDBTool = DataBaseTool::getInstance();
     $life = $objDBTool->checkLife($fileName);
 
     if ($life > 700) {
@@ -144,7 +143,7 @@ try {
 //                            "\n" . "本期[" . $game . "]已存在，前往下一期賽事" .
 //                            "\n" . "還有[" . ($total - $done) . "]筆賽事，");
                     }
-                    usleep(100);
+                    usleep(10000);
                     if($done%50 == 0){
                         $now_time = microtime(true);
                         $cost_time = $now_time - $start_time;
