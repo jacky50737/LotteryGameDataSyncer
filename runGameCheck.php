@@ -36,7 +36,7 @@ $sDay = $lastDay;
 while ($dd){
     $sDay = strtotime($sDay . "+1 days");
     $day = date('Y-m-d', $sDay);
-    echo "Day：".$lastDay."\n";
+    echo "Day：".$day."\n";
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
     foreach ($arrGameData as $result) {
         $game = $result[0];
