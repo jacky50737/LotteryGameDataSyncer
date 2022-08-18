@@ -15,7 +15,7 @@ class CurlTool
      * @param array $payload
      * @return false|mixed
      */
-    public function doPost(string $url,array $header,array $payload)
+    public function doPost(string $url,array $header,array $payload, $is_Daily = false)
     {
         try {
             set_time_limit(0);
@@ -25,6 +25,9 @@ class CurlTool
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($payload));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            if($is_Daily){
+                curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            }
             curl_setopt($ch, CURLOPT_HEADER, 1);
 
             $results = curl_exec($ch);
