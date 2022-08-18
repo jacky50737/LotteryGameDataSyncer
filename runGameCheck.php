@@ -15,7 +15,7 @@ $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
 //$startGame = '31333329'; //頭31333329
-$startGame = '32135121'; //頭31333329
+$startGame = '32135120'; //頭31333329
 //$endGame   = '31334331'; //For Test
 $endGame = '32176592'; //正式
 
