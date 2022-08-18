@@ -21,7 +21,7 @@ $startGame = '32135120'; //頭31333329
 $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
-$lastDay = '2021-11-26';
+$lastDay = '2021-11-';
 $lostGame = [];
 for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
     $gameData = $objDBTool->getGameData(intval($gameTag));
@@ -31,11 +31,10 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
     }
 }
 
-$dd = 30;
-$sDay = $lastDay;
-while ($dd){
-    $sDay = strtotime($sDay . "+1 days");
-    $day = date('Y-m-d', $sDay);
+$dd = 1;
+while ($dd<31){
+    $sDay = $lastDay.$dd;
+    $day = date('Y-m-d', strtotime($sDay));
     echo "Day：".$day."\n";
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
     foreach ($arrGameData as $result) {
@@ -50,5 +49,5 @@ while ($dd){
             }
         }
     }
-    $dd--;
+    $dd++;
 }
