@@ -30,7 +30,7 @@ while ($dd){
         $game = $result[0];
         $gno = $result[1];
         $dbGameData = $objDBTool->getGameData(intval($game));
-        if(!isset($gameData['game'])){
+        if(!isset($dbGameData['game'])){
             echo "期數：{$game} 缺失!\n";
             $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
             if($isSuccess){
