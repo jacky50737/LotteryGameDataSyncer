@@ -24,6 +24,6 @@ $msg = "";
 for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
     $gameData = $objDBTool->getGameData(intval($gameTag));
     if(!isset($gameData['game'])){
-        echo "期數：{$gameTag} 缺失!";
+        echo "期數：{$gameTag} 缺失!\n";
     }
 }
