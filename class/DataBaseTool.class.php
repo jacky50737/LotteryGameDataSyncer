@@ -94,8 +94,8 @@ class DataBaseTool
     public function inQueueLineNotify(string $msg): bool
     {
         $sqlQuery = "INSERT INTO LINE_QUEUE" .
-            "(MSG) VALUES (" . json_encode($msg) . ")";
-var_dump($sqlQuery);
+            "(MSG) VALUES (" . $msg . ")";
+
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 return true;
@@ -117,7 +117,7 @@ var_dump($sqlQuery);
                 }
                 return [
                     'id'=>$this->connection->query($sqlQuery)->fetch_assoc()['ID'],
-                    'msg'=>json_decode($this->connection->query($sqlQuery)->fetch_assoc()['MSG'])];
+                    'msg'=>$this->connection->query($sqlQuery)->fetch_assoc()['MSG']];
             }
         }
         return false;
