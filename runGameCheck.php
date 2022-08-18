@@ -16,22 +16,30 @@ $objDBTool = DataBaseTool::getInstance();
 $forecastTool = ForecastTool::getInstance();
 
 //$startGame = '31333329'; //頭31333329
-$startGame = '32135121'; //頭31333329
+$startGame = '32135120'; //頭31333329
 //$endGame   = '31334331'; //For Test
 $endGame = '32176592'; //正式
 
 $count = $endGame - $startGame;
 $lastDay = '2021-11-26';
+$lostGame = [];
+for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
+    $gameData = $objDBTool->getGameData(intval($gameTag));
+    if(!isset($gameData['game'])){
+        echo "期數：{$gameTag} 缺失!\n";
+        $lostGame[]=strval($gameTag);
+    }
+}
+
 $dd = 30;
 while ($dd){
     $day = date('Y-m-d', strtotime($lastDay . "+1 days"));
+    echo "Day：".$lastDay."\n";
     $arrGameData = $objGameTool->getPK10Data("Date", $day);
     foreach ($arrGameData as $result) {
         $game = $result[0];
         $gno = $result[1];
-        $dbGameData = $objDBTool->getGameData(intval($game));
-        if(!isset($dbGameData['game'])){
-            echo "期數：{$game} 缺失!\n";
+        if(in_array(strval($game),$lostGame)){
             $isSuccess = $objDBTool->upLoadGame(strval($game), $gno);
             if($isSuccess){
                 echo "期數：{$game} 已補上!\n";
