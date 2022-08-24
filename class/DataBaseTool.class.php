@@ -214,9 +214,9 @@ class DataBaseTool
 
     public function getForecastTestData()
     {
-        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag', 'shoot_times', 'total_times', 'balance', 'fee'];
+        $arraykN = ['name', 'c_name', 'game', 'predict', 'status','tag', 'shoot_times', 'total_times', 'balance', 'fee','is_active'];
         $data = [];
-        $sqlQuery = "SELECT * FROM forecast_test ORDER BY TAG;";
+        $sqlQuery = "SELECT * FROM forecast_test WHERE IS_ACTIVE = 'ON' ORDER BY TAG;";
         for ($i = 0; $i < 5; $i++) {
             if ($this->connection->query($sqlQuery) == TRUE) {
                 if (empty($this->connection->query($sqlQuery)->fetch_all())) {
