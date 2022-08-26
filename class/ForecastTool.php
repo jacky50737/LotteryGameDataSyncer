@@ -64,7 +64,7 @@ class ForecastTool
     public function processBalance($balance, $name, $status, $lastStatus, $fee)
     {
         $betStrategy = [
-            'YARDS_9_LEVELS_3'=>[
+            'YARDS_9_LEVELS_3_Forward'=>[
                 'SHOOT'=>[
                     'DOWN' =>[18,1.2],
                     'SHOOT'=>[18,1.2],
@@ -90,7 +90,56 @@ class ForecastTool
                     'MISS2'=>[18,0],
                 ]
             ],
-            'YARDS_7_LEVELS_5'=>[
+            'YARDS_7_LEVELS_5_Forward'=>[
+                'SHOOT'=>[
+                    'DOWN' =>[14,5.2],
+                    'SHOOT'=>[14,5.2],
+                    'MISS1'=>[14,70.4],
+                    'MISS2'=>[14,341.2],
+                    'MISS3'=>[14,1330],
+                    'MISS4'=>[14,5170],
+                ],
+                'MISS1'=>[
+                    'DOWN' =>[63,0],
+                    'SHOOT'=>[63,0],
+                    'MISS1'=>[63,0],
+                    'MISS2'=>[63,0],
+                    'MISS3'=>[63,0],
+                    'MISS4'=>[63,0],
+                ],
+                'MISS2'=>[
+                    'DOWN' =>[259,0],
+                    'SHOOT'=>[259,0],
+                    'MISS1'=>[259,0],
+                    'MISS2'=>[259,0],
+                    'MISS3'=>[259,0],
+                    'MISS4'=>[259,0],
+                ],
+                'MISS3'=>[
+                    'DOWN' =>[980,0],
+                    'SHOOT'=>[980,0],
+                    'MISS1'=>[980,0],
+                    'MISS2'=>[980,0],
+                    'MISS3'=>[980,0],
+                    'MISS4'=>[980,0],
+                ],
+                'MISS4'=>[
+                    'DOWN' =>[3780,0],
+                    'SHOOT'=>[3780,0],
+                    'MISS1'=>[3780,0],
+                    'MISS2'=>[3780,0],
+                    'MISS3'=>[3780,0],
+                    'MISS4'=>[3780,0],
+                ],
+                'DOWN'=>[
+                    'DOWN'=>[14,0],
+                    'SHOOT'=>[14,0],
+                    'MISS1'=>[14,0],
+                    'MISS2'=>[14,0],
+                    'MISS3'=>[14,0],
+                    'MISS4'=>[14,0],
+                ],
+            ],'YARDS_7_LEVELS_5_ThreeToNine'=>[
                 'SHOOT'=>[
                     'DOWN' =>[14,5.2],
                     'SHOOT'=>[14,5.2],
@@ -140,7 +189,7 @@ class ForecastTool
                     'MISS4'=>[14,0],
                 ],
             ],
-            'YARDS_5_LEVELS_3'=>[
+            'YARDS_5_LEVELS_3_Forward'=>[
                 'SHOOT'=>[
                     'DOWN' =>[10,9.2],
                     'SHOOT'=>[10,9.2],
