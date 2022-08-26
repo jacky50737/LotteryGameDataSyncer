@@ -27,14 +27,15 @@ class ForecastTool
     public function forecastNextGame(string $name, array $gameData)
     {
         $forecastData = 0;
+        $strategy = explode('_', $name)[4];
 
         switch ($name) {
-            case 'YARDS_9_LEVELS_3':
-            case 'YARDS_7_LEVELS_5':
-            case 'YARDS_8_LEVELS_3':
-            case 'YARDS_5_LEVELS_3':
-            case 'YARDS_9_LEVELS_2':
-            case 'YARDS_1_LEVELS_10':
+            case 'YARDS_9_LEVELS_3_Forward':
+            case 'YARDS_7_LEVELS_5_Forward':
+            case 'YARDS_8_LEVELS_3_Forward':
+            case 'YARDS_5_LEVELS_3_Forward':
+            case 'YARDS_9_LEVELS_2_Forward':
+            case 'YARDS_1_LEVELS_10_Forward':
                 $total = intval($gameData['no1']) + intval($gameData['no10']);
 
                 if ($total <= 10) {
@@ -42,6 +43,9 @@ class ForecastTool
                 } else {
                     $forecastData = $total - 10;
                 }
+                break;
+            case 'YARDS_7_LEVELS_5_ThreeToNine':
+                $forecastData = intval($gameData['no3']);
                 break;
             default:
                 break;
@@ -215,18 +219,35 @@ class ForecastTool
      */
     public function checkForecastTestStatus($gno, $predict, $name)
     {
-        $yards = intval(explode('_', $name)[1]);
+        $nameArr = explode('_', $name);
+        $yards = intval($nameArr[1]);
+        $strategy = $nameArr[4];
         print("為{$yards}碼預測{$predict}最新：");
         print_r($gno);
 
-        for ($i = 1; $i <= $yards; $i++) {
-            if(isset($gno["no".$i])){
-                if (intval($gno["no".$i]) == intval($predict)) {
-                    print("比對成功!");
-                    return true;
+        switch ($strategy) {
+            case 'Forward'://順向
+                for ($i = 1; $i <= $yards; $i++) {
+                    if (isset($gno["no" . $i])) {
+                        if (intval($gno["no" . $i]) == intval($predict)) {
+                            print("比對成功!");
+                            return true;
+                        }
+                    }
                 }
-            }
+                break;
+            case 'ThreeToNine'://3~9
+                for ($i = 3; $i <= 9; $i++) {
+                    if (isset($gno["no" . $i])) {
+                        if (intval($gno["no" . $i]) == intval($predict)) {
+                            print("比對成功!");
+                            return true;
+                        }
+                    }
+                }
+                break;
         }
+
         print("比對失敗!");
         return false;
     }

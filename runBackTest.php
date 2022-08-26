@@ -40,11 +40,19 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
         $row['status'] = $forecastResult['status'];
 //    var_dump($row['c_name']."-本期預測結果：".$forecastResult['result']);
         if (in_array($row['status'], ['SHOOT', 'DOWN']) or $row['game'] == '0') {
-            $pass2Data = $objDBTool->getGameData(intval($game - 2)); //抓-2期資料
-            unset($pass2Data['game']);
-//        var_dump($gameData);
-//        var_dump($pass2Data);
-            $getPredict = $forecastTool->forecastNextGame($row['name'], $pass2Data);
+            $strategy = explode('_', $row['name'])[4];
+            switch ($strategy){
+                default:
+                case 'Forward':
+                    $Data = $objDBTool->getGameData(intval($game - 2)); //抓-2期資料
+                    break;
+                case 'ThreeToNine':
+                    $Data = $objDBTool->getGameData(intval($game - 1)); //抓-2期資料
+                    break;
+            }
+            unset($Data['game']);
+            $getPredict = $forecastTool->forecastNextGame($row['name'], $Data);
+
             $row['total_times'] = $row['total_times'] +1;
             $objDBTool->updateForecastTestTotalTimes($row['name'],intval($row['total_times']));
 
@@ -52,10 +60,10 @@ for($gameTag=$startGame;$gameTag<=$endGame;$gameTag++){
                 $row['shoot_times'] = $row['shoot_times'] +1;
                 $objDBTool->updateForecastTestShootTimes($row['name'],intval($row['shoot_times']));
             }
-
         }
 
-        if($balanceData[0] < 10000){
+        if($balanceData[0] < 10000)
+        {
             $objDBTool->inQueueLineNotify("\n回測第{$game}局\n策略{$row['c_name']}\n金額小於1萬\n目前金額：".$balanceData[0]);
             $balanceData[0] = 30000;
         }

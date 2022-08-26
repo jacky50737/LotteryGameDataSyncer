@@ -1,0 +1,15 @@
+{
+    "name": "jacky/lottery-game-data-syncer",
+    "autoload": {
+        "psr-4": {
+            "Jacky\\LotteryGameDataSyncer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jacky",
+            "email": "jacky50737@gmail.com"
+        }
+    ],
+    "require": {}
+}
